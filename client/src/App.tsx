@@ -1,18 +1,42 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const Game = () => {
-  const canvasRef = useRef(null);
-  const [player, setPlayer] = useState({ x: 100, y: 100, size: 20 });
-  const keys = useRef({ w: false, a: false, s: false, d: false, ц: false, ф: false, ы: false, в: false });
+interface Player {
+  x: number;
+  y: number;
+  size: number;
+}
 
-  const walls = useRef([
+interface Wall {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+type ControlKeys = 'w' | 'a' | 's' | 'd' | 'ц' | 'ф' | 'ы' | 'в';
+
+const Game = () => {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [player, setPlayer] = useState<Player>({ x: 100, y: 100, size: 20 });
+  const keys = useRef<Record<ControlKeys, boolean>>({
+    w: false,
+    a: false,
+    s: false,
+    d: false,
+    ц: false,
+    ф: false,
+    ы: false,
+    в: false
+  });
+
+  const walls = useRef<Wall[]>([
     { x: 200, y: 100, width: 50, height: 200 },
     { x: 400, y: 300, width: 150, height: 30 },
     { x: 100, y: 400, width: 30, height: 150 },
     { x: 600, y: 100, width: 40, height: 300 }
   ]);
 
-  const checkCollision = (x, y, size) => {
+  const checkCollision = (x: number, y: number, size: number): boolean => {
     for (const wall of walls.current) {
       if (x + size > wall.x &&
         x < wall.x + wall.width &&
@@ -26,7 +50,10 @@ const Game = () => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
+    if (!canvas) return;
+
     const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
     const handleResize = () => {
       canvas.width = window.innerWidth;
@@ -40,15 +67,17 @@ const Game = () => {
   }, []);
 
   useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (['w', 'a', 's', 'd', 'ц', 'ф', 'ы', 'в'].includes(e.key)) {
-        keys.current[e.key] = true;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const key = e.key.toLowerCase();
+      if (Object.keys(keys.current).includes(key)) {
+        keys.current[key as ControlKeys] = true;
       }
     };
 
-    const handleKeyUp = (e) => {
-      if (['w', 'a', 's', 'd', 'ц', 'ф', 'ы', 'в'].includes(e.key)) {
-        keys.current[e.key] = false;
+    const handleKeyUp = (e: KeyboardEvent) => {
+      const key = e.key.toLowerCase();
+      if (Object.keys(keys.current).includes(key)) {
+        keys.current[key as ControlKeys] = false;
       }
     };
 
@@ -68,14 +97,10 @@ const Game = () => {
         let moveX = 0;
         let moveY = 0;
 
-        if (keys.current.w) moveY -= 1;
-        if (keys.current.s) moveY += 1;
-        if (keys.current.a) moveX -= 1;
-        if (keys.current.d) moveX += 1;
-        if (keys.current.ц) moveY -= 1;
-        if (keys.current.ы) moveY += 1;
-        if (keys.current.ф) moveX -= 1;
-        if (keys.current.в) moveX += 1;
+        if (keys.current.w || keys.current.ц) moveY -= 1;
+        if (keys.current.s || keys.current.ы) moveY += 1;
+        if (keys.current.a || keys.current.ф) moveX -= 1;
+        if (keys.current.d || keys.current.в) moveX += 1;
 
         if (moveX !== 0 && moveY !== 0) {
           moveX *= 0.7071;
@@ -96,8 +121,10 @@ const Game = () => {
         }
 
         const canvas = canvasRef.current;
-        newX = Math.max(0, Math.min(canvas.width - prev.size, newX));
-        newY = Math.max(0, Math.min(canvas.height - prev.size, newY));
+        if (canvas) {
+          newX = Math.max(0, Math.min(canvas.width - prev.size, newX));
+          newY = Math.max(0, Math.min(canvas.height - prev.size, newY));
+        }
 
         return { ...prev, x: newX, y: newY };
       });
@@ -108,12 +135,20 @@ const Game = () => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
+    if (!canvas) return;
+
     const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Рисуем стены
     ctx.fillStyle = '#888';
     for (const wall of walls.current) {
       ctx.fillRect(wall.x, wall.y, wall.width, wall.height);
     }
+
+    // Рисуем игрока
     ctx.fillStyle = 'blue';
     ctx.fillRect(player.x, player.y, player.size, player.size);
   }, [player]);
