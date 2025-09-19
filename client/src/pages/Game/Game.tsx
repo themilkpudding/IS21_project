@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState, useMemo, useRef } from 'react';
 import CONFIG from '../../config';
 import Button from '../../components/Button/Button';
 import { IBasePage, PAGES } from '../PageManager';
-import Game from '../../game/Game';
 import Canvas from '../../services/canvas/Canvas';
 import useCanvas from '../../services/canvas/useCanvas';
 import useSprites from './hooks/useSprites';
@@ -13,7 +12,6 @@ const GREEN = '#00e81c';
 const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
     const { WINDOW, SPRITE_SIZE } = CONFIG;
     const { setPage } = props;
-    let game: Game | null = null;
     // инициализация канваса
     let canvas: Canvas | null = null;
     const Canvas = useCanvas(render);
@@ -35,16 +33,8 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
 
     // функция отрисовки одного кадра сцены
     function render(FPS: number): void {
-        if (canvas && game) {
+        if (canvas) {
             canvas.clear();
-            const { kapitoshka } = game.getScene();
-
-            /************************/
-            /* нарисовать Капитошку */
-            /************************/
-            const { x, y } = kapitoshka;
-            printKapitoshka(canvas, { x, y }, getSprite(1));
-
             /******************/
             /* нарисовать FPS */
             /******************/
@@ -73,7 +63,6 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
 
     useEffect(() => {
         // инициализация игры
-        game = new Game();
         canvas = Canvas({
             parentId: GAME_FIELD,
             WIDTH: WINDOW.WIDTH * SPRITE_SIZE,
@@ -87,10 +76,8 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
         });
         return () => {
             // деинициализировать все экземпляры
-            game?.destructor();
             canvas?.destructor();
             canvas = null;
-            game = null;
             if (interval) {
                 clearInterval(interval);
                 interval = null;
@@ -104,16 +91,12 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
             const keyCode = event.keyCode ? event.keyCode : event.which ? event.which : 0;
             switch (keyCode) {
                 case 65: // a
-                    game?.move(-delta, 0);
                     break
                 case 68: // d
-                    game?.move(delta, 0);
                     break
                 case 87: // w
-                    game?.move(0, -delta);
                     break
                 case 83: // s
-                    game?.move(0, delta);
                     break
             }
         }
