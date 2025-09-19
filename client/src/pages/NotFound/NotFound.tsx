@@ -5,7 +5,7 @@ import { IBasePage, PAGES } from '../PageManager';
 const NotFound: React.FC<IBasePage> = (props: IBasePage) => {
     const { setPage } = props;
 
-    const clickHandler = () => setPage(PAGES.PRELOADER);
+    const clickHandler = () => setPage(PAGES.LOGIN);
 
     return (<>
         <h1>Упс... Нету такой страницы</h1>

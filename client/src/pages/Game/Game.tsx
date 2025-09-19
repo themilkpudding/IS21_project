@@ -56,7 +56,7 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
         }
     }
 
-    const backClickHandler = () => setPage(PAGES.CHAT);
+    const backClickHandler = () => setPage(PAGES.LOGIN);
 
     /****************/
     /* Mouse Events */
