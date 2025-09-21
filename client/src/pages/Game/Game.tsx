@@ -46,7 +46,10 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
         }
     }
 
-    const backClickHandler = () => setPage(PAGES.LOGIN);
+    const backClickHandler = () => {
+        const transitions = CONFIG.PAGE_TRANSITIONS[PAGES.GAME];
+        setPage(transitions);
+    };
 
     /****************/
     /* Mouse Events */
@@ -55,9 +58,12 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
     }
 
     const mouseClick = (_x: number, _y: number) => {
+        console.log('ЛКМ: атака персонажа');
     }
 
     const mouseRightClick = () => {
+        console.log('ПКМ: использование второй руки');
+
     }
     /****************/
 
@@ -91,12 +97,16 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
             const keyCode = event.keyCode ? event.keyCode : event.which ? event.which : 0;
             switch (keyCode) {
                 case 65: // a
+                    console.log('Влево');
                     break
                 case 68: // d
+                    console.log('Вправо');
                     break
                 case 87: // w
+                    console.log('Вверх');
                     break
                 case 83: // s
+                    console.log('Вниз');
                     break
             }
         }

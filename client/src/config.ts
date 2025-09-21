@@ -1,3 +1,5 @@
+import { PAGES } from "./pages/PageManager";
+
 export type TPoint = {
     x: number;
     y: number;
@@ -33,6 +35,10 @@ const CONFIG = {
         HEIGHT: 12,
         WIDTH: 20,
     },
+
+    PAGE_TRANSITIONS: {
+        [PAGES.GAME]: PAGES.NOT_FOUND,
+    }
 };
 
 export default CONFIG;
