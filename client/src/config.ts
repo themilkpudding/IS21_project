@@ -1,5 +1,3 @@
-import { PAGES } from "./pages/PageManager";
-
 export type TPoint = {
     x: number;
     y: number;
