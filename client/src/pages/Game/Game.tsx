@@ -47,8 +47,7 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
     }
 
     const backClickHandler = () => {
-        const transitions = CONFIG.PAGE_TRANSITIONS[PAGES.GAME];
-        setPage(transitions);
+        setPage(PAGES.NOT_FOUND);
     };
 
     /****************/
