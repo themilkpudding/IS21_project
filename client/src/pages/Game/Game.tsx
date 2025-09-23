@@ -82,7 +82,9 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
         }
     }
 
-    const backClickHandler = () => setPage(PAGES.LOGIN);
+    const backClickHandler = () => {
+        setPage(PAGES.NOT_FOUND);
+    };
 
     /****************/
     /* Mouse Events */
@@ -106,6 +108,8 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
     }
 
     const mouseRightClick = () => {
+        console.log('ПКМ: использование второй руки');
+
     }
     /****************/
 
