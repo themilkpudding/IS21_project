@@ -44,10 +44,9 @@ class Game {
         if (dx !== 0) {
             if (dx > 0) {
                 this.Sword.x = this.Hero.x + 100
-                this.Sword.y = this.Hero.y
-            } else {
+            }
+            if (dx < 0) {
                 this.Sword.x = this.Hero.x - 100
-                this.Sword.y = this.Hero.y
             }
             newX = this.Hero.x + dx;
             let canMoveX = true;
@@ -66,6 +65,7 @@ class Game {
 
         // Затем пробуем движение по Y
         if (dy !== 0) {
+            this.Sword.y = this.Hero.y + dy
             newY = this.Hero.y + dy;
             let canMoveY = true;
 
