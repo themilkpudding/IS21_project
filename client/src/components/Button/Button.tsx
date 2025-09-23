@@ -21,9 +21,19 @@ const Button: React.FC<TButton> = (props: TButton) => {
         isDisabled = false,
     } = props;
 
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        if (isDisabled) {
+            e.preventDefault();
+            e.stopPropagation(); 
+            return;
+        }
+        onClick(e);
+    };
+
     return (<button
         className={cn('button', `button-${variant}`, className, { 'hover': isHover, 'disabled': isDisabled })}
-        onClick={onClick}
+        onClick={handleClick}
+        disabled={isDisabled}
     >
         {text}
     </button>);
