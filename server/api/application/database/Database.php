@@ -45,9 +45,9 @@ class Database {
         $this->execute("UPDATE users SET token=? WHERE id=?", [$token, $userId]);
     }
 
-    public function registration($login, $password_hash, $nickname, $email) {
+    public function registration($login, $password_hash, $nickname) {
         $token = md5(uniqid()); 
-        $this->execute("INSERT INTO users (login, password_hash, nickname, email, token) VALUES (?, ?, ?, ?, ?)", [$login, $password_hash, $nickname, $email, $token]);
+        $this->execute("INSERT INTO users (login, password_hash, nickname, token) VALUES (?, ?, ?, ?)", [$login, $password_hash, $nickname, $token]);
     }
 }
 

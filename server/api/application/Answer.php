@@ -16,7 +16,7 @@ class Answer {
         '1005' => 'Other user is playing wright now. If you doesn`t, please change the password',
         '1006' => 'user with this email is already registered',
         '8001' => 'enter at least one value',
-        '8002' => 'the discriminant cannot be less than zero',
+        '8002' => 'the discriminant cannot be equal to zero',
         '8003' => 'no real roots found',
         '9000' => 'unknown error'
     );

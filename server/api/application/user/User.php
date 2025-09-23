@@ -35,13 +35,13 @@ class User {
         return ['error' => 1003];
     }
 
-    public function registration($login, $password, $nickname, $email) {
+    public function registration($login, $password, $nickname) {
         $user = $this->db->getUserByLogin($login);
         if ($user) {
             return ['error' => 1001];
         }
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
-        $this->db->registration($login, $password_hash, $nickname, $email);
+        $this->db->registration($login, $password_hash, $nickname);
         $user = $this->db->getUserByLogin($login);
         if ($user) {
             $token = md5(rand());

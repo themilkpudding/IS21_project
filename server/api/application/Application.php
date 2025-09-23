@@ -29,22 +29,22 @@ class Application {
     }
 
     public function registration($params) {
-        if ($params['login'] && $params['password'] && $params['nickname'] && $params['email']) {
-            return $this->user->registration($params['login'], $params['password'], $params['nickname'], $params['email']);
+        if ($params['login'] && $params['password'] && $params['nickname']) {
+            return $this->user->registration($params['login'], $params['password'], $params['nickname']);
         }
         return ['error' => 242];
     }
 
-        public function math($params) {
-            $a = (float) ($params['a'] ?? 0);
-            $b = (float) ($params['b'] ?? 0);
-            $c = (float) ($params['c'] ?? 0);
-            $d = (float) ($params['d'] ?? 0);
-            $e = (float) ($params['e'] ?? 0);
-            
-            if ($a != 0 || $b != 0 || $c != 0 || $d != 0 || $e != 0) {
-                return $this->math->getAnswers($a, $b, $c, $d, $e);
-            }
-            return ['error' => 8001];
+    public function math($params) {
+        $a = (float) ($params['a'] ?? 0);
+        $b = (float) ($params['b'] ?? 0);
+        $c = (float) ($params['c'] ?? 0);
+        $d = (float) ($params['d'] ?? 0);
+        $e = (float) ($params['e'] ?? 0);
+        
+        if ($a != 0 || $b != 0 || $c != 0 || $d != 0 || $e != 0) {
+            return $this->math->getAnswers($a, $b, $c, $d, $e);
         }
+        return ['error' => 8001];
+    }
 }
