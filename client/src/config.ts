@@ -3,6 +3,13 @@ export type TPoint = {
     y: number;
 }
 
+export type FPoint = {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
 export enum EDIRECTION {
     LEFT = 'left',
     RIGHT = 'right',
@@ -30,8 +37,8 @@ const CONFIG = {
     WINDOW: {
         LEFT: 0,
         TOP: 0,
-        HEIGHT: 12,
-        WIDTH: 20,
+        HEIGHT: 800,
+        WIDTH: 1300,
     },
 };
 
