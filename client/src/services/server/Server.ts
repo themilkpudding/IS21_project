@@ -24,6 +24,7 @@ class Server {
                 params.token = token;
             }
             const response = await fetch(`${this.HOST}/?${Object.keys(params).map(key => `${key}=${params[key]}`).join('&')}`);
+            
             const answer: TAnswer<T> = await response.json();
             if (answer.result === 'ok' && answer.data) {
                 return answer.data;
@@ -48,17 +49,14 @@ class Server {
         this.showErrorCb = cb;
     }
 
-    async login(login: string, password: string): Promise<boolean> {
-        const rnd = Math.round(Math.random() * 100000);
-        const hash = md5(`${md5(`${login}${password}`)}${rnd}`);
-        const user = await this.request<TUser>('login', { login, hash, rnd: `${rnd}` });
+    async login(login: string, password: string): Promise<TUser | null> {
+        const user = await this.request<TUser>('login', { login, password });
         if (user) {
             this.store.setUser(user);
-            return true;
+            return user;
         }
-        return false;
+        return null;
     }
-
     async logout() {
         const result = await this.request<boolean>('logout');
         if (result) {
