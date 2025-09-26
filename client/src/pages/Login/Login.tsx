@@ -73,9 +73,6 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
     const registrationClickHandler = () => {
         setPage(PAGES.REGISTRATION)
     };
-    const passwordRecoveryClickHandler = () => {
-        setPage(PAGES.PASSWORD_RECOVERY)
-    };
 
 
     return (<div className='login'>
@@ -115,7 +112,6 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
                     text='Продолжить'
                     isDisabled={!isFormValid}
                 />
-                <Button onClick={passwordRecoveryClickHandler} text='Не можете войти?' />
                 <Button onClick={registrationClickHandler} text='Создать учетную запись' />
                 <button onClick={() => setPage(PAGES.GAME)}>Временная кнопка для открытия самой игры</button>
             </div>
