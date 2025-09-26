@@ -42,16 +42,7 @@ class User {
         }
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
         $this->db->registration($login, $password_hash, $nickname);
-        $user = $this->db->getUserByLogin($login);
-        if ($user) {
-            $token = md5(rand());
-            $this->db->updateToken($user->id, $token);
-            return [
-                'id' => $user->id,
-                'nickname' => $user->nickname,
-                'token' => $token
-            ];
-        }
-        return ['error' => 1004];
+        
+        return $this->login($login, $password);
     }
 }

@@ -46,8 +46,7 @@ class Database {
     }
 
     public function registration($login, $password_hash, $nickname) {
-        $token = md5(uniqid()); 
-        $this->execute("INSERT INTO users (login, password_hash, nickname, token) VALUES (?, ?, ?, ?)", [$login, $password_hash, $nickname, $token]);
+        $this->execute("INSERT INTO users (login, password_hash, nickname) VALUES (?, ?, ?)", [$login, $password_hash, $nickname]);
     }
 }
 

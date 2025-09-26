@@ -1,32 +1,6 @@
 <?php
 
 class Math {
-    public function getAnswers($a, $b, $c, $d = 0, $e = 0) {
-        if ($a == 0 && $b == 0 && $c == 0 && $d == 0) {
-            if ($e == 0) {
-                return ['error' => 8001]; 
-            } else {
-                return ['error' => 8003]; 
-            }
-        }
-
-        // определение степеней 
-        if ($a != 0) {
-            $roots = $this->solveQuartic($a, $b, $c, $d, $e);
-        } elseif ($b != 0) {
-            $roots = $this->solveCubic($b, $c, $d, $e);
-        } elseif ($c != 0) {
-            $roots = $this->solveQuadratic($c, $d, $e);
-        } else {
-            $roots = $this->solveLinear($d, $e);
-        }
-
-        // округление
-        return array_map(function($root) {
-            return round($root, 10);
-        }, $roots);
-    }
-
     private function solveLinear($a, $b) {
         if ($a == 0) {
             return [];
@@ -114,5 +88,25 @@ class Math {
         return array_filter([$x1, $x2, $x3, $x4], function($root) {
             return is_numeric($root) && !is_nan($root);
         });
+    }
+
+    public function getAnswers($a, $b, $c, $d = 0, $e = 0) {
+        if ($a == 0 && $b == 0 && $c == 0 && $d == 0) {
+            if ($e == 0) {
+                return ['error' => 8001]; 
+            }
+        }
+        // определение степеней 
+        if ($a != 0) {
+            $roots = $this->solveQuartic($a, $b, $c, $d, $e);
+        } elseif ($b != 0) {
+            $roots = $this->solveCubic($b, $c, $d, $e);
+        } elseif ($c != 0) {
+            $roots = $this->solveQuadratic($c, $d, $e);
+        } else {
+            $roots = $this->solveLinear($d, $e);
+        }
+ 
+        return $roots;
     }
 }
