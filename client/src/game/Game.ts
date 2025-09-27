@@ -40,43 +40,35 @@ class Game {
         let newX = this.Hero.x;
         let newY = this.Hero.y;
 
-        // Сначала пробуем движение по X
+        // Для движения по X
         if (dx !== 0) {
             if (dx > 0) {
-                this.Sword.x = this.Hero.x + 100
+                this.Sword.x = this.Hero.x + 100;
             }
             if (dx < 0) {
-                this.Sword.x = this.Hero.x - 100
+                this.Sword.x = this.Hero.x - 100;
             }
             newX = this.Hero.x + dx;
-            let canMoveX = true;
 
-            for (const wall of this.Walls) {
-                if (this.check_collision(newX, this.Hero.y, wall)) {
-                    canMoveX = false;
-                    break;
-                }
-            }
+            const collidingWall = this.Walls.find(wall =>
+                this.check_collision(newX, this.Hero.y, wall)
+            );
 
-            if (canMoveX) {
+            if (!collidingWall) {
                 this.Hero.x = newX;
             }
         }
 
-        // Затем пробуем движение по Y
+        // Для движения по Y
         if (dy !== 0) {
-            this.Sword.y = this.Hero.y + dy
+            this.Sword.y = this.Hero.y + dy;
             newY = this.Hero.y + dy;
-            let canMoveY = true;
 
-            for (const wall of this.Walls) {
-                if (this.check_collision(this.Hero.x, newY, wall)) {
-                    canMoveY = false;
-                    break;
-                }
-            }
+            const collidingWall = this.Walls.find(wall =>
+                this.check_collision(this.Hero.x, newY, wall)
+            );
 
-            if (canMoveY) {
+            if (!collidingWall) {
                 this.Hero.y = newY;
             }
         }
