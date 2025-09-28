@@ -2,6 +2,7 @@ import md5 from 'md5';
 import CONFIG from "../../config";
 import Store from "../store/Store";
 import { TAnswer, TError, TMessagesResponse, TUser } from "./types";
+import { TupleType } from 'typescript';
 
 const { CHAT_TIMESTAMP, HOST } = CONFIG;
 
@@ -23,8 +24,9 @@ class Server {
             if (token) {
                 params.token = token;
             }
-            const response = await fetch(`${this.HOST}/?${Object.keys(params).map(key => `${key}=${params[key]}`).join('&')}`);
             
+            const response = await fetch(`${this.HOST}/?${Object.keys(params).map(key => `${key}=${params[key]}`).join('&')}`);
+
             const answer: TAnswer<T> = await response.json();
             if (answer.result === 'ok' && answer.data) {
                 return answer.data;
@@ -57,6 +59,7 @@ class Server {
         }
         return null;
     }
+
     async logout() {
         const result = await this.request<boolean>('logout');
         if (result) {
@@ -64,9 +67,8 @@ class Server {
         }
     }
 
-    registration(login: string, password: string, name: string): Promise<boolean | null> {
-        const hash = md5(`${login}${password}`);
-        return this.request<boolean>('registration', { login, hash, name });
+    registration(login: string, password: string, nickname: string): Promise<TUser | null> {
+        return this.request<TUser>('registration', { login, password, nickname });
     }
 
     sendMessage(message: string): void {
