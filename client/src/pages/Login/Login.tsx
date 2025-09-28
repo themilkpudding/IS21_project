@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { ServerContext } from '../../App';
 import Button from '../../components/Button/Button';
 import { IBasePage, PAGES } from '../PageManager';
+import { TError } from '../../services/server/types';
 
 const Login: React.FC<IBasePage> = (props: IBasePage) => {
     const { setPage } = props;
@@ -26,37 +27,46 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
     };
 
     const clearAuthFields = () => {
-        if (loginRef.current && passwordRef.current) {
-            loginRef.current.value = '';
-            passwordRef.current.value = '';
-            checkFormValidity();
-        }
+        if (loginRef.current) loginRef.current.value = '';
+        if (passwordRef.current) passwordRef.current.value = '';
+        setIsFormValid(false);
     };
 
-    const handlePasswordInput = (e: React.FormEvent<HTMLInputElement>) => {
-        const input = e.currentTarget;
-        if (input.value.length > 20) {
-            input.value = input.value.slice(0, 20);
+    const showError = (): boolean => {
+        const login = loginRef.current?.value || '';
+        const password = passwordRef.current?.value || '';
+
+        if (login.length > 15 || login.length < 6) {
+            setError('Логин должен быть от 6 до 15 символов');
+            return false;
         }
-        hideErrorOnInput();
+
+        if (password.length > 25 || password.length < 6) {
+            setError('Пароль должен быть от 6 до 25 символов');
+            return false;
+        }
+
+        return true;
     };
 
     useEffect(() => {
         const token = server.store.getToken();
         const savedRememberMe = server.store.getRememberMe();
+
+        server.showError((err: TError) => {
+            if (err.code === 1002 || err.code === 1005) setError('Неверный логин или пароль');
+            clearAuthFields();
+        });
+
         if (token && savedRememberMe) {
             setPage(PAGES.MENU);
         }
-        server.showError(err => {
-            if (err.code === 1002 || err.code === 1005) {
-                setError('Неверный логин или пароль');
-                clearAuthFields();
-            }
-        });
     }, []);
 
     const loginClickHandler = async () => {
-        setError('');
+        if (!showError()) {
+            return;
+        }
         if (loginRef.current && passwordRef.current) {
             const login = loginRef.current.value;
             const password = passwordRef.current.value;
@@ -91,8 +101,7 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
                 ref={passwordRef}
                 type="password"
                 placeholder="Ваш Пароль"
-                maxLength={20}
-                onChange={handlePasswordInput}
+                onChange={hideErrorOnInput}
                 onKeyUp={checkFormValidity}
             />
             <div>
