@@ -1,4 +1,6 @@
 import CONFIG, { TPoint, FPoint } from "../config";
+import { WALLS } from "./map";
+
 const { WIDTH, HEIGHT } = CONFIG;
 
 class Game {
@@ -8,12 +10,7 @@ class Game {
 
     constructor() {
         this.Hero = { x: 650, y: 400, width: 100, height: 100 };
-        this.Walls = [
-            { x: 0, y: 0, width: 10, height: 800 },
-            { x: 0, y: 0, width: 1300, height: 10 },
-            { x: 1290, y: 0, width: 10, height: 800 },
-            { x: 0, y: 790, width: 1300, height: 10 },
-        ];
+        this.Walls = WALLS;
         this.Sword = { x: 650, y: 400, width: 100, height: 100 }
     }
 
@@ -74,6 +71,5 @@ class Game {
         }
     }
 }
-
 
 export default Game;
