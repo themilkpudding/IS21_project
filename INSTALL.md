@@ -14,42 +14,49 @@ MySQL 8.0
 php -v
 mysql --version
 
-2. Разворачивание проекта
+2. Разворачивание проекта (только API)
 
-Копировать проект в директорию OSPanel:
+В OSPanel копировать только папку API проекта в директорию:
 
-C:\OSPanel\home\localhost
-
+C:\OSPanel\home\knightwars.local
 
 Создать в корне папку .osp:
 
-C:\OSPanel\home\localhost\.osp
+C:\OSPanel\home\knightwars.local\.osp
 
 
-В .osp создать файл project.ini:
+В .osp создать файл project.ini для проекта:
 
-[localhost]
+[knightwars.local]
 php_engine = PHP-8.3
 public_dir = {base_dir}/server/api
 
 
+Для phpMyAdmin создать отдельный .osp файл:
+
+C:\OSPanel\home\phpmyadmin\.osp\project.ini
+
+Содержимое:
+
+[phpmyadmin]
+php_engine = PHP-8.3
+public_dir = {base_dir}/public
+
 Перезапустить OSPanel.
 
-Сервер проекта будет доступен по адресу:
+Сервер API будет доступен по адресу:
 
-http://localhost/
+http://knightwars.local/
 
 3. Настройка MySQL и phpMyAdmin
 
 phpMyAdmin доступен по адресу:
 
-http://localhost/phpmyadmin/
-
+http://knightwars.local/phpmyadmin/
 
 Конфигурационный файл:
 
 C:\OSPanel\home\phpmyadmin\public\config.sample.inc.php
-
 
 Переименовать config.sample.inc.php в config.inc.php.
 
@@ -68,7 +75,6 @@ $cfg['Servers'][$i]['AllowNoPassword'] = true;
 
 knightwars_db
 
-
 Импортировать дамп knightwars_db.sql.
 
 Таблица users содержит следующие поля:
@@ -80,21 +86,18 @@ password_hash	хэш пароля
 nickname	отображаемое имя
 date	дата регистрации
 token	уникальный токен для идентификации
-
 5. Проверка работы
 
 Запустить OSPanel и убедиться, что MySQL и PHP активны.
 
 В браузере открыть:
 
-http://localhost/api?method=login
-
+http://knightwars.local/api?method=login
 
 Ожидаемый ответ JSON:
 
 {"error":101,"text":"Param method not setted"}
 
-
 Для теста логина с данными из таблицы users:
 
-http://localhost/api?method=login&login=admin&password=123
+http://knightwars.local/api?method=login&login=admin&password=123
