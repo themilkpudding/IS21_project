@@ -1,19 +1,18 @@
 import CONFIG, { TPoint, FPoint } from "../config";
+import { Map } from "./map";
+
 const { WIDTH, HEIGHT } = CONFIG;
 
 class Game {
     private Hero: FPoint;
     private Walls: FPoint[];
     private Sword: FPoint;
+    private gameMap: Map;
 
     constructor() {
         this.Hero = { x: 650, y: 400, width: 100, height: 100 };
-        this.Walls = [
-            { x: 0, y: 0, width: 10, height: 800 },
-            { x: 0, y: 0, width: 1300, height: 10 },
-            { x: 1290, y: 0, width: 10, height: 800 },
-            { x: 0, y: 790, width: 1300, height: 10 },
-        ];
+        this.gameMap = new Map();
+        this.Walls = this.gameMap.getWalls();
         this.Sword = { x: 650, y: 400, width: 100, height: 100 }
     }
 
@@ -73,7 +72,11 @@ class Game {
             }
         }
     }
-}
 
+    // Метод для доступа к карте извне (если нужно)
+    getMap(): Map {
+        return this.gameMap;
+    }
+}
 
 export default Game;
