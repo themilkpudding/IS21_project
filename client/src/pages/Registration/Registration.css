@@ -1,0 +1,39 @@
+.registration {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    background-image: url(../../assets/img/background/backgroung.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+
+
+.logo {
+    margin-top: -260px;
+}
+
+.registration-label {
+    color: white;
+    font-family: 'metanart-big';
+}
+
+@font-face {
+    font-family: 'metanart-big';
+    src: url(../../assets/fonts/metanart-big.ttf) format('woff2');
+    src: url(../../assets/fonts/metanart-big.ttf) format('woff');
+    src: url(../../assets/fonts/metanart-big.ttf) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}

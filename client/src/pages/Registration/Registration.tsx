@@ -3,6 +3,8 @@ import Button from '../../components/Button/Button';
 import { IBasePage, PAGES } from '../PageManager';
 import { ServerContext } from '../../App';
 import { TError } from '../../services/server/types';
+import './Registration.css';
+import logo from '../../assets/img/logo/logo.svg'
 
 const Registration: React.FC<IBasePage> = (props: IBasePage) => {
     const { setPage } = props;
@@ -89,9 +91,9 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
     }
 
     return (<div className='registration'>
-        <h1>Knight Wars</h1>
+        <img src={logo} className="logo" height={80}/>
         <div className='registration-wrapper'>
-            <p>Логин</p>
+            <p className='registration-label'>Логин</p>
             <input
                 ref={loginRef}
                 type="text"
@@ -99,7 +101,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
                 onChange={hideErrorOnInput}
                 onKeyUp={checkFormValidity}
             />
-            <p>Никнейм</p>
+            <p className='registration-label'>Никнейм</p>
             <input
                 ref={nicknameRef}
                 type="text"
@@ -107,7 +109,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
                 onChange={hideErrorOnInput}
                 onKeyUp={checkFormValidity}
             />
-            <p>Пароль</p>
+            <p className='registration-label'>Пароль</p>
             <input
                 ref={passwordRef}
                 type="password"
@@ -115,11 +117,11 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
                 onChange={hideErrorOnInput}
                 onKeyUp={checkFormValidity}
             />
-            <p>Подтверждение пароля</p>
+            <p className='registration-label'>Подтверждение пароля</p>
             <input
                 ref={confirmPasswordRef}
                 type="password"
-                placeholder="Повторите аш пароль"
+                placeholder="Повторите ваш пароль"
                 onChange={hideErrorOnInput}
                 onKeyUp={checkFormValidity}
             />
