@@ -72,11 +72,6 @@ class Game {
             }
         }
     }
-
-    // Метод для доступа к карте извне (если нужно)
-    getMap(): Map {
-        return this.gameMap;
-    }
 }
 
 export default Game;
