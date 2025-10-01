@@ -1,4 +1,4 @@
-Инструкция по запуску проекта KnightWars на localhost и подключение базы данных 
+Инструкция по запуску проекта KnightWars на knightwars.local и подключение базы данных 
 1. Установка окружения
 
 Для работы проекта требуется:
@@ -52,7 +52,7 @@ http://knightwars.local/
 
 phpMyAdmin доступен по адресу:
 
-http://knightwars.local/phpmyadmin/
+http://phpmyadmin/
 
 Конфигурационный файл:
 
@@ -101,3 +101,4 @@ http://knightwars.local/api?method=login
 Для теста логина с данными из таблицы users:
 
 http://knightwars.local/api?method=login&login=admin&password=123
+
