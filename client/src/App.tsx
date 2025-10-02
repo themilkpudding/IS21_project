@@ -3,6 +3,7 @@ import Store from './services/store/Store';
 import Server from './services/server/Server';
 import Popup from './components/Popup/Popup';
 import PageManager from './pages/PageManager';
+import './App.css';
 
 export const StoreContext = React.createContext<Store>(null!);
 export const ServerContext = React.createContext<Server>(null!);
