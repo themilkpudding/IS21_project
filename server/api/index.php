@@ -19,6 +19,11 @@ function result($params) {
             case 'registration': return $app->registration($params);
             //math
             case 'math': return $app->math($params);
+            // chat
+            case 'sendMessage': return $app->sendMessage($params);
+            case 'getMessages': return $app->getMessages($params);
+
+            default: return ['error' => 102];
         }
     }
     return ['error' => 101];
