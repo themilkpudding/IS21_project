@@ -91,39 +91,43 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
     }
 
     return (<div className='registration'>
-        <img src={logo} className="logo" height={80}/>
+        <img src={logo} className="logoReg" height={80}/>
         <div className='registration-wrapper'>
-            <p className='registration-label'>Логин</p>
+            <p className='registration-label'>логин</p>
             <input
                 ref={loginRef}
                 type="text"
-                placeholder="Ваш Логин"
+                placeholder="ваш логин"
                 onChange={hideErrorOnInput}
                 onKeyUp={checkFormValidity}
+                className='input-login'
             />
-            <p className='registration-label'>Никнейм</p>
+            <p className='registration-label'>никнейм</p>
             <input
                 ref={nicknameRef}
                 type="text"
-                placeholder="Ваш никнейм"
+                placeholder="ваш никнейм"
                 onChange={hideErrorOnInput}
                 onKeyUp={checkFormValidity}
+                className='input-nickname'
             />
-            <p className='registration-label'>Пароль</p>
+            <p className='registration-label'>пароль</p>
             <input
                 ref={passwordRef}
                 type="password"
-                placeholder="Ваш Пароль"
+                placeholder="ваш пароль"
                 onChange={hideErrorOnInput}
                 onKeyUp={checkFormValidity}
+                className='input-password'
             />
-            <p className='registration-label'>Подтверждение пароля</p>
+            <p className='registration-label'>подтверждение пароля</p>
             <input
                 ref={confirmPasswordRef}
                 type="password"
-                placeholder="Повторите ваш пароль"
+                placeholder="повторите ваш пароль"
                 onChange={hideErrorOnInput}
                 onKeyUp={checkFormValidity}
+                className='input-certpassword'
             />
             <div>
             </div>
@@ -131,10 +135,10 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
             <div className='registration-buttons'>
                 <Button
                     onClick={registrationClickHandler}
-                    text='Регистрация'
                     isDisabled={!isFormValid}
+                    className='registation-button'
                 />
-                <Button onClick={haveAccountClickHandler} text='Уже есть аккаунт' />
+                <Button onClick={haveAccountClickHandler} className='haveAccount' />
             </div>
         </div>
     </div>)

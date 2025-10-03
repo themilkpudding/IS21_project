@@ -17,15 +17,14 @@
     background-size: cover;
 }
 
-
-
-.logo {
-    margin-top: -260px;
+.logoReg {
+    margin-top: -270px;
 }
 
 .registration-label {
+    position: relative;
     color: white;
-    font-family: 'metanart-big';
+    font-family: Metanart_Big;
 }
 
 @font-face {
@@ -37,3 +36,62 @@
     font-style: normal;
     font-display: swap;
 }
+
+.registation-button {
+    background-image: url(../../assets/img/registrationButton.svg);
+    color: transparent;
+    background-size: cover;
+    border: 0;
+    background-color: transparent;
+    width: 184px;
+    height: 45px;
+    position: absolute;
+    margin-top: 27.100vh;
+    right: 43.758vw;
+    transition: filter 0.1s ease;
+}
+
+.registation-button:hover {
+    filter: brightness(2);
+}
+
+
+.haveAccount {
+    background-image: url(../../assets/img/haveAccountButton.svg);
+    background-size: cover;
+    color: transparent;
+    border: 0;
+    background-color: transparent;
+    width: 200px;
+    height: 34px;
+    position: absolute;
+    margin-top: 33.200vh;
+    right: 43.148vw;
+    transition: filter 0.1s ease;
+}
+
+.haveAccount:hover {
+    filter: brightness(2);
+}
+
+
+/*.input-login,
+.input-password,
+.input-nickname,
+.input-certpassowrd {
+    position: fixed;
+    width: 5.000vw;
+    left: 2.500vw;
+    color: #ffffff;
+    border: none;
+    outline: none;
+    background-image: url('../../assets/img/input.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    color: #ffffff;
+    height: 7.407vh;
+    font-family: Metanart_Big;
+    font-size: 1.667vh;
+}
+*/
