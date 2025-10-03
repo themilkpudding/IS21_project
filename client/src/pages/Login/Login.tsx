@@ -3,6 +3,8 @@ import { ServerContext } from '../../App';
 import Button from '../../components/Button/Button';
 import { IBasePage, PAGES } from '../PageManager';
 import { TError } from '../../services/server/types';
+import './Login.css'
+import logo from '../../assets/img/logo/logo.svg';
 
 const Login: React.FC<IBasePage> = (props: IBasePage) => {
     const { setPage } = props;
@@ -86,24 +88,32 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
 
 
     return (<div className='login'>
-        <h1>Knight Wars</h1>
-        <div className='login-wrapper'>
-            <p>Логин</p>
-            <input
-                ref={loginRef}
-                type="text"
-                placeholder="Ваш Логин"
-                onChange={hideErrorOnInput}
-                onKeyUp={checkFormValidity}
-            />
-            <p>Пароль</p>
+        <img src={logo} className='logo' />
+            <div className="input-group login-group">
+                <p className='p-log'>логин</p>
+                <input
+                    ref={loginRef}
+                    type="text"
+                    placeholder="Ваш Логин"
+                    onChange={hideErrorOnInput}
+                    onKeyUp={checkFormValidity}
+                    className='input-log'
+                />
+            </div>
+
+            <div className="input-group password-group">
+            <p className='p-pass'>пароль</p>
             <input
                 ref={passwordRef}
                 type="password"
                 placeholder="Ваш Пароль"
                 onChange={hideErrorOnInput}
                 onKeyUp={checkFormValidity}
+                className='input-pass'
             />
+            </div>
+        
+        <div className='login-buttons'>
             <div>
                 <label>
                     <input
@@ -115,15 +125,13 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
                 </label>
             </div>
             {error && <div style={{ color: 'red' }}>{error}</div>}
-            <div className='login-buttons'>
-                <Button
-                    onClick={loginClickHandler}
-                    text='Продолжить'
-                    isDisabled={!isFormValid}
-                />
-                <Button onClick={registrationClickHandler} text='Создать учетную запись' />
-                <button onClick={() => setPage(PAGES.GAME)}>Временная кнопка для открытия самой игры</button>
-            </div>
+            <Button
+                onClick={loginClickHandler}
+                text='Продолжить'
+                isDisabled={!isFormValid}
+            />
+            <Button onClick={registrationClickHandler} text='Создать учетную запись' />
+            <button onClick={() => setPage(PAGES.GAME)}>Временная кнопка для открытия самой игры</button>
         </div>
     </div>)
 }
