@@ -1,11 +1,11 @@
 <?php
-require_once ('database/Database.php');
+require_once ('database/DataBase.php');
 require_once ('user/User.php');
 require_once ('math/Math.php');
 
 class Application {
     function __construct() {
-        $db = new Database();
+        $db = new DataBase();
         $this->user = new User($db);
         $this->math = new Math();
     }
@@ -46,5 +46,27 @@ class Application {
             return $this->math->getAnswers($a, $b, $c, $d, $e);
         }
         return ['error' => 8001];
+    }
+
+    public function sendMessage($params) {
+        if ($params['token'] && $params['message']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->chat->sendMessage($user->id, $params['message']);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+
+    public function getMessages($params) {
+        if ($params['token'] && $params['hash']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->chat->getMessages($params['hash']);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
     }
 }
