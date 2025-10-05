@@ -25,6 +25,7 @@ const Menu: React.FC<IBasePage> = (props: IBasePage) => {
         <Button onClick={classShopClickHandler} text='Назад' />
         <Button onClick={startingGameMenuClickHandler} text='Начать игру' />
         <Button onClick={exitAccountClickHandler} text='Выйти из аккаунта' />
+        <button onClick={() => setPage(PAGES.GAME) }>Временная кнопка для открытия самой игры</button>
     </>)
 }
 

@@ -39,12 +39,12 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
         const password = passwordRef.current?.value || '';
 
         if (login.length > 15 || login.length < 6) {
-            setError('Логин должен быть от 6 до 15 символов');
+            setError('логин должен быть от 6 до 15 символов');
             return false;
         }
 
         if (password.length > 25 || password.length < 6) {
-            setError('Пароль должен быть от 6 до 25 символов');
+            setError('пароль должен быть от 6 до 25 символов');
             return false;
         }
 
@@ -56,7 +56,7 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
         const savedRememberMe = server.store.getRememberMe();
 
         server.showError((err: TError) => {
-            if (err.code === 1002 || err.code === 1005) setError('Неверный логин или пароль');
+            if (err.code === 1002 || err.code === 1005) setError('неверный логин или пароль');
             clearAuthFields();
         });
 
@@ -89,50 +89,52 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
 
     return (<div className='login'>
         <img src={logo} className='logo' />
-            <div className="input-group login-group">
-                <p className='p-log'>логин</p>
-                <input
-                    ref={loginRef}
-                    type="text"
-                    placeholder="Ваш Логин"
-                    onChange={hideErrorOnInput}
-                    onKeyUp={checkFormValidity}
-                    className='input-log'
-                />
-            </div>
+        <div className="input-group login-group">
+            <p className='p-login'>логин</p>
+            <input
+                ref={loginRef}
+                type="text"
+                placeholder="ваш логин"
+                onChange={hideErrorOnInput}
+                onKeyUp={checkFormValidity}
+                className='input-login'
+            />
+        </div>
 
-            <div className="input-group password-group">
-            <p className='p-pass'>пароль</p>
+        <div className="input-group password-group">
+            <p className='p-password'>пароль</p>
             <input
                 ref={passwordRef}
                 type="password"
-                placeholder="Ваш Пароль"
+                placeholder="ваш пароль"
                 onChange={hideErrorOnInput}
                 onKeyUp={checkFormValidity}
-                className='input-pass'
+                className='input-password'
             />
-            </div>
-        
-        <div className='login-buttons'>
-            <div>
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={rememberMe}
-                        onChange={() => setRememberMe(prev => !prev)}
-                    />
-                    Не выходить из учетной записи
-                </label>
-            </div>
-            {error && <div style={{ color: 'red' }}>{error}</div>}
-            <Button
-                onClick={loginClickHandler}
-                text='Продолжить'
-                isDisabled={!isFormValid}
-            />
-            <Button onClick={registrationClickHandler} text='Создать учетную запись' />
-            <button onClick={() => setPage(PAGES.GAME)}>Временная кнопка для открытия самой игры</button>
         </div>
+
+        <label className='label-remember'>
+            <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={() => setRememberMe(prev => !prev)}
+                className='checkbox-remember'
+            />
+            <span className="label-remember-span">не выходить из учетной записи</span>
+        </label>
+
+        {error && <p className='p-error'>{error}</p>}
+        <Button
+            onClick={loginClickHandler}
+            text=''
+            isDisabled={!isFormValid}
+            className='button-login'
+        />
+        <Button
+            onClick={registrationClickHandler}
+            text='создать учетную запись'
+            className='button-registration'
+        />
     </div>)
 }
 
