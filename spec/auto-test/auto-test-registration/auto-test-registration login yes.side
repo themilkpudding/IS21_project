@@ -1,7 +1,7 @@
 {
   "id": "d0c5c57a-77ed-4e7a-8886-f3623b4b1f01",
   "version": "2.0",
-  "name": "auto-test-registration",
+  "name": "auto-test-registration login yes",
   "url": "http://localhost:3000",
   "tests": [{
     "id": "8704a507-1851-4ddc-8623-09aff74970f1",
@@ -85,6 +85,13 @@
         ["xpath=//button[contains(.,'Регистрация')]", "xpath:innerText"]
       ],
       "value": ""
+    }, {
+      "id": "3f3c35fe-8b89-401d-b285-71d634d9375c",
+      "comment": "",
+      "command": "verifyElementPresent",
+      "target": "css=.errors",
+      "targets": [],
+      "value": "логин уже существует"
     }]
   }],
   "suites": [{
