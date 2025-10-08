@@ -2,19 +2,13 @@ import { FPoint } from "../config";
 
 // Базовый класс персонажа
 class CharacterClass {
-    name: string;
-    health: number;
-    damage: number;
-    speed: number;
-    inventory: string[];
-
-    constructor(name: string, health: number, damage: number, speed: number, inventory: string[]) {
-        this.name = name;
-        this.health = health;
-        this.damage = damage;
-        this.speed = speed;
-        this.inventory = inventory;
-    }
+    constructor(
+        public name: string,
+        public health: number,
+        public damage: number,
+        public speed: number,
+        public inventory: string[]
+    ) { }
 }
 
 // Классы персонажей
@@ -28,27 +22,63 @@ export const KNIGHT = new CharacterClass(
 
 export type Direction = 'left' | 'right';
 
+// Класс для снарядов (стрел)
+export class Projectile {
+    position: FPoint;
+    isActive: boolean = true;
+
+    constructor(
+        x: number,
+        y: number,
+        public direction: Direction,
+        public speed: number,
+        public damage: number
+    ) {
+        this.position = {
+            x,
+            y,
+            width: 30,
+            height: 10
+        };
+    }
+
+    update(): void {
+        if (!this.isActive) return;
+
+        if (this.direction === 'right') {
+            this.position.x += this.speed;
+        } else {
+            this.position.x -= this.speed;
+        }
+    }
+
+    getPosition(): FPoint {
+        return { ...this.position };
+    }
+}
+
 class Hero {
     private position: FPoint;
-    private direction: Direction;
-    private characterClass: CharacterClass;
-    private equipment: string[];
-    private inventory: string[];
+    private direction: Direction = 'right';
+    private projectiles: Projectile[] = [];
+    private lastShotTime: number = 0;
+    private readonly shotCooldown: number = 500;
 
-    constructor(x: number, y: number, characterClass: CharacterClass = KNIGHT) {
+    constructor(
+        x: number,
+        y: number,
+        private characterClass: CharacterClass = KNIGHT,
+        private equipment: string[] = [],
+        private inventory: string[] = [...KNIGHT.inventory]
+    ) {
         this.position = {
             x,
             y,
             width: 100,
             height: 100
         };
-        this.direction = 'right';
-        this.characterClass = characterClass;
-        this.equipment = [];
-        this.inventory = [...characterClass.inventory];
     }
 
-    // Геты для позиции и характеристик
     getPosition(): FPoint {
         return { ...this.position };
     }
@@ -69,12 +99,14 @@ class Hero {
         return [...this.inventory];
     }
 
-    // Методы для движения и изменения направления
+    getProjectiles(): Projectile[] {
+        return this.projectiles.filter(projectile => projectile.isActive);
+    }
+
     move(dx: number, dy: number): void {
         this.position.x += dx;
         this.position.y += dy;
 
-        // Обновляем направление в зависимости от движения
         if (dx > 0) this.direction = 'right';
         if (dx < 0) this.direction = 'left';
     }
@@ -88,29 +120,67 @@ class Hero {
         this.position.y = y;
     }
 
-    // Метод для получения позиции меча в зависимости от направления
     getAttackPosition(): FPoint {
         const swordOffset = 100;
         const swordSize = 100;
 
-        if (this.direction === 'right') {
-            return {
-                x: this.position.x + swordOffset,
-                y: this.position.y,
-                width: swordSize,
-                height: swordSize
-            };
-        } else { // left
-            return {
-                x: this.position.x - swordOffset,
-                y: this.position.y,
-                width: swordSize,
-                height: swordSize
-            };
-        }
+        const x = this.direction === 'right'
+            ? this.position.x + swordOffset
+            : this.position.x - swordOffset;
+
+        return {
+            x,
+            y: this.position.y,
+            width: swordSize,
+            height: swordSize
+        };
     }
 
-    // Методы для управления инвентарем и экипировкой
+    shoot(): boolean {
+        const currentTime = Date.now();
+
+        if (currentTime - this.lastShotTime < this.shotCooldown) {
+            return false;
+        }
+
+        const hasBow = [...this.inventory, ...this.equipment]
+            .some(item => item.toLowerCase().includes('bow'));
+
+        if (!hasBow) {
+            return false;
+        }
+
+        const arrowX = this.direction === 'right'
+            ? this.position.x + this.position.width
+            : this.position.x - 30;
+
+        const arrowY = this.position.y + this.position.height / 2 - 5;
+
+        const arrow = new Projectile(
+            arrowX,
+            arrowY,
+            this.direction,
+            10,
+            this.characterClass.damage
+        );
+
+        this.projectiles.push(arrow);
+        this.lastShotTime = currentTime;
+
+        return true;
+    }
+
+    updateProjectiles(): void {
+        this.projectiles.forEach(projectile => projectile.update());
+
+        // Удаляем неактивные снаряды
+        this.projectiles = this.projectiles.filter(projectile => projectile.isActive);
+    }
+
+    deactivateProjectile(projectile: Projectile): void {
+        projectile.isActive = false;
+    }
+
     addToInventory(item: string): void {
         this.inventory.push(item);
     }
@@ -123,7 +193,6 @@ class Hero {
     }
 
     equipItem(item: string): void {
-        // Будущая логика экипировки предмета
         this.equipment.push(item);
     }
 

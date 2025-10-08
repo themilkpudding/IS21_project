@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useMemo, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import CONFIG from '../../config';
 import Button from '../../components/Button/Button';
 import { IBasePage, PAGES } from '../PageManager';
@@ -9,38 +9,47 @@ import useSprites from './hooks/useSprites';
 
 const GAME_FIELD = 'game-field';
 const GREEN = '#00e81c';
-const WALL_COLOR = '#8B4513'; // коричневый цвет для стен
+const WALL_COLOR = '#8B4513';
+const ARROW_COLOR = '#8B4513';
+
+type AttackMode = 'sword' | 'bow';
 
 const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
-    const { WINDOW, SPRITE_SIZE } = CONFIG;
+    const { WINDOW } = CONFIG;
     const { setPage } = props;
-    let game: Game | null = null;
+
+    const gameRef = useRef<Game | null>(null);
+    const canvasRef = useRef<Canvas | null>(null);
     const swordVisibleRef = useRef(false);
     const swordTimerRef = useRef<NodeJS.Timeout | null>(null);
+    const [attackMode, setAttackMode] = useState<AttackMode>('sword');
+    const attackModeRef = useRef<AttackMode>('sword');
 
-    // Храним состояние нажатых клавиш
     const keysPressedRef = useRef({
         w: false,
         a: false,
         s: false,
-        d: false
+        d: false,
+        space: false
     });
 
-    // инициализация канваса
-    let canvas: Canvas | null = null;
-    const Canvas = useCanvas(render);
-    let interval: NodeJS.Timer | null = null;
-    // инициализация карты спрайтов
+    const [debugInfo, setDebugInfo] = useState({
+        arrowsCount: 0,
+        hasBow: false,
+        attackMode: 'sword'
+    });
+
+    const movementIntervalRef = useRef<NodeJS.Timeout | null>(null);
+    const gameUpdateIntervalRef = useRef<NodeJS.Timeout | null>(null);
+    const shootingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+    const CanvasComponent = useCanvas(render);
     const [
         [spritesImage],
         getSprite,
     ] = useSprites();
 
-    function printFillSprite(image: HTMLImageElement, canvas: Canvas, { x = 0, y = 0 }, points: number[]): void {
-        canvas.spriteFull(image, x, y, points[0], points[1], points[2]);
-    }
-
-    function printHero(canvas: Canvas, { x = 0, y = 0, width = 0, height = 0 }, points: number[]): void {
+    function printHero(canvas: Canvas, { x = 0, y = 0, width = 0, height = 0 }): void {
         canvas.rectangle(x, y, width, height, 'blue');
     }
 
@@ -52,77 +61,109 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
         canvas.rectangle(x, y, width, height, 'red');
     }
 
-    // функция отрисовки одного кадра сцены
-    function render(FPS: number): void {
-        if (canvas && game) {
-            canvas.clear();
-            const { Hero, Walls, Sword } = game.getScene();
+    function printArrow(canvas: Canvas, { x = 0, y = 0, width = 0, height = 0 }): void {
+        canvas.rectangle(x, y, width, height, ARROW_COLOR);
+    }
 
-            /**********************/
-            /* нарисовать стены */
-            /**********************/
-            if (Walls && Walls.length > 0 && canvas) {
+    function render(FPS: number): void {
+        if (canvasRef.current && gameRef.current) {
+            canvasRef.current.clear();
+            const scene = gameRef.current.getScene();
+            const { Hero, Walls, Sword, Arrows } = scene;
+
+            // Рисуем стены
+            if (Walls && Walls.length > 0) {
                 Walls.forEach(wall => {
-                    printWall(canvas!, { x: wall.x, y: wall.y, width: wall.width, height: wall.height });
+                    printWall(canvasRef.current!, {
+                        x: wall.x,
+                        y: wall.y,
+                        width: wall.width,
+                        height: wall.height
+                    });
                 });
             }
 
-            /************************/
-            /* нарисовать меч*/
-            /************************/
-            if (swordVisibleRef.current) {
-                printSword(canvas!, { x: Sword.x, y: Sword.y, width: Sword.width, height: Sword.height });
+            // Рисуем стрелы
+            if (Arrows && Arrows.length > 0) {
+                Arrows.forEach(arrow => {
+                    printArrow(canvasRef.current!, {
+                        x: arrow.x,
+                        y: arrow.y,
+                        width: arrow.width,
+                        height: arrow.height
+                    });
+                });
             }
 
-            /************************/
-            /* нарисовать Героя */
-            /************************/
-            const { x, y, width, height } = Hero;
-            printHero(canvas, { x, y, width, height }, getSprite(1));
+            // Рисуем меч
+            if (swordVisibleRef.current && attackModeRef.current === 'sword') {
+                printSword(canvasRef.current!, {
+                    x: Sword.x,
+                    y: Sword.y,
+                    width: Sword.width,
+                    height: Sword.height
+                });
+            }
 
-            /******************/
-            /* нарисовать FPS */
-            /******************/
-            canvas.text(WINDOW.LEFT + 20, WINDOW.TOP + 50, String(FPS), GREEN);
-            /************************/
-            /* отрендерить картинку */
-            /************************/
-            canvas.render();
+            // Рисуем героя
+            const { x, y, width, height } = Hero;
+            printHero(canvasRef.current, { x, y, width, height });
+
+            // Рисуем FPS
+            canvasRef.current.text(WINDOW.LEFT + 20, WINDOW.TOP + 50, String(FPS), GREEN);
+
+            canvasRef.current.render();
+            updateDebugInfo();
         }
     }
+
+    const updateDebugInfo = () => {
+        if (gameRef.current) {
+            const hero = gameRef.current.getHero();
+            const hasBow = hero.getInventory().some(item => item.toLowerCase().includes('bow')) ||
+                hero.getEquipment().some(item => item.toLowerCase().includes('bow'));
+
+            setDebugInfo({
+                arrowsCount: gameRef.current.getArrows().length,
+                hasBow,
+                attackMode: attackModeRef.current
+            });
+        }
+    };
 
     const backClickHandler = () => {
         setPage(PAGES.NOT_FOUND);
     };
 
-    /****************/
-    /* Mouse Events */
-    /****************/
-    const mouseMove = (_x: number, _y: number) => {
-    }
-
     const mouseClick = (_x: number, _y: number) => {
-        // Показываем меч на 500 мс
-        swordVisibleRef.current = true;
+        if (attackModeRef.current === 'sword') {
+            // Используем меч
+            swordVisibleRef.current = true;
 
-        // Очищаем предыдущий таймер
-        if (swordTimerRef.current) {
-            clearTimeout(swordTimerRef.current);
+            if (swordTimerRef.current) {
+                clearTimeout(swordTimerRef.current);
+            }
+
+            swordTimerRef.current = setTimeout(() => {
+                swordVisibleRef.current = false;
+            }, 500);
+        } else if (attackModeRef.current === 'bow') {
+            // Используем лук
+            if (gameRef.current) {
+                gameRef.current.shoot();
+            }
         }
+    };
 
-        // Устанавливаем таймер для скрытия меча
-        swordTimerRef.current = setTimeout(() => {
-            swordVisibleRef.current = false;
-        }, 500);
-    }
-
-    const mouseRightClick = () => {
-        console.log('ПКМ: использование второй руки');
-    }
-    /****************/
+    // Функция для переключения режима атаки
+    const switchAttackMode = (mode: AttackMode) => {
+        setAttackMode(mode);
+        attackModeRef.current = mode;
+        updateDebugInfo();
+    };
 
     const normalizeVector = (dx: number, dy: number): { dx: number; dy: number } => {
-        if (dx === 0 || dy === 0) {
+        if (dx === 0 && dy === 0) {
             return { dx, dy };
         }
 
@@ -138,68 +179,88 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
     };
 
     const handleMovement = () => {
-        if (swordVisibleRef.current || !game) {
+        if (swordVisibleRef.current || !gameRef.current) {
             return;
         }
 
-        const delta = 3
+        const delta = 3;
         const { w, a, s, d } = keysPressedRef.current;
 
         let dx = 0;
         let dy = 0;
 
-        // Горизонтальное движение
         if (a) dx -= delta;
         if (d) dx += delta;
-
-        // Вертикальное движение
         if (w) dy -= delta;
         if (s) dy += delta;
 
-        // Нормализуем вектор движения для диагонального движения
         const normalized = normalizeVector(dx, dy);
 
-        // Если есть движение по любой из осей
         if (dx !== 0 || dy !== 0) {
-            game.move(normalized.dx, normalized.dy);
+            gameRef.current.move(normalized.dx, normalized.dy);
         }
     };
 
+    const handleShooting = () => {
+    };
+
     useEffect(() => {
-        // инициализация игры
-        game = new Game();
-        canvas = Canvas({
+        // Инициализация игры
+        gameRef.current = new Game();
+
+        // Инициализация канваса
+        canvasRef.current = CanvasComponent({
             parentId: GAME_FIELD,
             WIDTH: WINDOW.WIDTH,
             HEIGHT: WINDOW.HEIGHT,
             WINDOW,
             callbacks: {
-                mouseMove,
+                mouseMove: () => { },
                 mouseClick,
-                mouseRightClick,
+                mouseRightClick: () => { },
             },
         });
 
-        interval = setInterval(handleMovement, 8);
+        // Добавляем лук для тестирования
+        gameRef.current.addBowToInventory();
+
+        // Интервалы для обновления игры
+        movementIntervalRef.current = setInterval(handleMovement, 8);
+        shootingIntervalRef.current = setInterval(handleShooting, 100);
+
+        // Интервал для обновления состояния игры (стрел)
+        gameUpdateIntervalRef.current = setInterval(() => {
+            if (gameRef.current) {
+                gameRef.current.update();
+            }
+        }, 8);
 
         return () => {
-            // деинициализировать все экземпляры
-            game?.destructor();
-            canvas?.destructor();
-            canvas = null;
-            game = null;
-            if (interval) {
-                clearInterval(interval);
-                interval = null;
+            // Очистка ресурсов
+            gameRef.current?.destructor();
+            canvasRef.current?.destructor();
+            canvasRef.current = null;
+            gameRef.current = null;
+
+            if (movementIntervalRef.current) {
+                clearInterval(movementIntervalRef.current);
             }
-        }
-    });
+            if (gameUpdateIntervalRef.current) {
+                clearInterval(gameUpdateIntervalRef.current);
+            }
+            if (shootingIntervalRef.current) {
+                clearInterval(shootingIntervalRef.current);
+            }
+            if (swordTimerRef.current) {
+                clearTimeout(swordTimerRef.current);
+            }
+        };
+    }, []);
 
     useEffect(() => {
         const keyDownHandler = (event: KeyboardEvent) => {
             const keyCode = event.keyCode ? event.keyCode : event.which ? event.which : 0;
 
-            // Обновляем состояние нажатых клавиш
             switch (keyCode) {
                 case 65: // a
                     keysPressedRef.current.a = true;
@@ -213,13 +274,20 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
                 case 83: // s
                     keysPressedRef.current.s = true;
                     break;
+                case 49: // 1 - переключение на меч
+                    switchAttackMode('sword');
+                    break;
+                case 50: // 2 - переключение на лук
+                    switchAttackMode('bow');
+                    break;
+                default:
+                    break;
             }
-        }
+        };
 
         const keyUpHandler = (event: KeyboardEvent) => {
             const keyCode = event.keyCode ? event.keyCode : event.which ? event.which : 0;
 
-            // Обновляем состояние нажатых клавиш
             switch (keyCode) {
                 case 65: // a
                     keysPressedRef.current.a = false;
@@ -233,8 +301,10 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
                 case 83: // s
                     keysPressedRef.current.s = false;
                     break;
+                default:
+                    break;
             }
-        }
+        };
 
         document.addEventListener('keydown', keyDownHandler);
         document.addEventListener('keyup', keyUpHandler);
@@ -242,14 +312,20 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
         return () => {
             document.removeEventListener('keydown', keyDownHandler);
             document.removeEventListener('keyup', keyUpHandler);
-        }
-    });
+        };
+    }, []);
 
-    return (<div className='game'>
-        <h1>Игра</h1>
-        <Button onClick={backClickHandler} text='Назад' />
-        <div id={GAME_FIELD} className={GAME_FIELD}></div>
-    </div>)
-}
+    return (
+        <div className='game'>
+            <h1>Игра</h1>
+            <Button onClick={backClickHandler} text='Назад' />
+            <div className="debug-info">
+                <p>Стрелы: {debugInfo.arrowsCount} | Лук: {debugInfo.hasBow ? 'Есть' : 'Нет'} | Режим: {debugInfo.attackMode}</p>
+                <p>Управление: WASD - движение, ЛКМ - атака, 1 - меч, 2 - лук</p>
+            </div>
+            <div id={GAME_FIELD} className={GAME_FIELD}></div>
+        </div>
+    );
+};
 
 export default GamePage;
