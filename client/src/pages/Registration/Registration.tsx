@@ -3,6 +3,8 @@ import Button from '../../components/Button/Button';
 import { IBasePage, PAGES } from '../PageManager';
 import { ServerContext } from '../../App';
 import { TError } from '../../services/server/types';
+import './Registration.css';
+import logo from '../../assets/img/logo/logo.svg'
 
 const Registration: React.FC<IBasePage> = (props: IBasePage) => {
     const { setPage } = props;
@@ -45,19 +47,19 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
         const { login, nickname, password, confirmPassword } = getFormValues();
 
         if (loginRef.current && (login.length > 15 || login.length < 6)) {
-            setError('Логин должен быть от 6 до 15 символов');
+            setError("логин должен быть от 6 до 15 символов");
             return false;
         }
         else if (nicknameRef.current && (nickname.length > 15 || nickname.length < 1)) {
-            setError('Никнейм должен быть от 1 до 15 символов');
+            setError('никнейм должен быть от 1 до 15 символов');
             return false;
         }
         else if (passwordRef.current && (password.length > 25 || password.length < 6)) {
-            setError('Пароль должен быть от 6 до 25 символов');
+            setError('пароль должен быть от 6 до 25 символов');
             return false;
         }
         else if (password !== confirmPassword) {
-            setError('Пароли не совпадают');
+            setError('пароли не совпадают');
             return false;
         }
 
@@ -71,7 +73,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
         }
         
         server.showError((err: TError) => {
-            if (err.code === 1001) setError('Логин уже существует');
+            if (err.code === 1001) setError('логин уже существует');
             clearAuthFields();
         });
 
@@ -89,50 +91,54 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
     }
 
     return (<div className='registration'>
-        <h1>Knight Wars</h1>
+        <img src={logo} className="logoReg" height={80}/>
         <div className='registration-wrapper'>
-            <p>Логин</p>
+            <p className='registration-label'>логин</p>
             <input
                 ref={loginRef}
                 type="text"
-                placeholder="Ваш Логин"
+                placeholder="ваш логин"
                 onChange={hideErrorOnInput}
                 onKeyUp={checkFormValidity}
+                className='input-loginReg'
             />
-            <p>Никнейм</p>
+            <p className='registration-label'>никнейм</p>
             <input
                 ref={nicknameRef}
                 type="text"
-                placeholder="Ваш никнейм"
+                placeholder="ваш никнейм"
                 onChange={hideErrorOnInput}
                 onKeyUp={checkFormValidity}
+                className='input-nicknameReg'
             />
-            <p>Пароль</p>
+            <p className='registration-label'>пароль</p>
             <input
                 ref={passwordRef}
                 type="password"
-                placeholder="Ваш Пароль"
+                placeholder="ваш пароль"
                 onChange={hideErrorOnInput}
                 onKeyUp={checkFormValidity}
+                className='input-passwordReg'
             />
-            <p>Подтверждение пароля</p>
+            <p className='registration-label'>подтверждение пароля</p>
             <input
                 ref={confirmPasswordRef}
                 type="password"
-                placeholder="Повторите аш пароль"
+                placeholder="повторите ваш пароль"
                 onChange={hideErrorOnInput}
                 onKeyUp={checkFormValidity}
+                className='input-certpasswordReg'
             />
             <div>
             </div>
-            {error && <div style={{ color: 'red' }}>{error}</div>}
+            {error && <div className='errors'>{error}'</div>}
             <div className='registration-buttons'>
                 <Button
                     onClick={registrationClickHandler}
-                    text='Регистрация'
                     isDisabled={!isFormValid}
+                    className='registation-button'
                 />
-                <Button onClick={haveAccountClickHandler} text='Уже есть аккаунт' />
+                <Button onClick={haveAccountClickHandler} className='haveAccount' />
             </div>
         </div>
     </div>)
