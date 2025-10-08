@@ -22,6 +22,9 @@ function result($params) {
             // chat
             case 'sendMessage': return $app->sendMessage($params);
             case 'getMessages': return $app->getMessages($params);
+            //lobby
+            case 'createRoom': return $app->createRoom($params);
+            case 'joinToRoom': return $app->joinToRoom($params);
 
             default: return ['error' => 102];
         }

@@ -1,13 +1,16 @@
 <?php
 require_once ('database/DataBase.php');
 require_once ('user/User.php');
+require_once ('chat/Chat.php');
 require_once ('math/Math.php');
+require_once ('lobby/Lobby.php');
 
 class Application {
     function __construct() {
         $db = new DataBase();
         $this->user = new User($db);
         $this->math = new Math();
+        $this->lobby = new Lobby($db, $this->user);
     }
 
     public function login($params) {
@@ -48,6 +51,7 @@ class Application {
         return ['error' => 8001];
     }
 
+    
     public function sendMessage($params) {
         if ($params['token'] && $params['message']) {
             $user = $this->user->getUser($params['token']);
@@ -64,6 +68,29 @@ class Application {
             $user = $this->user->getUser($params['token']);
             if ($user) {
                 return $this->chat->getMessages($params['hash']);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+
+    //lobby
+    public function createRoom($params) {
+        if ($params['token']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->lobby->createRoom($user->id);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+
+    public function joinToRoom($params) {
+        if ($params['token'] && $params['roomId']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->lobby->joinToRoom($params);
             }
             return ['error' => 705];
         }

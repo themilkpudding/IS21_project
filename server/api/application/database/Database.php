@@ -70,5 +70,25 @@ class DataBase {
                                 ORDER BY m.created DESC"
         );
     }
+
+    public function createRoom() {
+        $this->execute("INSERT INTO rooms (status) VALUES ('open')");
+        return $this->pdo->lastInsertId();
+    }
+
+    public function addRoomMember($roomId, $userId, $type, $status) {
+        return $this->execute(
+            "INSERT INTO room_members (room_id, user_id, type, status) VALUES (?, ?, ?, ?)",
+            [$roomId, $userId, $type, $status]
+        );
+    }
+
+    public function getRoomById($roomId) {
+        return $this->query("SELECT * FROM rooms WHERE id=?", [$roomId]);
+    }
+
+    public function getRoomMember($roomId, $userId) {
+        return $this->query("SELECT * FROM room_members WHERE room_id=? AND user_id=?", [$roomId, $userId]);
+    }
 }
 
