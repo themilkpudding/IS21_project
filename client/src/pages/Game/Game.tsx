@@ -72,7 +72,7 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
             const { Hero, Walls, Sword, Arrows } = scene;
 
             // Рисуем стены
-            if (Walls && Walls.length > 0) {
+            if (Walls.length > 0) {
                 Walls.forEach(wall => {
                     printWall(canvasRef.current!, {
                         x: wall.x,
@@ -84,7 +84,7 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
             }
 
             // Рисуем стрелы
-            if (Arrows && Arrows.length > 0) {
+            if (Arrows.length > 0) {
                 Arrows.forEach(arrow => {
                     printArrow(canvasRef.current!, {
                         x: arrow.x,
