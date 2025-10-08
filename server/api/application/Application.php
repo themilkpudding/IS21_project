@@ -1,5 +1,5 @@
 <?php
-require_once ('database/DataBase.php');
+require_once ('db/DB.php');
 require_once ('user/User.php');
 require_once ('chat/Chat.php');
 require_once ('math/Math.php');
@@ -7,7 +7,7 @@ require_once ('lobby/Lobby.php');
 
 class Application {
     function __construct() {
-        $db = new DataBase();
+        $db = new DB();
         $this->user = new User($db);
         $this->math = new Math();
         $this->lobby = new Lobby($db, $this->user);
