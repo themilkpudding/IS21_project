@@ -14,8 +14,8 @@ class Application {
     }
 
     public function login($params) {
-        if ($params['login'] && $params['password']) {
-            return $this->user->login($params['login'], $params['password']);
+        if ($params['login'] && $params['hash']) {
+            return $this->user->login($params['login'], $params['hash'], $params['rnd']);
         }
         return ['error' => 242];
     }
@@ -32,8 +32,8 @@ class Application {
     }
 
     public function registration($params) {
-        if ($params['login'] && $params['password'] && $params['nickname']) {
-            return $this->user->registration($params['login'], $params['password'], $params['nickname']);
+        if ($params['login'] && $params['hash'] && $params['nickname']) {
+            return $this->user->registration($params['login'], $params['hash'], $params['nickname']);
         }
         return ['error' => 242];
     }

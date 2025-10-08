@@ -131,7 +131,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
             />
             <div>
             </div>
-            {error && <div className='errors'>{error}'</div>}
+            {error && <div className='errors'>{error}</div>}
             <div className='registration-buttons'>
                 <Button
                     onClick={registrationClickHandler}
