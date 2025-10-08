@@ -11,14 +11,22 @@ class Answer {
         '1003' => 'Error to logout user',
         '1004' => 'Error to register user',
         '1005' => 'User is no exists',
-        '404' => 'not found',
-        '1001' => 'params login or password not set',
+        '404' => 'Not found',
+        '1001' => 'Params login or password not set',
         '1005' => 'Other user is playing wright now. If you doesn`t, please change the password',
-        '1006' => 'user with this email is already registered',
-        '8001' => 'enter at least one value',
-        '8002' => 'the discriminant cannot be less than zero',
-        '8003' => 'no real roots found',
-        '9000' => 'unknown error'
+        '1006' => 'User with this email is already registered',
+        //lobby answers
+        '2001' => 'Error creating room',
+        '2002' => 'Error adding user to room',
+        '2003' => 'Room not found',
+        '2004' => 'User already in room',
+        '2005' => 'User is already owner of this room',
+         //menu answers
+        '3000' => 'Placeholder',
+        '8001' => 'Enter at least one value',
+        '8002' => 'The discriminant cannot be less than zero',
+        '8003' => 'No real roots found',
+        '9000' => 'Unknown error'
     );
 
     static function response($data) {

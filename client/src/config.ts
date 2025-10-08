@@ -25,6 +25,9 @@ export type TWINDOW = {
 }
 
 const CONFIG = {
+    //UDSU
+    //HOST: 'http://knightwars:81/api',
+
     HOST: 'http://knightwars.local/api',
 
     CHAT_TIMESTAMP: 200, //ms
