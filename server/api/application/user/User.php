@@ -12,7 +12,7 @@ class User {
     public function login($login, $password) {
         $user = $this->db->getUserByLogin($login);
         if ($user) {
-            if (password_verify($password, $user->password_hash)) {
+            if (password_verify($password, $user->password)) {
                 $token = md5(rand());
                 $this->db->updateToken($user->id, $token);
                 return [
