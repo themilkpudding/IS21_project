@@ -1,13 +1,15 @@
 <?php
-class Database {
+class DataBase {
     private $pdo;
 
     function __construct() {
-        $host = 'MySQL-8.0';
+        //$host = '127.0.0.1';
+        $host = '127.127.126.15';
+        $port = '3306';
         $user = 'root';      
         $pass = '';          
-        $db = 'knightwars_db';  
-        $connect = "mysql:host=$host;dbname=$db;charset=utf8mb4";
+        $db = 'knightwars';  
+        $connect = "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4";
         $this->pdo = new PDO($connect, $user, $pass);
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
@@ -45,8 +47,48 @@ class Database {
         $this->execute("UPDATE users SET token=? WHERE id=?", [$token, $userId]);
     }
 
-    public function registration($login, $password_hash, $nickname) {
-        $this->execute("INSERT INTO users (login, password_hash, nickname) VALUES (?, ?, ?)", [$login, $password_hash, $nickname]);
+    public function registration($login, $password, $nickname) {
+        $this->execute("INSERT INTO users (login, password, nickname) VALUES (?, ?, ?)", [$login, $password, $nickname]);
+    }
+
+     public function getChatHash() {
+        return $this->query("SELECT * FROM hashes WHERE id=1");
+    }
+
+    public function updateChatHash($hash) {
+        $this->execute("UPDATE hashes SET chat_hash=? WHERE id=1", [$hash]);
+    }
+
+    public function addMessage($userId, $message) {
+        $this->execute('INSERT INTO messages (user_id, message, created) VALUES (?,?, now())', [$userId, $message]);
+    }
+
+    public function getMessages() {
+        return $this->queryAll("SELECT u.name AS author, m.message AS message,
+                                to_char(m.created, 'yyyy-mm-dd hh24:mi:ss') AS created FROM messages as m 
+                                LEFT JOIN users as u on u.id = m.user_id 
+                                ORDER BY m.created DESC"
+        );
+    }
+
+    public function createRoom() {
+        $this->execute("INSERT INTO rooms (status) VALUES ('open')");
+        return $this->pdo->lastInsertId();
+    }
+
+    public function addRoomMember($roomId, $userId, $type, $status) {
+        return $this->execute(
+            "INSERT INTO room_members (room_id, user_id, type, status) VALUES (?, ?, ?, ?)",
+            [$roomId, $userId, $type, $status]
+        );
+    }
+
+    public function getRoomById($roomId) {
+        return $this->query("SELECT * FROM rooms WHERE id=?", [$roomId]);
+    }
+
+    public function getRoomMember($roomId, $userId) {
+        return $this->query("SELECT * FROM room_members WHERE room_id=? AND user_id=?", [$roomId, $userId]);
     }
 }
 

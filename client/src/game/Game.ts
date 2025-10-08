@@ -1,19 +1,20 @@
-import CONFIG, { TPoint, FPoint } from "../config";
+import CONFIG, { FPoint } from "../config";
 import { Map } from "./map";
+import Hero, { KNIGHT } from "./hero";
 
 const { WIDTH, HEIGHT } = CONFIG;
 
 class Game {
-    private Hero: FPoint;
+    private hero: Hero;
     private Walls: FPoint[];
     private Sword: FPoint;
     private gameMap: Map;
 
     constructor() {
-        this.Hero = { x: 650, y: 400, width: 100, height: 100 };
+        this.hero = new Hero(650, 400, KNIGHT);
         this.gameMap = new Map();
         this.Walls = this.gameMap.getWalls();
-        this.Sword = { x: 650, y: 400, width: 100, height: 100 }
+        this.Sword = this.hero.getAttackPosition();
     }
 
     destructor() {
@@ -22,58 +23,61 @@ class Game {
 
     getScene() {
         return {
-            Hero: this.Hero,
+            Hero: this.hero.getPosition(),
             Walls: this.Walls,
             Sword: this.Sword
         };
     }
 
     check_collision(heroX: number, heroY: number, wall: FPoint): boolean {
-        return ((heroX + this.Hero.width) > wall.x) &&
+        const heroPos = this.hero.getPosition();
+        return ((heroX + heroPos.width) > wall.x) &&
             (heroX < (wall.x + wall.width)) &&
-            ((heroY + this.Hero.height) > wall.y) &&
+            ((heroY + heroPos.height) > wall.y) &&
             (heroY < (wall.y + wall.height));
     }
 
     move(dx: number, dy: number): void {
-        let newX = this.Hero.x;
-        let newY = this.Hero.y;
+        const currentPos = this.hero.getPosition();
+        let newX = currentPos.x;
+        let newY = currentPos.y;
 
         // Для движения по X
         if (dx !== 0) {
-            if (dx > 0) {
-                this.Sword.x = this.Hero.x + 100;
-            }
-            if (dx < 0) {
-                this.Sword.x = this.Hero.x - 100;
-            }
-            newX = this.Hero.x + dx;
+            newX = currentPos.x + dx;
 
             const collidingWall = this.Walls.find(wall =>
-                this.check_collision(newX, this.Hero.y, wall)
+                this.check_collision(newX, currentPos.y, wall)
             );
 
             if (!collidingWall) {
-                this.Hero.x = newX;
+                this.hero.move(dx, 0);
             }
         }
 
         // Для движения по Y
         if (dy !== 0) {
-            this.Sword.y = this.Hero.y + dy;
-            newY = this.Hero.y + dy;
+            newY = currentPos.y + dy;
 
             const collidingWall = this.Walls.find(wall =>
-                this.check_collision(this.Hero.x, newY, wall)
+                this.check_collision(currentPos.x, newY, wall)
             );
 
             if (!collidingWall) {
-                this.Hero.y = newY;
+                this.hero.move(0, dy);
             }
         }
+
+        // Обновляем позицию меча после движения
+        this.Sword = this.hero.getAttackPosition();
     }
 
-    // Метод для доступа к карте извне (если нужно)
+    // Метод для доступа к герою извне
+    getHero(): Hero {
+        return this.hero;
+    }
+
+    // Метод для доступа к карте извне
     getMap(): Map {
         return this.gameMap;
     }
