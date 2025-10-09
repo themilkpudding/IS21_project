@@ -41,7 +41,10 @@ class User {
             return ['error' => 1001];
         }
         $this->db->registration($login, $password, $nickname);
+
+        $rnd = round(rand() * 100000);
+        $passwordHash = md5($password . $rnd);
         
-        return $this->login($login, $password);
+        return $this->login($login, $passwordHash, $rnd);
     }
 }
