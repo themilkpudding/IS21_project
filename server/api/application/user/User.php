@@ -9,10 +9,10 @@ class User {
         return $this->db->getUserByToken($token);
     }
 
-    public function login($login, $password, $rnd) {
+    public function login($login, $password) {
         $user = $this->db->getUserByLogin($login);
         if ($user) {
-            if ($password == md5($user->password . $rnd)) {
+            if (password_verify($password, $user->password)) {
                 $token = md5(rand());
                 $this->db->updateToken($user->id, $token);
                 return [
@@ -40,7 +40,8 @@ class User {
         if ($user) {
             return ['error' => 1001];
         }
-        $this->db->registration($login, $password, $nickname);
+        $password_hash = password_hash($password, PASSWORD_DEFAULT);
+        $this->db->registration($login, $password_hash, $nickname);
         
         return $this->login($login, $password);
     }
