@@ -11,7 +11,7 @@ export type TAnswer<T> = {
 
 export type TUser = {
     token: string;
-    name: string;
+    nickname: string;
 }
 
 export type TMessage = {

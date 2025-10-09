@@ -3,6 +3,13 @@ export type TPoint = {
     y: number;
 }
 
+export type FPoint = {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
 export enum EDIRECTION {
     LEFT = 'left',
     RIGHT = 'right',
@@ -18,7 +25,10 @@ export type TWINDOW = {
 }
 
 const CONFIG = {
-    HOST: 'http://nopainnogame.local/api',
+    //UDSU
+    //HOST: 'http://knightwars:81/api',
+
+    HOST: 'http://knightwars.local/api',
 
     CHAT_TIMESTAMP: 200, //ms
 
@@ -30,8 +40,8 @@ const CONFIG = {
     WINDOW: {
         LEFT: 0,
         TOP: 0,
-        HEIGHT: 12,
-        WIDTH: 20,
+        HEIGHT: 800,
+        WIDTH: 1300,
     },
 };
 

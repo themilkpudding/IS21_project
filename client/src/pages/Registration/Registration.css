@@ -1,0 +1,105 @@
+.registration {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    background-image: url(../../assets/img/background/background.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.logoReg {
+    margin-top: -130px;
+}
+
+
+.registration-label {
+    font-size: 1.6vw;
+    color: white;
+    font-family: Metanart_Big;
+}
+
+
+@font-face {
+    font-family: 'metanart-big';
+    src: url(../../assets/fonts/metanart-big.ttf) format('woff2');
+    src: url(../../assets/fonts/metanart-big.ttf) format('woff');
+    src: url(../../assets/fonts/metanart-big.ttf) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+.errors {
+    position: absolute;
+    top: 83vh;
+    left: 38%;
+    font-family: 'metanart-big';
+    color: yellow;
+}
+
+.registation-button {
+    background-image: url(../../assets/img/registrationButton.svg);
+    color: transparent;
+    background-size: cover;
+    border: 0;
+    background-color: transparent;
+    width: 184px;
+    height: 45px;
+    position: absolute;
+    margin-top: 7.100vh;
+    right: 43.758vw;
+    transition: filter 0.1s ease;
+}
+
+.registation-button:hover {
+    filter: brightness(2);
+}
+
+
+.haveAccount {
+    background-image: url(../../assets/img/haveAccountButton.svg);
+    background-size: cover;
+    color: transparent;
+    border: 0;
+    background-color: transparent;
+    width: 200px;
+    height: 34px;
+    position: absolute;
+    margin-top: 13.100vh;
+    right: 43.148vw;
+    transition: filter 0.1s ease;
+}
+
+.haveAccount:hover {
+    filter: brightness(2);
+}
+
+
+.input-loginReg,
+.input-passwordReg,
+.input-nicknameReg,
+.input-certpasswordReg {
+    width: 550px;
+    height: 45px;
+    border: none;
+    outline: none;
+    background-image: url('../../assets/img/input.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    color: #ffffff;
+    font-family: Metanart_Big;
+    font-size: 1.667vh;
+    padding: 0 0 0 23px;
+    box-sizing: border-box;
+}

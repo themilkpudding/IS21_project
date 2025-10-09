@@ -1,23 +1,41 @@
 import { TMessages, TUser } from "../server/types";
 
 const TOKEN = 'token';
+const REMEMBER_ME = 'rememberMe';
 
 class Store {
     user: TUser | null = null;
     messages: TMessages = [];
     chatHash: string = 'empty chat hash';
+    rememberMe: boolean = false;
 
-    setToken(token: string): void {
-        localStorage.setItem(TOKEN, token);
+    constructor() {
+        this.rememberMe = localStorage.getItem(REMEMBER_ME) === 'true';
+    }
+
+    setToken(token: string, rememberMe = false): void {
+        this.rememberMe = rememberMe;
+        if (rememberMe) {
+            localStorage.setItem(REMEMBER_ME, 'true');
+            localStorage.setItem(TOKEN, token);
+        } else {
+            localStorage.removeItem(REMEMBER_ME);
+            sessionStorage.setItem(TOKEN, token);
+        }
+
     }
 
     getToken(): string | null {
-        return localStorage.getItem(TOKEN);
+        return sessionStorage.getItem(TOKEN) || localStorage.getItem(TOKEN);
     }
 
-    setUser(user: TUser): void {
+    getRememberMe(): boolean {
+        return this.rememberMe;
+    }
+
+    setUser(user: TUser, rememberMe = false): void {
         const { token } = user;
-        this.setToken(token);
+        this.setToken(token, rememberMe);
         this.user = user;
     }
 
@@ -28,6 +46,7 @@ class Store {
     clearUser(): void {
         this.user = null;
         this.setToken('');
+        this.rememberMe = false;
     }
 
     addMessages(messages: TMessages): void {

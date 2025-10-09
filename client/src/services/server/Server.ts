@@ -2,6 +2,7 @@ import md5 from 'md5';
 import CONFIG from "../../config";
 import Store from "../store/Store";
 import { TAnswer, TError, TMessagesResponse, TUser } from "./types";
+import { TupleType } from 'typescript';
 
 const { CHAT_TIMESTAMP, HOST } = CONFIG;
 
@@ -23,7 +24,9 @@ class Server {
             if (token) {
                 params.token = token;
             }
+            
             const response = await fetch(`${this.HOST}/?${Object.keys(params).map(key => `${key}=${params[key]}`).join('&')}`);
+
             const answer: TAnswer<T> = await response.json();
             if (answer.result === 'ok' && answer.data) {
                 return answer.data;
@@ -48,15 +51,15 @@ class Server {
         this.showErrorCb = cb;
     }
 
-    async login(login: string, password: string): Promise<boolean> {
+    async login(login: string, password: string): Promise<TUser | null> {
         const rnd = Math.round(Math.random() * 100000);
-        const hash = md5(`${md5(`${login}${password}`)}${rnd}`);
+        const hash = md5(`${md5(`${login}${password}`)}${rnd}`)
         const user = await this.request<TUser>('login', { login, hash, rnd: `${rnd}` });
         if (user) {
             this.store.setUser(user);
-            return true;
+            return user;
         }
-        return false;
+        return null;
     }
 
     async logout() {
@@ -66,9 +69,9 @@ class Server {
         }
     }
 
-    registration(login: string, password: string, name: string): Promise<boolean | null> {
+    registration(login: string, password: string, nickname: string): Promise<TUser | null> {
         const hash = md5(`${login}${password}`);
-        return this.request<boolean>('registration', { login, hash, name });
+        return this.request<TUser>('registration', { login, hash, nickname });
     }
 
     sendMessage(message: string): void {
