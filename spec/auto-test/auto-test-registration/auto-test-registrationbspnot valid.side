@@ -155,10 +155,10 @@
       ],
       "value": ""
     }, {
-      "id": "acc251a3-23c9-4d81-94f1-91289613018d",
+      "id": "459162da-4557-4def-9f2f-6b66e6396264",
       "comment": "",
-      "command": "verifyText",
-      "target": "css=div[style*=\"color: red\"]",
+      "command": "verifyElementPresent",
+      "target": "css=.errors",
       "targets": [],
       "value": "Пароли не совпадают"
     }]

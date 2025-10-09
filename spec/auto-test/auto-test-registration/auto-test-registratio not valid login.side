@@ -88,10 +88,10 @@
     }, {
       "id": "5b29e779-b271-496b-84eb-1d82ffd0009f",
       "comment": "",
-      "command": "verifyText",
-      "target": "css=div[style*=\"color: red\"]",
+      "command": "verifyElementPresent",
+      "target": "css=.errors",
       "targets": [],
-      "value": "Логин должен быть от 6 до 15 символов"
+      "value": "логин должен быть от 6 до 15 символов"
     }, {
       "id": "c7b5eb2e-d940-4dad-b629-75adef196076",
       "comment": "",
@@ -117,12 +117,12 @@
       ],
       "value": ""
     }, {
-      "id": "6a02bd9a-7494-4da0-8ae9-d809c4f7f832",
+      "id": "b9bd60fd-482b-4b37-9018-fdecda5c1d52",
       "comment": "",
-      "command": "verifyText",
-      "target": "css=div[style*=\"color: red\"]",
+      "command": "verifyElementPresent",
+      "target": "css=.errors",
       "targets": [],
-      "value": "Логин должен быть от 6 до 15 символов"
+      "value": "логин должен быть от 6 до 15 символов"
     }, {
       "id": "c94f49c6-1b0d-4abe-a6b2-766108aeb290",
       "comment": "",
@@ -148,12 +148,12 @@
       ],
       "value": ""
     }, {
-      "id": "376eeca1-e7f8-43f7-a1f1-1de810e48f81",
+      "id": "19b0bcfc-ab88-4bc6-ae6c-57f391ef24db",
       "comment": "",
-      "command": "verifyText",
-      "target": "css=div[style*=\"color: red\"]",
+      "command": "verifyElementPresent",
+      "target": "css=.errors",
       "targets": [],
-      "value": "Логин должен быть от 6 до 15 символов"
+      "value": "логин должен быть от 6 до 15 символов"
     }, {
       "id": "fbc9853d-72d3-4579-b78f-b888cb51624b",
       "comment": "",
@@ -179,12 +179,12 @@
       ],
       "value": ""
     }, {
-      "id": "6900118f-938a-4fe7-b83e-41178924a71a",
+      "id": "e7c85660-7034-4dfa-a3fb-4a500d39a2d4",
       "comment": "",
-      "command": "verifyText",
-      "target": "css=div[style*=\"color: red\"]",
+      "command": "verifyElementPresent",
+      "target": "css=.errors",
       "targets": [],
-      "value": "Логин должен быть от 6 до 15 символов"
+      "value": "логин должен быть от 6 до 15 символов"
     }, {
       "id": "76e12c6e-c8c9-402f-9bc8-7872a710edc7",
       "comment": "",
@@ -210,12 +210,12 @@
       ],
       "value": ""
     }, {
-      "id": "1b531e02-6aab-4c23-b89f-9bef68ea5a83",
+      "id": "58da13bc-21a1-48e1-aa99-58d9f8a76f8f",
       "comment": "",
-      "command": "verifyText",
-      "target": "css=div[style*=\"color: red\"]",
+      "command": "verifyElementPresent",
+      "target": "css=.errors",
       "targets": [],
-      "value": "Логин должен быть от 6 до 15 символов"
+      "value": "логин должен быть от 6 до 15 символов"
     }]
   }],
   "suites": [{
