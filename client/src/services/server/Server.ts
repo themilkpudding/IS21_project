@@ -53,8 +53,8 @@ class Server {
 
     async login(login: string, password: string): Promise<TUser | null> {
         const rnd = Math.round(Math.random() * 100000);
-        const hash = md5(`${md5(`${login}${password}`)}${rnd}`)
-        const user = await this.request<TUser>('login', { login, hash, rnd: `${rnd}` });
+        const passwordHash = md5(`${md5(`${login}${password}`)}${rnd}`)
+        const user = await this.request<TUser>('login', { login, passwordHash, rnd: `${rnd}` });
         if (user) {
             this.store.setUser(user);
             return user;
@@ -70,8 +70,8 @@ class Server {
     }
 
     registration(login: string, password: string, nickname: string): Promise<TUser | null> {
-        const hash = md5(`${login}${password}`);
-        return this.request<TUser>('registration', { login, hash, nickname });
+        const passwordHash = md5(`${login}${password}`);
+        return this.request<TUser>('registration', { login, passwordHash, nickname });
     }
 
     sendMessage(message: string): void {
