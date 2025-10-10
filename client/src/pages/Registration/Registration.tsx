@@ -140,7 +140,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
                 <Button
                     onClick={registrationClickHandler}
                     isDisabled={!isFormValid}
-                    className='registation-button'
+                    className='registration-button'
                 />
             </div>
             <div id='haveAccount-Button'>
