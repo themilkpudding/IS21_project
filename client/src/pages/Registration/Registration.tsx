@@ -101,7 +101,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
                 onChange={hideErrorOnInput}
                 onKeyUp={checkFormValidity}
                 className='input-loginReg'
-                id='input-loginReg'
+                id='test-input-loginReg'
             />
             <p className='registration-label'>никнейм</p>
             <input
@@ -111,7 +111,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
                 onChange={hideErrorOnInput}
                 onKeyUp={checkFormValidity}
                 className='input-nicknameReg'
-                id='input-nicknameReg'
+                id='test-input-nicknameReg'
             />
             <p className='registration-label'>пароль</p>
             <input
@@ -121,7 +121,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
                 onChange={hideErrorOnInput}
                 onKeyUp={checkFormValidity}
                 className='input-passwordReg'
-                id='input-passwordReg'
+                id='test-input-passwordReg'
             />
             <p className='registration-label'>подтверждение пароля</p>
             <input
@@ -131,22 +131,22 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
                 onChange={hideErrorOnInput}
                 onKeyUp={checkFormValidity}
                 className='input-certpasswordReg'
-                id='input-certpasswordReg'
+                id='test-input-certpasswordReg'
             />
             <div>
             </div>
             {error && <div className='errors'>{error}</div>}
-            <div id='registration-button'>
+            <div className ='registration-buttons'>
                 <Button
                     onClick={registrationClickHandler}
                     isDisabled={!isFormValid}
                     className='registration-button'
+                    id='test-registration-button'
                 />
-            </div>
-            <div id='haveAccount-Button'>
                 <Button 
                     onClick={haveAccountClickHandler} 
                     className='haveAccount-Button' 
+                    id='test-haveAccount-Button'
                 />
             </div>
         </div>

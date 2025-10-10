@@ -98,7 +98,7 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
                 onChange={hideErrorOnInput}
                 onKeyUp={checkFormValidity}
                 className='input-login'
-                id='input-login'
+                id='test-input-login'
             />
         </div>
 
@@ -111,7 +111,7 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
                 onChange={hideErrorOnInput}
                 onKeyUp={checkFormValidity}
                 className='input-password'
-                id='input-password'
+                id='test-input-password'
             />
         </div>
 
@@ -121,25 +121,25 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
                 checked={rememberMe}
                 onChange={() => setRememberMe(prev => !prev)}
                 className='checkbox-remember'
-                id='checkbox-remember'
+                id='test-checkbox-remember'
             />
-            <span id='span-remember' className="span-remember">не выходить из учетной записи</span>
+            <span id='test-span-remember' className="span-remember">не выходить из учетной записи</span>
         </label>
 
         {error && <p className='p-error'>{error}</p>}
-        <div id='button-login'>
+        <div>
             <Button 
                 onClick={loginClickHandler}
                 text=''
                 isDisabled={!isFormValid}
                 className='button-login'
+                id='test-button-login'
             />
-        </div>
-        <div id='button-registration'>
             <Button
                 onClick={registrationClickHandler}
                 text='создать учетную запись'
                 className='button-registration'
+                id='test-button-registration'
             />
         </div>
     </div>)
