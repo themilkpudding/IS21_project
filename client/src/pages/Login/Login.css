@@ -98,7 +98,7 @@
     margin: 0;
 }
 
-.label-remember-span {
+.span-remember {
     color: #ffffff;
     font-family: Metanart_Big;
     font-weight: 400;
@@ -208,7 +208,7 @@
         height: 67px;
     }
 
-    .label-remember-span {
+    .span-remember {
         white-space: normal;
     }
 
@@ -251,7 +251,7 @@
         height: 5.185vh;
     }
 
-    .label-remember-span {
+    .span-remember {
         white-space: normal;
     }
 
@@ -308,7 +308,7 @@
         height: 3vh;
     }
 
-    .label-remember-span {
+    .span-remember {
         font-size: 1.704vh;
         white-space: normal;
     }

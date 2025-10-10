@@ -3,8 +3,8 @@ import Button from '../../components/Button/Button';
 import { IBasePage, PAGES } from '../PageManager';
 import { ServerContext } from '../../App';
 import { TError } from '../../services/server/types';
-import './Registration.css';
 import logo from '../../assets/img/logo/logo.svg'
+import './Registration.css';
 
 const Registration: React.FC<IBasePage> = (props: IBasePage) => {
     const { setPage } = props;
@@ -101,6 +101,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
                 onChange={hideErrorOnInput}
                 onKeyUp={checkFormValidity}
                 className='input-loginReg'
+                id='input-loginReg'
             />
             <p className='registration-label'>никнейм</p>
             <input
@@ -110,6 +111,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
                 onChange={hideErrorOnInput}
                 onKeyUp={checkFormValidity}
                 className='input-nicknameReg'
+                id='input-nicknameReg'
             />
             <p className='registration-label'>пароль</p>
             <input
@@ -119,6 +121,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
                 onChange={hideErrorOnInput}
                 onKeyUp={checkFormValidity}
                 className='input-passwordReg'
+                id='input-passwordReg'
             />
             <p className='registration-label'>подтверждение пароля</p>
             <input
@@ -128,17 +131,23 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
                 onChange={hideErrorOnInput}
                 onKeyUp={checkFormValidity}
                 className='input-certpasswordReg'
+                id='input-certpasswordReg'
             />
             <div>
             </div>
             {error && <div className='errors'>{error}</div>}
-            <div className='registration-buttons'>
+            <div id='registration-button'>
                 <Button
                     onClick={registrationClickHandler}
                     isDisabled={!isFormValid}
                     className='registation-button'
                 />
-                <Button onClick={haveAccountClickHandler} className='haveAccount' />
+            </div>
+            <div id='haveAccount-Button'>
+                <Button 
+                    onClick={haveAccountClickHandler} 
+                    className='haveAccount-Button' 
+                />
             </div>
         </div>
     </div>)

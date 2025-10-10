@@ -18,7 +18,10 @@
 }
 
 .logoReg {
-    margin-top: -130px;
+    position: absolute;
+    top: 4.052vh;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 
@@ -41,10 +44,15 @@
 
 .errors {
     position: absolute;
-    top: 83vh;
-    left: 38%;
-    font-family: 'metanart-big';
-    color: yellow;
+    top: 83.870vh;
+    transform: translateX(-50%);
+    left: 50%;
+    margin: 0;
+    color: #D9FF00;
+    font-family: Metanart_Big;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 2.315vh;
 }
 
 .registation-button {
@@ -55,9 +63,10 @@
     background-color: transparent;
     width: 184px;
     height: 45px;
+    transform: translateX(-50%);
+    left: 50%;
     position: absolute;
-    margin-top: 7.100vh;
-    right: 43.758vw;
+    margin-top: 5.100vh;
     transition: filter 0.1s ease;
 }
 
@@ -66,7 +75,7 @@
 }
 
 
-.haveAccount {
+.haveAccount-Button {
     background-image: url(../../assets/img/haveAccountButton.svg);
     background-size: cover;
     color: transparent;
@@ -75,8 +84,9 @@
     width: 200px;
     height: 34px;
     position: absolute;
-    margin-top: 13.100vh;
-    right: 43.148vw;
+    margin-top: 11.100vh;
+    transform: translateX(-50%);
+    left: 50%;
     transition: filter 0.1s ease;
 }
 
@@ -102,4 +112,42 @@
     font-size: 1.667vh;
     padding: 0 0 0 23px;
     box-sizing: border-box;
+}
+
+@media (min-height: 1300px) and (min-width: 1100px) {
+    .logoReg {
+        height: 180px;
+    }
+
+/* .registration-button {
+        height: 3.4vh;
+        width: 8.900vw;
+    }
+*/
+}
+
+@media ((max-width: 1100px) or (max-height: 1300px)) and (orientation: portrait) {
+    .logoReg {
+        top: 5vh;
+        width: 60.781vw;
+        height: 17.13vh;
+    }
+
+    .errors {
+        transform: translateX(-50%);
+        top: 74vh;
+        font-size: 1.315vh;
+        white-space: nowrap;
+    }
+
+
+
+}
+
+@media ((max-width: 1300px) or (max-height: 1100px)) and (orientation: landscape) {
+    .logoReg {
+        width: 25.781vw;
+        height: 11.130vh;
+    }
+
 }
