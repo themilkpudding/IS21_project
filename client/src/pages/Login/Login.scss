@@ -1,31 +1,29 @@
 .login {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
 
     height: 100%;
     width: 100%;
-    display: flex;
 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 
     background-image: url(../../assets/img/background/background.png);
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    overflow: hidden;
 
     .logo {
-        position: absolute;
+        position: fixed;
         top: 9.352vh;
-        left: 50%;
-        transform: translateX(-50%);
     }
 
     .input-group {
-        position: absolute;
+        position: fixed;
         top: 39.352vh;
-        left: 50%;
-        transform: translateX(-50%);
         display: flex;
 
         .input-login,
@@ -66,65 +64,55 @@
         top: 54.630vh;
     }
 
-    .label-remember,
-    .button-login,
-    .p-error,
-    .button-registration {
-        position: absolute;
-        display: flex;
-        left: 50%;
-        transform: translateX(-50%);
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-    }
-
     .label-remember {
+        position: fixed;
         top: 66.204vh;
         height: 56px;
-        flex-direction: row;
+
+        display: flex;
         align-items: center;
+        justify-content: center;
+
         gap: 1.563vw;
         cursor: pointer;
 
-    }
+        .checkbox-remember {
+            opacity: 0;
+            position: fixed;
+            width: 0;
+            height: 0;
+            margin: 0;
+        }
 
-    .checkbox-remember {
-        opacity: 0;
-        position: absolute;
-        width: 0;
-        height: 0;
-        margin: 0;
-    }
+        .span-remember {
+            color: #ffffff;
+            font-family: Metanart_Big;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 2.778vh;
+            white-space: nowrap;
+        }
 
-    .span-remember {
-        color: #ffffff;
-        font-family: Metanart_Big;
-        font-weight: 400;
-        font-style: normal;
-        font-size: 2.778vh;
-        white-space: nowrap;
-    }
+        &::before {
+            content: '';
+            display: inline-block;
+            width: 104px;
+            height: 56px;
+            background-image: url('../../assets/img/checkbox/checkbox-remember-off.svg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-color: transparent;
+            transition: all 500ms ease-out;
+        }
 
-    .label-remember::before {
-        content: '';
-        display: inline-block;
-        width: 104px;
-        height: 56px;
-        background-image: url('../../assets/img/checkbox/checkbox-remember-off.svg');
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-color: transparent;
-        transition: all 500ms ease-out;
-    }
+        &:has(.checkbox-remember:checked)::before {
+            background-image: url('../../assets/img/checkbox/checkbox-remember-on.svg');
 
-    .label-remember:has(.checkbox-remember:checked)::before {
-        background-image: url('../../assets/img/checkbox/checkbox-remember-on.svg');
-
+        }
     }
 
     .p-error {
-        position: absolute;
+        position: fixed;
         top: 72.870vh;
 
         margin: 0;
@@ -137,7 +125,7 @@
     }
 
     .button-login {
-        position: absolute;
+        position: fixed;
         top: 78.241vh;
 
         width: 328px;
@@ -150,16 +138,16 @@
         background-color: transparent;
         padding: 0;
         transition: all 500ms ease-out;
-    }
 
-    .button-login:not(:disabled) {
-        background-image: url('../../assets/img/login/button-login-active.svg');
-        cursor: pointer;
-        transition: all 500ms ease-out;
+        &:not(:disabled) {
+            background-image: url('../../assets/img/login/button-login-active.svg');
+            cursor: pointer;
+            transition: all 500ms ease-out;
+        }
     }
 
     .button-registration {
-        position: absolute;
+        position: fixed;
         top: 88.241vh;
 
         color: #CDCDCD;
@@ -174,162 +162,169 @@
         box-sizing: border-box;
         cursor: pointer;
         transition: all 500ms ease-out;
-    }
 
-    .button-registration:hover {
-        color: #FFFFFF;
-        transition: all 500ms ease-out;
+        &:hover {
+            color: #FFFFFF;
+            transition: all 500ms ease-out;
+        }
     }
 }
 
 
 @media (min-height: 1441px) and (min-width: 3441px) {
-    .logo {
-        height: 287px;
-    }
+    .login {
+        .logo {
+            height: 287px;
+        }
 
-    .input-login,
-    .input-password {
-        width: 1152px;
-        height: 96px;
-        padding: 0 0 0 36px;
-    }
+        .input-group {
 
-    .p-login,
-    .p-password {
-        left: 17px;
-        padding: 12px;
-    }
+            .input-login,
+            .input-password {
+                width: 1152px;
+                height: 96px;
+                padding: 0 0 0 36px;
+            }
 
-    .label-remember {
-        height: 67px;
-    }
+            .p-login,
+            .p-password {
+                left: 17px;
+                padding: 12px;
+            }
+        }
 
-    .label-remember::before {
-        width: 125px;
-        height: 67px;
-    }
+        .label-remember {
+            height: 67px;
 
-    .span-remember {
-        white-space: normal;
-    }
+            &::before {
+                width: 125px;
+                height: 67px;
+            }
+        }
 
-    .button-login {
-        width: 394px;
-        height: 96px;
-    }
+        .button-login {
+            width: 394px;
+            height: 96px;
+        }
 
-    .button-registration {
-        padding: 12px;
-    }
-
-}
-
-@media ((max-width: 1300px) or (max-height: 1100px)) and (orientation: landscape) {
-    .logo {
-        width: 60.781vw;
-        height: 22.130vh;
-    }
-
-    .p-login,
-    .p-password {
-        left: auto;
-        padding: 0.926vh 0.521vw;
-    }
-
-    .input-login,
-    .input-password {
-        width: 34.37vw;
-        height: 7.407vh;
-        padding: 0 0 0 2.083vw;
-    }
-
-    .label-remember {
-        height: 5.185vh;
-    }
-
-    .label-remember::before {
-        width: 5.417vw;
-        height: 5.185vh;
-    }
-
-    .span-remember {
-        white-space: normal;
-    }
-
-    .button-login {
-        width: 17.083vw;
-        height: 7.407vh;
-    }
-
-    .button-registration {
-        padding: 0.926vh 0.521vw;
+        .button-registration {
+            padding: 12px;
+        }
     }
 }
 
-@media ((max-width: 1100px) or (max-height: 1300px)) and (orientation: portrait) {
-    .logo {
-        top: 5vh;
-        width: 60.781vw;
-        height: 17.13vh;
+@media ((max-width: 1300px) or (max-height: 1079px)) and (orientation: landscape) {
+    .login {
+        .logo {
+            width: 60.781vw;
+            height: 22.130vh;
+        }
+
+        .input-group {
+
+            .input-login,
+            .input-password {
+                width: 34.37vw;
+                height: 7.407vh;
+                padding: 0 0 0 2.083vw;
+            }
+
+            .p-login,
+            .p-password {
+                left: auto;
+                padding: 0.926vh 0.521vw;
+            }
+        }
+
+        .label-remember {
+            height: 3.185vh;
+
+            .span-remember {
+                white-space: normal;
+            }
+
+            &::before {
+                width: 4vw;
+                height: 3.185vh;
+            }
+        }
+
+        .button-login {
+            width: 17.083vw;
+            height: 7.407vh;
+        }
+
+        .button-registration {
+            padding: 0.926vh 0.521vw;
+        }
     }
+}
 
-    .input-group {
-        top: 25vh;
-        width: 65%;
-    }
+@media ((max-width: 1079px) or (max-height: 1300px)) and (orientation: portrait) {
+    .login {
+        .logo {
+            top: 5vh;
+            width: 60.781vw;
+            height: 17.13vh;
+        }
 
-    .password-group {
-        top: 35vh;
-    }
+        .input-group {
+            top: 25vh;
+            width: 65%;
 
-    .p-login,
-    .p-password {
-        left: 0.896vh;
-        top: -2.2vh;
-        padding: 0;
-        font-size: 1.704vh;
+            .input-login,
+            .input-password {
+                width: 100%;
+                padding: 0 0 0 15px;
+                font-size: 1vh;
+            }
 
-    }
+            .p-login,
+            .p-password {
+                left: 0.896vh;
+                top: -2.2vh;
+                padding: 0;
+                font-size: 1.704vh;
 
-    .input-login,
-    .input-password {
-        width: 100%;
-        padding: 0 0 0 15px;
-        font-size: 1vh;
-    }
+            }
+        }
 
-    .label-remember {
-        top: 47vh;
-        height: 5.185vh;
-        gap: 6.563vw;
-    }
+        .password-group {
+            top: 35vh;
+        }
 
-    .label-remember::before {
-        width: 40.417vw;
-        height: 3vh;
-    }
+        .label-remember {
+            top: 47vh;
+            height: 3vh;
+            gap: 6.563vw;
 
-    .span-remember {
-        font-size: 1.704vh;
-        white-space: normal;
-    }
+            .span-remember {
+                font-size: 1.704vh;
+                white-space: normal;
+            }
 
-    .p-error {
-        top: 58vh;
-        font-size: 1.315vh;
-        white-space: nowrap;
-    }
+            &::before {
+                width: 8.417vw;
+                height: 3vh;
+            }
+        }
 
-    .button-login {
-        top: 65vh;
-        width: 55.083vw;
-        height: 4vh;
-    }
+        .p-error {
+            top: 58vh;
+            font-size: 1.315vh;
+            white-space: nowrap;
+        }
 
-    .button-registration {
-        top: 73vh;
-        font-size: 1.704vh;
-        white-space: nowrap;
+        .button-login {
+            top: 65vh;
+            width: 55.083vw;
+            height: 4vh;
+        }
+
+        .button-registration {
+            top: 73vh;
+            font-size: 1.704vh;
+            white-space: nowrap;
+        }
     }
 }
