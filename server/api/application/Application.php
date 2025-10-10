@@ -10,7 +10,7 @@ class Application {
         $db = new DB();
         $this->user = new User($db);
         $this->math = new Math();
-        $this->lobby = new Lobby($db, $this->user);
+        $this->lobby = new Lobby($db);
     }
 
     public function login($params) {
@@ -90,7 +90,29 @@ class Application {
         if ($params['token'] && $params['roomId']) {
             $user = $this->user->getUser($params['token']);
             if ($user) {
-                return $this->lobby->joinToRoom($params);
+                return $this->lobby->joinToRoom($params['roomId'], $user->id);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+
+    public function leaveRoom($params) {
+        if ($params['token']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->lobby->leaveRoom($user->id);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+
+    public function dropFromRoom($params) {
+        if ($params['token'] && $params['targetToken']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->lobby->dropFromRoom($user->id, $params['targetToken']);
             }
             return ['error' => 705];
         }

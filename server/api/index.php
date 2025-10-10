@@ -25,6 +25,8 @@ function result($params) {
             //lobby
             case 'createRoom': return $app->createRoom($params);
             case 'joinToRoom': return $app->joinToRoom($params);
+            case 'leaveRoom': return $app->leaveRoom($params);
+            case 'dropFromRoom': return $app->dropFromRoom($params);
 
             default: return ['error' => 102];
         }

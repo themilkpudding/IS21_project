@@ -21,6 +21,12 @@ class Answer {
         '2003' => 'Room not found',
         '2004' => 'User already in room',
         '2005' => 'User is already owner of this room',
+        '2006' => 'The user is already playing',
+        '2007' => 'The room is not available',
+        '2008' => 'User is not in room',
+        '2009' => 'Owner cannot kick yourself',
+        '2010' => 'Only the owner can kick out participants of the room.',
+        '2011' => 'User to kick not found in room',
          //menu answers
         '3000' => 'Placeholder',
         '8001' => 'Enter at least one value',
