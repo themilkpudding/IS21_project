@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: MySQL-8.0
--- Время создания: Окт 03 2025 г., 14:50
+-- Время создания: Окт 10 2025 г., 16:30
 -- Версия сервера: 8.0.41
 -- Версия PHP: 8.3.14
 
@@ -34,6 +34,13 @@ CREATE TABLE `hashes` (
   `chat_hash` varchar(255) DEFAULT NULL,
   `room_hash` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп данных таблицы `hashes`
+--
+
+INSERT INTO `hashes` (`id`, `chat_hash`, `room_hash`) VALUES
+(1, 'default chat_hash', 'default room_hash');
 
 -- --------------------------------------------------------
 
@@ -71,7 +78,7 @@ CREATE TABLE `person_classes` (
 CREATE TABLE `rooms` (
   `id` int NOT NULL,
   `status` enum('open','closed','started') DEFAULT 'open'
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -187,19 +194,19 @@ ALTER TABLE `person_classes`
 -- AUTO_INCREMENT для таблицы `rooms`
 --
 ALTER TABLE `rooms`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT для таблицы `room_members`
 --
 ALTER TABLE `room_members`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT для таблицы `users_person_classes`
