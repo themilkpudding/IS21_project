@@ -44,6 +44,7 @@
     ]
   },
   "devDependencies": {
-    "@types/md5": "^2.3.5"
+    "@types/md5": "^2.3.5",
+    "sass": "^1.93.2"
   }
 }
