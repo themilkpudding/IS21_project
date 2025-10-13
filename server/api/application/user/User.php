@@ -65,7 +65,7 @@ class User {
             }
         }
         
-        //удаляем юзера из всех связанных таблиц
+        //удаляем юзера
         $success = $this->db->deleteUser($user->id);
         if ($success) {
             return true;
