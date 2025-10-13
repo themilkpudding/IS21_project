@@ -27,6 +27,9 @@ function result($params) {
             case 'joinToRoom': return $app->joinToRoom($params);
             case 'leaveRoom': return $app->leaveRoom($params);
             case 'dropFromRoom': return $app->dropFromRoom($params);
+            case 'deleteUser': return $app->deleteUser($params); // для тестеров
+            case 'startGame': return $app->startGame($params);
+            case 'getRooms': return $app->getRooms($params);
 
             default: return ['error' => 102];
         }
