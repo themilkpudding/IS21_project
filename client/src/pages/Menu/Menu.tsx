@@ -15,8 +15,8 @@ const Menu: React.FC<IBasePage> = (props: IBasePage) => {
         setPage(PAGES.STARTING_GAME_MENU);
     };
 
-    const exitAccountClickHandler = () => {
-        server.store.clearUser();
+    const exitAccountClickHandler = async () => {
+        await server.logout();
         setPage(PAGES.LOGIN);
     };
 
@@ -25,7 +25,7 @@ const Menu: React.FC<IBasePage> = (props: IBasePage) => {
         <Button onClick={classShopClickHandler} text='Назад' />
         <Button onClick={startingGameMenuClickHandler} text='Начать игру' />
         <Button onClick={exitAccountClickHandler} text='Выйти из аккаунта' />
-        <button onClick={() => setPage(PAGES.GAME) }>Временная кнопка для открытия самой игры</button>
+        <button onClick={() => setPage(PAGES.GAME)}>Временная кнопка для открытия самой игры</button>
     </>)
 }
 

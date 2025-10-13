@@ -71,12 +71,25 @@ class DB {
         );
     }
 
-    public function createRoom() {
-        $this->execute("INSERT INTO rooms (status) VALUES ('open')");
-        return $this->pdo->lastInsertId();
+    public function isUserPlaying($userId) {
+        return $this->query("SELECT id FROM room_members WHERE user_id = ? AND status = 'started'", [$userId]);
     }
 
-    public function addRoomMember($roomId, $userId, $type, $status) {
+    public function getUserTypeInRoom($userId) {
+        return $this->query("SELECT type FROM room_members WHERE user_id=?", [$userId]);
+    }
+
+    public function leaveParticipantFromRoom($userId) {
+        $this->execute("DELETE FROM room_members WHERE user_id=?", [$userId]);
+    }
+
+    public function createRoom($userId) {
+        $this->execute("INSERT INTO rooms () VALUES ()");
+        $roomId = $this->pdo->lastInsertId();
+        $this->addRoomMember($roomId, $userId, 'owner');
+    }
+
+    public function addRoomMember($roomId, $userId, $type, $status = 'ready') {
         return $this->execute(
             "INSERT INTO room_members (room_id, user_id, type, status) VALUES (?, ?, ?, ?)",
             [$roomId, $userId, $type, $status]
@@ -84,11 +97,59 @@ class DB {
     }
 
     public function getRoomById($roomId) {
-        return $this->query("SELECT * FROM rooms WHERE id=?", [$roomId]);
+        return $this->query("SELECT id, status FROM rooms WHERE id=?", [$roomId]);
     }
 
     public function getRoomMember($roomId, $userId) {
         return $this->query("SELECT * FROM room_members WHERE room_id=? AND user_id=?", [$roomId, $userId]);
+    }
+
+    public function updateRoomHash($hash) {
+        $this->execute("UPDATE hashes SET room_hash = ? WHERE id = 1", [$hash]);
+    }
+
+    public function getRoomHash() {
+        $result = $this->query("SELECT room_hash FROM hashes WHERE id = 1");
+        return $result ? $result->room_hash : null;
+    }
+
+    public function getRoomMemberByUserId($userId) {
+        return $this->query("SELECT * FROM room_members WHERE user_id=?", [$userId]);
+    }
+
+    public function deleteAllRoomMembers($roomId) {
+        $this->execute("DELETE FROM room_members WHERE room_id=?", [$roomId]);
+    }
+
+    public function deleteRoom($roomId) {
+        $this->execute("DELETE FROM rooms WHERE id=?", [$roomId]);
+    }
+
+    public function deleteUser($userId) {
+        return $this->execute("DELETE FROM users WHERE id=?", [$userId]);
+    }
+
+    public function getAllRoomMembers($roomId) {
+        return $this->queryAll("SELECT * FROM room_members WHERE room_id=?", [$roomId]);
+    }
+
+    public function updateRoomStatus($roomId, $status) {
+        $this->execute("UPDATE rooms SET status=? WHERE id=?", [$status, $roomId]);
+    }
+
+    public function updateAllRoomMembersStatus($roomId, $status) {
+        $this->execute("UPDATE room_members SET status=? WHERE room_id=?", [$status, $roomId]);
+    }
+
+    //?????
+    public function getOpenRooms() {
+        return $this->queryAll("
+            SELECT r.id, r.status, COUNT(rm.user_id) as players_count 
+            FROM rooms r 
+            LEFT JOIN room_members rm ON r.id = rm.room_id 
+            WHERE r.status = 'open' 
+            GROUP BY r.id, r.status
+        ");
     }
 }
 

@@ -30,6 +30,8 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
         setIsFormValid(login.length > 0 && nickname.trim().length > 0 && password.length > 0 && confirmPassword.length > 0);
     };
 
+    const checkValidChars = /^[a-zA-Z0-9]+$/;
+
     const hideErrorOnInput = () => {
         setError('');
         checkFormValidity();
@@ -50,13 +52,28 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
             setError("логин должен быть от 6 до 15 символов");
             return false;
         }
+        else if (!checkValidChars.test(login)) {
+            setError('логин должен содержать только латинские буквы и цифры');
+            return false;
+
+        }
         else if (nicknameRef.current && (nickname.length > 15 || nickname.length < 1)) {
             setError('никнейм должен быть от 1 до 15 символов');
             return false;
         }
+        else if (!checkValidChars.test(nickname)) {
+            setError('никнейм должен содержать только латинские буквы и цифры');
+            return false;
+
+        }
         else if (passwordRef.current && (password.length > 25 || password.length < 6)) {
             setError('пароль должен быть от 6 до 25 символов');
             return false;
+        }
+        else if (!checkValidChars.test(password)) {
+            setError('пароль должен содержать только латинские буквы и цифры');
+            return false;
+
         }
         else if (password !== confirmPassword) {
             setError('пароли не совпадают');
@@ -66,14 +83,13 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
         return true;
     }
 
-
     const registrationClickHandler = async () => {
         if (!showError()) {
             return;
         }
-        
+
         server.showError((err: TError) => {
-            if (err.code === 1001) setError('логин уже существует');
+            if (err.code === 1001) setError('логин занят');
             clearAuthFields();
         });
 
@@ -91,7 +107,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
     }
 
     return (<div className='registration'>
-        <img src={logo} className="logoReg" height={80}/>
+        <img src={logo} className="logoReg" height={80} />
         <div className='registration-wrapper'>
             <p className='registration-label'>логин</p>
             <input

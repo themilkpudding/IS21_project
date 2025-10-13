@@ -1,0 +1,330 @@
+.login {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    background-image: url(../../assets/img/background/background.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+
+    .logo {
+        position: fixed;
+        top: 9.352vh;
+    }
+
+    .input-group {
+        position: fixed;
+        top: 39.352vh;
+        display: flex;
+
+        .input-login,
+        .input-password {
+            width: 960px;
+            height: 80px;
+            border: none;
+            outline: none;
+            background-image: url('../../assets/img/input.svg');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-color: transparent;
+            color: #ffffff;
+            font-family: Metanart_Big;
+            font-size: 1.667vh;
+            padding: 0 0 0 30px;
+            box-sizing: border-box;
+        }
+
+        .p-login,
+        .p-password {
+            position: absolute;
+            top: -6.481vh;
+            left: 14px;
+
+            color: #ffffff;
+            font-family: Metanart_Big;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 3.704vh;
+            margin: 0;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+    }
+
+    .password-group {
+        top: 54.630vh;
+    }
+
+    .label-remember {
+        position: fixed;
+        top: 66.204vh;
+        height: 56px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 1.563vw;
+        cursor: pointer;
+
+        .checkbox-remember {
+            opacity: 0;
+            position: fixed;
+            width: 0;
+            height: 0;
+            margin: 0;
+        }
+
+        .span-remember {
+            color: #ffffff;
+            font-family: Metanart_Big;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 2.778vh;
+            white-space: nowrap;
+        }
+
+        &::before {
+            content: '';
+            display: inline-block;
+            width: 104px;
+            height: 56px;
+            background-image: url('../../assets/img/checkbox/checkbox-remember-off.svg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-color: transparent;
+            transition: all 500ms ease-out;
+        }
+
+        &:has(.checkbox-remember:checked)::before {
+            background-image: url('../../assets/img/checkbox/checkbox-remember-on.svg');
+
+        }
+    }
+
+    .p-error {
+        position: fixed;
+        top: 72.870vh;
+
+        margin: 0;
+        color: #D9FF00;
+        font-family: Metanart_Big;
+        font-weight: 400;
+        font-style: normal;
+        font-size: 2.315vh;
+        white-space: nowrap;
+    }
+
+    .button-login {
+        position: fixed;
+        top: 78.241vh;
+
+        width: 328px;
+        height: 80px;
+        border: none;
+        outline: none;
+        background-image: url('../../assets/img/login/button-login-disabled.svg');
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        background-color: transparent;
+        padding: 0;
+        transition: all 500ms ease-out;
+
+        &:not(:disabled) {
+            background-image: url('../../assets/img/login/button-login-active.svg');
+            cursor: pointer;
+            transition: all 500ms ease-out;
+        }
+    }
+
+    .button-registration {
+        position: fixed;
+        top: 88.241vh;
+
+        color: #CDCDCD;
+        font-family: Metanart_Big;
+        font-weight: 400;
+        font-style: normal;
+        font-size: 2.778vh;
+        border: none;
+        outline: none;
+        background-color: transparent;
+        padding: 10px;
+        box-sizing: border-box;
+        cursor: pointer;
+        transition: all 500ms ease-out;
+
+        &:hover {
+            color: #FFFFFF;
+            transition: all 500ms ease-out;
+        }
+    }
+}
+
+
+@media (min-height: 1441px) and (min-width: 3441px) {
+    .login {
+        .logo {
+            height: 287px;
+        }
+
+        .input-group {
+
+            .input-login,
+            .input-password {
+                width: 1152px;
+                height: 96px;
+                padding: 0 0 0 36px;
+            }
+
+            .p-login,
+            .p-password {
+                left: 17px;
+                padding: 12px;
+            }
+        }
+
+        .label-remember {
+            height: 67px;
+
+            &::before {
+                width: 125px;
+                height: 67px;
+            }
+        }
+
+        .button-login {
+            width: 394px;
+            height: 96px;
+        }
+
+        .button-registration {
+            padding: 12px;
+        }
+    }
+}
+
+@media ((max-width: 1300px) or (max-height: 1079px)) and (orientation: landscape) {
+    .login {
+        .logo {
+            width: 60.781vw;
+            height: 22.130vh;
+        }
+
+        .input-group {
+
+            .input-login,
+            .input-password {
+                width: 34.37vw;
+                height: 7.407vh;
+                padding: 0 0 0 2.083vw;
+            }
+
+            .p-login,
+            .p-password {
+                left: auto;
+                padding: 0.926vh 0.521vw;
+            }
+        }
+
+        .label-remember {
+            height: 3.185vh;
+
+            .span-remember {
+                white-space: normal;
+            }
+
+            &::before {
+                width: 4vw;
+                height: 3.185vh;
+            }
+        }
+
+        .button-login {
+            width: 17.083vw;
+            height: 7.407vh;
+        }
+
+        .button-registration {
+            padding: 0.926vh 0.521vw;
+        }
+    }
+}
+
+@media ((max-width: 1079px) or (max-height: 1300px)) and (orientation: portrait) {
+    .login {
+        .logo {
+            top: 5vh;
+            width: 60.781vw;
+            height: 17.13vh;
+        }
+
+        .input-group {
+            top: 25vh;
+            width: 65%;
+
+            .input-login,
+            .input-password {
+                width: 100%;
+                padding: 0 0 0 15px;
+                font-size: 1vh;
+            }
+
+            .p-login,
+            .p-password {
+                left: 0.896vh;
+                top: -2.2vh;
+                padding: 0;
+                font-size: 1.704vh;
+
+            }
+        }
+
+        .password-group {
+            top: 35vh;
+        }
+
+        .label-remember {
+            top: 47vh;
+            height: 3vh;
+            gap: 6.563vw;
+
+            .span-remember {
+                font-size: 1.704vh;
+                white-space: normal;
+            }
+
+            &::before {
+                width: 8.417vw;
+                height: 3vh;
+            }
+        }
+
+        .p-error {
+            top: 58vh;
+            font-size: 1.315vh;
+            white-space: nowrap;
+        }
+
+        .button-login {
+            top: 65vh;
+            width: 55.083vw;
+            height: 4vh;
+        }
+
+        .button-registration {
+            top: 73vh;
+            font-size: 1.704vh;
+            white-space: nowrap;
+        }
+    }
+}

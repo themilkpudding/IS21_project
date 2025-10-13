@@ -47,4 +47,29 @@ class User {
         
         return $this->login($login, $passwordHash, $rnd);
     }
+
+    
+    public function deleteUser($token) {
+        $user = $this->db->getUserByToken($token);
+        if (!$user) {
+            return ['error' => 705]; 
+        }
+        
+        //создание временного объекта Lobby для вызова leaveRoom (мало ли юзер овнер)
+        $userType = $this->db->getUserTypeInRoom($user->id);
+        if ($userType) {
+            $lobby = new Lobby($this->db);
+            $leaveResult = $lobby->leaveRoom($user->id);
+            if (isset($leaveResult['error'])) {
+                return $leaveResult;
+            }
+        }
+        
+        //удаляем юзера
+        $success = $this->db->deleteUser($user->id);
+        if ($success) {
+            return true;
+        }
+        return ['error' => 2012]; 
+    }
 }

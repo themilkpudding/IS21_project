@@ -1,55 +1,46 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import useCheckLogin from './hooks/useCheckLogin';
 import { ServerContext } from '../../App';
-import Button from '../../components/Button/Button';
 import { IBasePage, PAGES } from '../PageManager';
 import { TError } from '../../services/server/types';
-import './Login.css'
+import Button from '../../components/Button/Button';
 import logo from '../../assets/img/logo/logo.svg';
+import './Login.scss'
 
 const Login: React.FC<IBasePage> = (props: IBasePage) => {
     const { setPage } = props;
     const server = useContext(ServerContext);
     const loginRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
+    const { isFormValid, error,  setError, checkFilled, showError } = useCheckLogin();
     const [rememberMe, setRememberMe] = useState(false);
-    const [error, setError] = useState('');
-    const [isFormValid, setIsFormValid] = useState(false);
-
-    const checkFormValidity = () => {
-        if (loginRef.current && passwordRef.current) {
-            const login = loginRef.current.value.trim();
-            const password = passwordRef.current.value.trim();
-            setIsFormValid(login.length > 0 && password.length > 0);
-        }
-    };
 
     const hideErrorOnInput = () => {
         setError('');
-        checkFormValidity();
+        checkFilled(loginRef.current!.value, passwordRef.current!.value);
     };
 
     const clearAuthFields = () => {
-        if (loginRef.current) loginRef.current.value = '';
-        if (passwordRef.current) passwordRef.current.value = '';
-        setIsFormValid(false);
+        loginRef.current!.value = '';
+        passwordRef.current!.value = '';
+        checkFilled(loginRef.current!.value, passwordRef.current!.value);
     };
 
-    const showError = (): boolean => {
-        const login = loginRef.current?.value || '';
-        const password = passwordRef.current?.value || '';
+    const loginClickHandler = async () => {
+        const login = loginRef.current!.value;
+        const password = passwordRef.current!.value;
 
-        if (login.length > 15 || login.length < 6) {
-            setError('логин должен быть от 6 до 15 символов');
-            return false;
+        if (!showError(login, password)) return;
+
+        const user = await server.login(login, password);
+
+        if (user) {
+            server.store.setUser(user, rememberMe)
+            setPage(PAGES.MENU);
         }
+    }
 
-        if (password.length > 25 || password.length < 6) {
-            setError('пароль должен быть от 6 до 25 символов');
-            return false;
-        }
-
-        return true;
-    };
+    const registrationClickHandler = () => { setPage(PAGES.REGISTRATION) };
 
     useEffect(() => {
         const token = server.store.getToken();
@@ -65,28 +56,6 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
         }
     }, []);
 
-    const loginClickHandler = async () => {
-        if (!showError()) {
-            return;
-        }
-        if (loginRef.current && passwordRef.current) {
-            const login = loginRef.current.value;
-            const password = passwordRef.current.value;
-
-            const user = await server.login(login, password);
-
-            if (user) {
-                server.store.setUser(user, rememberMe)
-                setPage(PAGES.MENU);
-            }
-        }
-    }
-
-    const registrationClickHandler = () => {
-        setPage(PAGES.REGISTRATION)
-    };
-
-
     return (<div className='login'>
         <img src={logo} className='logo' />
         <div className="input-group login-group">
@@ -96,7 +65,7 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
                 type="text"
                 placeholder="ваш логин"
                 onChange={hideErrorOnInput}
-                onKeyUp={checkFormValidity}
+                onKeyUp={() => checkFilled(loginRef.current!.value, passwordRef.current!.value)}
                 className='input-login'
                 id='test-input-login'
             />
@@ -109,7 +78,7 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
                 type="password"
                 placeholder="ваш пароль"
                 onChange={hideErrorOnInput}
-                onKeyUp={checkFormValidity}
+                onKeyUp={() => checkFilled(loginRef.current!.value, passwordRef.current!.value)}
                 className='input-password'
                 id='test-input-password'
             />
@@ -119,7 +88,7 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
             <input
                 type="checkbox"
                 checked={rememberMe}
-                onChange={() => setRememberMe(prev => !prev)}
+                onChange={(e) => setRememberMe(e.target.checked)}
                 className='checkbox-remember'
                 id='test-checkbox-remember'
             />
@@ -127,21 +96,18 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
         </label>
 
         {error && <p className='p-error'>{error}</p>}
-        <div>
-            <Button 
-                onClick={loginClickHandler}
-                text=''
-                isDisabled={!isFormValid}
-                className='button-login'
-                id='test-button-login'
-            />
-            <Button
-                onClick={registrationClickHandler}
-                text='создать учетную запись'
-                className='button-registration'
-                id='test-button-registration'
-            />
-        </div>
+        <Button
+            onClick={loginClickHandler}
+            isDisabled={!isFormValid}
+            className='button-login'
+            id='test-button-login'
+        />
+        <Button
+            onClick={registrationClickHandler}
+            text='создать учетную запись'
+            className='button-registration'
+            id='test-button-registration'
+        />
     </div>)
 }
 

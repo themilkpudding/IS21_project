@@ -17,6 +17,7 @@ function result($params) {
             case 'login': return $app->login($params);
             case 'logout': return $app->logout($params);
             case 'registration': return $app->registration($params);
+            case 'deleteUser': return $app->deleteUser($params); // для тестеров
             //math
             case 'math': return $app->math($params);
             // chat
@@ -25,6 +26,10 @@ function result($params) {
             //lobby
             case 'createRoom': return $app->createRoom($params);
             case 'joinToRoom': return $app->joinToRoom($params);
+            case 'leaveRoom': return $app->leaveRoom($params);
+            case 'dropFromRoom': return $app->dropFromRoom($params);
+            case 'startGame': return $app->startGame($params);
+            case 'getRooms': return $app->getRooms($params);
 
             default: return ['error' => 102];
         }
