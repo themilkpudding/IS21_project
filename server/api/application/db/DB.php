@@ -124,5 +124,32 @@ class DB {
     public function deleteRoom($roomId) {
         $this->execute("DELETE FROM rooms WHERE id=?", [$roomId]);
     }
+
+    public function deleteUser($userId) {
+        return $this->execute("DELETE FROM users WHERE id=?", [$userId]);
+    }
+
+    public function getAllRoomMembers($roomId) {
+        return $this->queryAll("SELECT * FROM room_members WHERE room_id=?", [$roomId]);
+    }
+
+    public function updateRoomStatus($roomId, $status) {
+        $this->execute("UPDATE rooms SET status=? WHERE id=?", [$status, $roomId]);
+    }
+
+    public function updateAllRoomMembersStatus($roomId, $status) {
+        $this->execute("UPDATE room_members SET status=? WHERE room_id=?", [$status, $roomId]);
+    }
+
+    //?????
+    public function getOpenRooms() {
+        return $this->queryAll("
+            SELECT r.id, r.status, COUNT(rm.user_id) as players_count 
+            FROM rooms r 
+            LEFT JOIN room_members rm ON r.id = rm.room_id 
+            WHERE r.status = 'open' 
+            GROUP BY r.id, r.status
+        ");
+    }
 }
 

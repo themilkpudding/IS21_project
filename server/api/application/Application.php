@@ -118,4 +118,37 @@ class Application {
         }
         return ['error' => 242];
     }
+
+    public function deleteUser($params) {
+        if ($params['token']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->user->deleteUser($params['token']);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+
+    public function startGame($params) {
+        if ($params['token']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->lobby->startGame($user->id);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+
+    public function getRooms($params) {
+        if ($params['token'] && $params['room_hash']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->lobby->getRooms($params['room_hash']);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
 }
