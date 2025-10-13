@@ -67,6 +67,7 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
                 onChange={hideErrorOnInput}
                 onKeyUp={() => checkFilled(loginRef.current!.value, passwordRef.current!.value)}
                 className='input-login'
+                id='test-input-login'
             />
         </div>
 
@@ -79,6 +80,7 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
                 onChange={hideErrorOnInput}
                 onKeyUp={() => checkFilled(loginRef.current!.value, passwordRef.current!.value)}
                 className='input-password'
+                id='test-input-password'
             />
         </div>
 
@@ -88,8 +90,9 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
                 className='checkbox-remember'
+                id='test-checkbox-remember'
             />
-            <span className="span-remember">не выходить из учетной записи</span>
+            <span id='test-span-remember' className="span-remember">не выходить из учетной записи</span>
         </label>
 
         {error && <p className='p-error'>{error}</p>}
@@ -97,11 +100,13 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
             onClick={loginClickHandler}
             isDisabled={!isFormValid}
             className='button-login'
+            id='test-button-login'
         />
         <Button
             onClick={registrationClickHandler}
             text='создать учетную запись'
             className='button-registration'
+            id='test-button-registration'
         />
     </div>)
 }
