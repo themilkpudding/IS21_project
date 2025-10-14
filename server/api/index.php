@@ -30,6 +30,11 @@ function result($params) {
             case 'dropFromRoom': return $app->dropFromRoom($params);
             case 'startGame': return $app->startGame($params);
             case 'getRooms': return $app->getRooms($params);
+            //menu
+            case 'getUserInfo': return $app->getUserInfo($params);
+            case 'getClasses': return $app->getClasses($params);
+            case 'buyClass': return $app->buyClass($params);
+            case 'selectClass': return $app->selectClass($params);
 
             default: return ['error' => 102];
         }
