@@ -43,6 +43,12 @@ class DB {
         return $this->query("SELECT * FROM users WHERE token=?", [$token]);
     }
 
+    
+    public function getUserById($id) {
+        return $this->query("SELECT * FROM users WHERE id = ?", [$id]);
+    }
+
+
     public function updateToken($userId, $token) {
         $this->execute("UPDATE users SET token=? WHERE id=?", [$token, $userId]);
     }
@@ -151,5 +157,71 @@ class DB {
             GROUP BY r.id, r.status
         ");
     }
+
+    public function getPersonClassByType($type) {
+        return $this->query("SELECT * FROM person_classes WHERE type = ?", [$type]);
+    }
+
+    public function getPersonClassById($id) {
+        return $this->query("SELECT * FROM person_classes WHERE id = ?", [$id]);
+    }
+
+    public function getAllPersonClasses() {
+        return $this->queryAll("SELECT * FROM person_classes");
+    }
+
+    public function getUserPersonClass($userId, $personClassId) {
+        return $this->query(
+            "SELECT * FROM users_person_classes WHERE user_id = ? AND person_class_id = ?",
+            [$userId, $personClassId]
+        );
+    }
+
+    public function getUserOwnedClasses($userId) {
+        return $this->queryAll(
+            "SELECT pc.*, upc.selected FROM person_classes pc
+             JOIN users_person_classes upc ON upc.person_class_id = pc.id
+             WHERE upc.user_id = ?",
+            [$userId]
+        );
+    }
+
+    public function addUserPersonClass($userId, $personClassId) {
+        return $this->execute(
+            "INSERT INTO users_person_classes (user_id, person_class_id, selected) VALUES (?, ?, 0)",
+            [$userId, $personClassId]
+        );
+    }
+
+    public function clearSelectedUserClasses($userId) {
+        return $this->execute(
+            "UPDATE users_person_classes SET selected = 0 WHERE user_id = ?",
+            [$userId]
+        );
+    }
+
+    public function setUserSelectedPersonClass($userId, $personClassId) {
+        return $this->execute(
+            "UPDATE users_person_classes SET selected = 1 WHERE user_id = ? AND person_class_id = ?",
+            [$userId, $personClassId]
+        );
+    }
+
+    public function updateUserMoneySubtract($userId, $amount) {
+        return $this->execute("UPDATE users SET money = money - ? WHERE id = ?", [$amount, $userId]);
+    }
+
+    public function beginTransaction() {
+        return $this->pdo->beginTransaction();
+    }
+
+    public function commit() {
+        return $this->pdo->commit();
+    }
+
+    public function rollBack() {
+        return $this->pdo->rollBack();
+    }
+}
 }
 
