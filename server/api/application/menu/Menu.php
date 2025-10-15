@@ -22,9 +22,13 @@ class Menu {
         return $this->db->getAllPersonClasses();
     }
 
-    public function getUserOwnedClasses($userId) {
-        return $this->db->getUserOwnedClasses($userId);
+public function getUserOwnedClasses($userId) {
+    $classes = $this->db->getUserOwnedClasses($userId);
+    if (!$classes || count($classes) === 0) {
+        return ['error' => 3001];
     }
+    return $classes;
+}
 
 public function buyClass($userId, $classId) {
     $class = $this->db->getPersonClassById($classId);
@@ -60,5 +64,6 @@ public function buyClass($userId, $classId) {
         return ['success' => true];
     }
 }
+
 
 
