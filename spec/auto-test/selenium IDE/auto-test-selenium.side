@@ -1202,6 +1202,600 @@
       ],
       "value": "логин должен быть от 6 до 15 символов"
     }]
+  }, {
+    "id": "562064a2-baa1-4184-a02a-3008d3473e60",
+    "name": "registration с не валидными данными пароля",
+    "commands": [{
+      "id": "884e0ee0-c840-4dff-b98a-0ed2c1f4c65f",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ad5519a1-f573-49fc-8a56-93b55251f6cf",
+      "comment": "",
+      "command": "click",
+      "target": "id=test-button-registration",
+      "targets": [
+        ["id=test-button-registration", "id"],
+        ["css=#test-button-registration", "css:finder"],
+        ["xpath=//button[@id='test-button-registration']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'создать учетную запись')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "8670ee26-ab31-443a-9ecd-81c400e94951",
+      "comment": "",
+      "command": "type",
+      "target": "id=test-input-loginReg",
+      "targets": [
+        ["id=test-input-loginReg", "id"],
+        ["css=#test-input-loginReg", "css:finder"],
+        ["xpath=//input[@id='test-input-loginReg']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "test123"
+    }, {
+      "id": "0c4c0f79-eef8-429b-bab8-e5ad2a504278",
+      "comment": "",
+      "command": "type",
+      "target": "id=test-input-nicknameReg",
+      "targets": [
+        ["id=test-input-nicknameReg", "id"],
+        ["css=#test-input-nicknameReg", "css:finder"],
+        ["xpath=//input[@id='test-input-nicknameReg']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/input[2]", "xpath:idRelative"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": "test123"
+    }, {
+      "id": "5afeda1a-5a98-4545-a865-58903ade78ec",
+      "comment": "",
+      "command": "type",
+      "target": "id=test-input-passwordReg",
+      "targets": [
+        ["id=test-input-passwordReg", "id"],
+        ["css=#test-input-passwordReg", "css:finder"],
+        ["xpath=//input[@id='test-input-passwordReg']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/input[3]", "xpath:idRelative"],
+        ["xpath=//input[3]", "xpath:position"]
+      ],
+      "value": "t"
+    }, {
+      "id": "1f5859bc-1fc2-4b3d-9901-fd7e47182da1",
+      "comment": "",
+      "command": "type",
+      "target": "id=test-input-certpasswordReg",
+      "targets": [
+        ["id=test-input-certpasswordReg", "id"],
+        ["css=#test-input-certpasswordReg", "css:finder"],
+        ["xpath=//input[@id='test-input-certpasswordReg']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/input[4]", "xpath:idRelative"],
+        ["xpath=//input[4]", "xpath:position"]
+      ],
+      "value": "test123"
+    }, {
+      "id": "3f7cd62a-b6aa-4229-be91-ecb6034a21b0",
+      "comment": "",
+      "command": "click",
+      "target": "id=test-registration-button",
+      "targets": [
+        ["id=test-registration-button", "id"],
+        ["css=#test-registration-button", "css:finder"],
+        ["xpath=//button[@id='test-registration-button']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "65f66964-54e6-4b1e-9f60-9b99f1bdd0be",
+      "comment": "",
+      "command": "verifyText",
+      "target": "id=test-errors-registration",
+      "targets": [
+        ["css=.errors", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div[2]", "xpath:idRelative"],
+        ["xpath=//div[2]", "xpath:position"]
+      ],
+      "value": "пароль должен быть от 6 до 25 символов"
+    }, {
+      "id": "6189b315-a395-428b-bc91-be55963db52a",
+      "comment": "",
+      "command": "type",
+      "target": "id=test-input-passwordReg",
+      "targets": [
+        ["id=test-input-passwordReg", "id"],
+        ["css=#test-input-passwordReg", "css:finder"],
+        ["xpath=//input[@id='test-input-passwordReg']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/input[3]", "xpath:idRelative"],
+        ["xpath=//input[3]", "xpath:position"]
+      ],
+      "value": "test"
+    }, {
+      "id": "0ad10809-2ab7-437f-a056-97dd272efca6",
+      "comment": "",
+      "command": "click",
+      "target": "id=test-registration-button",
+      "targets": [
+        ["id=test-registration-button", "id"],
+        ["css=#test-registration-button", "css:finder"],
+        ["xpath=//button[@id='test-registration-button']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4b933384-9486-45d6-9788-c3ea1f819940",
+      "comment": "",
+      "command": "verifyText",
+      "target": "id=test-errors-registration",
+      "targets": [
+        ["css=.errors", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div[2]", "xpath:idRelative"],
+        ["xpath=//div[2]", "xpath:position"]
+      ],
+      "value": "пароль должен быть от 6 до 25 символов"
+    }, {
+      "id": "d5d78a89-4079-425c-879f-1e50d50da615",
+      "comment": "",
+      "command": "type",
+      "target": "id=test-input-passwordReg",
+      "targets": [
+        ["id=test-input-passwordReg", "id"],
+        ["css=#test-input-passwordReg", "css:finder"],
+        ["xpath=//input[@id='test-input-passwordReg']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/input[3]", "xpath:idRelative"],
+        ["xpath=//input[3]", "xpath:position"]
+      ],
+      "value": "test1"
+    }, {
+      "id": "d006e743-8fd4-4acf-b9b3-6ae16ab78fcd",
+      "comment": "",
+      "command": "click",
+      "target": "id=test-registration-button",
+      "targets": [
+        ["id=test-registration-button", "id"],
+        ["css=#test-registration-button", "css:finder"],
+        ["xpath=//button[@id='test-registration-button']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f9937ae9-d08b-48e7-a07a-5cdc3033334c",
+      "comment": "",
+      "command": "verifyText",
+      "target": "id=test-errors-registration",
+      "targets": [
+        ["css=.errors", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div[2]", "xpath:idRelative"],
+        ["xpath=//div[2]", "xpath:position"]
+      ],
+      "value": "пароль должен быть от 6 до 25 символов"
+    }, {
+      "id": "70b09d85-74e1-4b4d-b4b1-5d79de338b82",
+      "comment": "",
+      "command": "type",
+      "target": "id=test-input-passwordReg",
+      "targets": [
+        ["id=test-input-passwordReg", "id"],
+        ["css=#test-input-passwordReg", "css:finder"],
+        ["xpath=//input[@id='test-input-passwordReg']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/input[3]", "xpath:idRelative"],
+        ["xpath=//input[3]", "xpath:position"]
+      ],
+      "value": "test1234567891012345678901"
+    }, {
+      "id": "d99c1ef3-438b-46a2-bea5-e514356b51d0",
+      "comment": "",
+      "command": "click",
+      "target": "id=test-registration-button",
+      "targets": [
+        ["id=test-registration-button", "id"],
+        ["css=#test-registration-button", "css:finder"],
+        ["xpath=//button[@id='test-registration-button']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f0a0979c-4d85-4ea3-9a97-a6fe7e122e8a",
+      "comment": "",
+      "command": "verifyText",
+      "target": "id=test-errors-registration",
+      "targets": [
+        ["css=.errors", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div[2]", "xpath:idRelative"],
+        ["xpath=//div[2]", "xpath:position"]
+      ],
+      "value": "пароль должен быть от 6 до 25 символов"
+    }, {
+      "id": "13c0a2dd-3318-4053-9ce4-845f9a7aacba",
+      "comment": "",
+      "command": "type",
+      "target": "id=test-input-passwordReg",
+      "targets": [
+        ["id=test-input-passwordReg", "id"],
+        ["css=#test-input-passwordReg", "css:finder"],
+        ["xpath=//input[@id='test-input-passwordReg']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/input[3]", "xpath:idRelative"],
+        ["xpath=//input[3]", "xpath:position"]
+      ],
+      "value": "test12345678910123456789012"
+    }, {
+      "id": "003f4993-8cf3-457d-9f05-7d9024ddf3c3",
+      "comment": "",
+      "command": "click",
+      "target": "id=test-registration-button",
+      "targets": [
+        ["id=test-registration-button", "id"],
+        ["css=#test-registration-button", "css:finder"],
+        ["xpath=//button[@id='test-registration-button']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "10dd6cf3-d1a9-459e-a2bb-dace95694ff7",
+      "comment": "",
+      "command": "verifyText",
+      "target": "id=test-errors-registration",
+      "targets": [
+        ["css=.errors", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div[2]", "xpath:idRelative"],
+        ["xpath=//div[2]", "xpath:position"]
+      ],
+      "value": "пароль должен быть от 6 до 25 символов"
+    }]
+  }, {
+    "id": "2af06650-d060-431d-bd4e-cb88d3f87778",
+    "name": "all button reg",
+    "commands": [{
+      "id": "369a4687-49d5-425f-b6e5-4e76bbc38912",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "71b2b9da-65db-4c32-9f5e-44b6fc965235",
+      "comment": "",
+      "command": "click",
+      "target": "id=test-button-registration",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e9aae019-2d69-492a-8bcf-74ccfce8c2c4",
+      "comment": "",
+      "command": "verifyElementPresent",
+      "target": "id=test-input-loginReg",
+      "targets": [
+        ["id=test-input-loginReg", "id"],
+        ["css=#test-input-loginReg", "css:finder"],
+        ["xpath=//input[@id='test-input-loginReg']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1c751812-ea5f-4243-807f-acbdb8a082ea",
+      "comment": "",
+      "command": "verifyElementPresent",
+      "target": "id=test-input-nicknameReg",
+      "targets": [
+        ["id=test-input-nicknameReg", "id"],
+        ["css=#test-input-nicknameReg", "css:finder"],
+        ["xpath=//input[@id='test-input-nicknameReg']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/input[2]", "xpath:idRelative"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8994d477-f88a-4d51-b1c2-8104abf51fc9",
+      "comment": "",
+      "command": "verifyElementPresent",
+      "target": "id=test-input-passwordReg",
+      "targets": [
+        ["id=test-input-passwordReg", "id"],
+        ["css=#test-input-passwordReg", "css:finder"],
+        ["xpath=//input[@id='test-input-passwordReg']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/input[3]", "xpath:idRelative"],
+        ["xpath=//input[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4a345c25-ec83-429f-9f80-58b13d807cc5",
+      "comment": "",
+      "command": "verifyElementPresent",
+      "target": "id=test-input-certpasswordReg",
+      "targets": [
+        ["id=test-input-certpasswordReg", "id"],
+        ["css=#test-input-certpasswordReg", "css:finder"],
+        ["xpath=//input[@id='test-input-certpasswordReg']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/input[4]", "xpath:idRelative"],
+        ["xpath=//input[4]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "299d4d80-2484-4d52-8f4a-aa46379eb176",
+      "comment": "",
+      "command": "verifyElementPresent",
+      "target": "id=test-haveAccount-Button",
+      "targets": [
+        ["id=test-haveAccount-Button", "id"],
+        ["css=#test-haveAccount-Button", "css:finder"],
+        ["xpath=//button[@id='test-haveAccount-Button']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div[2]/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "bf7be395-9434-4273-b9f1-4cf2f99094c4",
+    "name": "registration с валидными данными пароля(на доработке)",
+    "commands": [{
+      "id": "eaef3117-8343-4b7f-9216-616d6e6e5a2f",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d51941ec-fc07-4ba7-b24d-5b82b686752f",
+      "comment": "",
+      "command": "click",
+      "target": "id=test-button-registration",
+      "targets": [
+        ["id=test-button-registration", "id"],
+        ["css=#test-button-registration", "css:finder"],
+        ["xpath=//button[@id='test-button-registration']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'создать учетную запись')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "996a7e30-06c2-4a65-b96b-5846e17aa34f",
+      "comment": "",
+      "command": "type",
+      "target": "id=test-input-loginReg",
+      "targets": [
+        ["id=test-input-loginReg", "id"],
+        ["css=#test-input-loginReg", "css:finder"],
+        ["xpath=//input[@id='test-input-loginReg']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "test123"
+    }, {
+      "id": "93c4bb02-7708-4468-b30a-95b481506942",
+      "comment": "",
+      "command": "type",
+      "target": "id=test-input-nicknameReg",
+      "targets": [
+        ["id=test-input-nicknameReg", "id"],
+        ["css=#test-input-nicknameReg", "css:finder"],
+        ["xpath=//input[@id='test-input-nicknameReg']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/input[2]", "xpath:idRelative"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": "test123"
+    }, {
+      "id": "8c38af1f-3965-44b5-8571-2986a0e22a97",
+      "comment": "",
+      "command": "type",
+      "target": "id=test-input-passwordReg",
+      "targets": [
+        ["id=test-input-passwordReg", "id"],
+        ["css=#test-input-passwordReg", "css:finder"],
+        ["xpath=//input[@id='test-input-passwordReg']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/input[3]", "xpath:idRelative"],
+        ["xpath=//input[3]", "xpath:position"]
+      ],
+      "value": "test12"
+    }, {
+      "id": "81e1e443-3c42-48f0-875a-69ff8de83e55",
+      "comment": "",
+      "command": "type",
+      "target": "id=test-input-certpasswordReg",
+      "targets": [
+        ["id=test-input-certpasswordReg", "id"],
+        ["css=#test-input-certpasswordReg", "css:finder"],
+        ["xpath=//input[@id='test-input-certpasswordReg']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/input[4]", "xpath:idRelative"],
+        ["xpath=//input[4]", "xpath:position"]
+      ],
+      "value": "test12"
+    }, {
+      "id": "268bb59f-a03e-4442-a811-20ef1479cac2",
+      "comment": "",
+      "command": "click",
+      "target": "id=test-registration-button",
+      "targets": [
+        ["id=test-registration-button", "id"],
+        ["css=#test-registration-button", "css:finder"],
+        ["xpath=//button[@id='test-registration-button']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ada21bdf-3eb7-44b3-91b0-7af61bc2437f",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "14919576-4ade-4661-9633-2102ab7306b9",
+      "comment": "",
+      "command": "click",
+      "target": "id=test-button-registration",
+      "targets": [
+        ["id=test-button-registration", "id"],
+        ["css=#test-button-registration", "css:finder"],
+        ["xpath=//button[@id='test-button-registration']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'создать учетную запись')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "18ca16ad-c228-4e8c-9473-b4657197ca5b",
+      "comment": "",
+      "command": "type",
+      "target": "id=test-input-loginReg",
+      "targets": [
+        ["id=test-input-loginReg", "id"],
+        ["css=#test-input-loginReg", "css:finder"],
+        ["xpath=//input[@id='test-input-loginReg']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "test123"
+    }, {
+      "id": "1575ed91-de6f-4304-a22a-8b782d7b9fa6",
+      "comment": "",
+      "command": "type",
+      "target": "id=test-input-nicknameReg",
+      "targets": [
+        ["id=test-input-nicknameReg", "id"],
+        ["css=#test-input-nicknameReg", "css:finder"],
+        ["xpath=//input[@id='test-input-nicknameReg']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/input[2]", "xpath:idRelative"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": "test123"
+    }, {
+      "id": "1c266f56-4603-4413-ac21-a22a0965cf5a",
+      "comment": "",
+      "command": "type",
+      "target": "id=test-input-passwordReg",
+      "targets": [
+        ["id=test-input-passwordReg", "id"],
+        ["css=#test-input-passwordReg", "css:finder"],
+        ["xpath=//input[@id='test-input-passwordReg']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/input[3]", "xpath:idRelative"],
+        ["xpath=//input[3]", "xpath:position"]
+      ],
+      "value": "test123"
+    }, {
+      "id": "d39b4807-cbc7-43b3-8395-a5fbc5ada6df",
+      "comment": "",
+      "command": "type",
+      "target": "id=test-input-certpasswordReg",
+      "targets": [
+        ["id=test-input-certpasswordReg", "id"],
+        ["css=#test-input-certpasswordReg", "css:finder"],
+        ["xpath=//input[@id='test-input-certpasswordReg']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/input[4]", "xpath:idRelative"],
+        ["xpath=//input[4]", "xpath:position"]
+      ],
+      "value": "test123"
+    }, {
+      "id": "cc2c1231-f155-4911-9a14-ccfaa6d88b00",
+      "comment": "",
+      "command": "click",
+      "target": "id=test-registration-button",
+      "targets": [
+        ["id=test-registration-button", "id"],
+        ["css=#test-registration-button", "css:finder"],
+        ["xpath=//button[@id='test-registration-button']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0e6fc540-2744-4902-a180-a35dbcfe2ecf",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "48067f37-7991-40da-802c-a3aebd15524d",
+      "comment": "",
+      "command": "click",
+      "target": "id=test-button-registration",
+      "targets": [
+        ["id=test-button-registration", "id"],
+        ["css=#test-button-registration", "css:finder"],
+        ["xpath=//button[@id='test-button-registration']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'создать учетную запись')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "6a082fc4-53c9-48e5-bf60-38907795deb2",
+      "comment": "",
+      "command": "type",
+      "target": "id=test-input-loginReg",
+      "targets": [
+        ["id=test-input-loginReg", "id"],
+        ["css=#test-input-loginReg", "css:finder"],
+        ["xpath=//input[@id='test-input-loginReg']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "test123"
+    }, {
+      "id": "4a996e9a-b007-47f2-8783-311cc9fecb13",
+      "comment": "",
+      "command": "type",
+      "target": "id=test-input-nicknameReg",
+      "targets": [
+        ["id=test-input-nicknameReg", "id"],
+        ["css=#test-input-nicknameReg", "css:finder"],
+        ["xpath=//input[@id='test-input-nicknameReg']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/input[2]", "xpath:idRelative"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": "test123"
+    }, {
+      "id": "517092d6-1e4c-4127-9fbe-51519ddf14e3",
+      "comment": "",
+      "command": "type",
+      "target": "id=test-input-passwordReg",
+      "targets": [
+        ["id=test-input-passwordReg", "id"],
+        ["css=#test-input-passwordReg", "css:finder"],
+        ["xpath=//input[@id='test-input-passwordReg']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/input[3]", "xpath:idRelative"],
+        ["xpath=//input[3]", "xpath:position"]
+      ],
+      "value": "test123456789101234567890"
+    }, {
+      "id": "72e5e6c5-4910-4769-a329-b8e94ed4e54f",
+      "comment": "",
+      "command": "type",
+      "target": "id=test-input-certpasswordReg",
+      "targets": [
+        ["id=test-input-certpasswordReg", "id"],
+        ["css=#test-input-certpasswordReg", "css:finder"],
+        ["xpath=//input[@id='test-input-certpasswordReg']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/input[4]", "xpath:idRelative"],
+        ["xpath=//input[4]", "xpath:position"]
+      ],
+      "value": "test123456789101234567890"
+    }, {
+      "id": "bcb0dae5-eecf-4e04-960d-c896aee87633",
+      "comment": "",
+      "command": "click",
+      "target": "id=test-registration-button",
+      "targets": [
+        ["id=test-registration-button", "id"],
+        ["css=#test-registration-button", "css:finder"],
+        ["xpath=//button[@id='test-registration-button']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }]
   }],
   "suites": [{
     "id": "7aac5936-effc-461e-b098-c7eb3b754eb0",
@@ -1216,7 +1810,7 @@
     "persistSession": false,
     "parallel": false,
     "timeout": 300,
-    "tests": ["7d2744d2-5615-4fc3-9fac-892ba3dc3369", "53cbc9ce-ac1e-482c-876a-e870772aa4e7"]
+    "tests": ["7d2744d2-5615-4fc3-9fac-892ba3dc3369", "53cbc9ce-ac1e-482c-876a-e870772aa4e7", "562064a2-baa1-4184-a02a-3008d3473e60", "bf7be395-9434-4273-b9f1-4cf2f99094c4"]
   }],
   "urls": ["http://localhost:3000/"],
   "plugins": []
