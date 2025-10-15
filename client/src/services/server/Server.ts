@@ -2,7 +2,6 @@ import md5 from 'md5';
 import CONFIG from "../../config";
 import Store from "../store/Store";
 import { TAnswer, TError, TMessagesResponse, TUser } from "./types";
-import { TupleType } from 'typescript';
 
 const { CHAT_TIMESTAMP, HOST } = CONFIG;
 

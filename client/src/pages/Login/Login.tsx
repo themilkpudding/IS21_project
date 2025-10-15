@@ -10,25 +10,25 @@ import './Login.scss'
 const Login: React.FC<IBasePage> = (props: IBasePage) => {
     const { setPage } = props;
     const server = useContext(ServerContext);
-    const loginRef = useRef<HTMLInputElement>(null);
-    const passwordRef = useRef<HTMLInputElement>(null);
-    const { isFormValid, error,  setError, checkFilled, showError } = useCheckLogin();
+    const loginRef = useRef<HTMLInputElement>(null!);
+    const passwordRef = useRef<HTMLInputElement>(null!);
+    const { isFormValid, error, setError, checkFilled, showError } = useCheckLogin();
     const [rememberMe, setRememberMe] = useState(false);
 
     const hideErrorOnInput = () => {
         setError('');
-        checkFilled(loginRef.current!.value, passwordRef.current!.value);
+        checkFilled(loginRef.current.value, passwordRef.current.value);
     };
 
     const clearAuthFields = () => {
-        loginRef.current!.value = '';
-        passwordRef.current!.value = '';
-        checkFilled(loginRef.current!.value, passwordRef.current!.value);
+        loginRef.current.value = '';
+        passwordRef.current.value = '';
+        checkFilled(loginRef.current.value, passwordRef.current.value);
     };
 
     const loginClickHandler = async () => {
-        const login = loginRef.current!.value;
-        const password = passwordRef.current!.value;
+        const login = loginRef.current.value;
+        const password = passwordRef.current.value;
 
         if (!showError(login, password)) return;
 
@@ -65,9 +65,10 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
                 type="text"
                 placeholder="ваш логин"
                 onChange={hideErrorOnInput}
-                onKeyUp={() => checkFilled(loginRef.current!.value, passwordRef.current!.value)}
+                onKeyUp={() => checkFilled(loginRef.current.value, passwordRef.current.value)}
                 className='input-login'
                 id='test-input-login'
+                autoComplete='off'
             />
         </div>
 
@@ -78,9 +79,10 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
                 type="password"
                 placeholder="ваш пароль"
                 onChange={hideErrorOnInput}
-                onKeyUp={() => checkFilled(loginRef.current!.value, passwordRef.current!.value)}
+                onKeyUp={() => checkFilled(loginRef.current.value, passwordRef.current.value)}
                 className='input-password'
                 id='test-input-password'
+                autoComplete='off'
             />
         </div>
 
