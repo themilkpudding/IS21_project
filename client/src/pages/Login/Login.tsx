@@ -95,7 +95,7 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
             <span id='test-span-remember' className="span-remember">не выходить из учетной записи</span>
         </label>
 
-        {error && <p className='p-error'>{error}</p>}
+        {error && <p id='test-errors-login' className='p-error'>{error}</p>}
         <Button
             onClick={loginClickHandler}
             isDisabled={!isFormValid}
