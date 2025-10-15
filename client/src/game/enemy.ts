@@ -5,10 +5,14 @@ export type Direction = 'left' | 'right';
 class Enemy {
     private position: FPoint;
     private direction: Direction = 'right';
+    private health: number;
+    private maxHealth: number;
+    private alive: boolean = true;
 
     constructor(
         x: number,
         y: number,
+        health: number = 100
     ) {
         this.position = {
             x,
@@ -16,6 +20,8 @@ class Enemy {
             width: 100,
             height: 100
         };
+        this.health = health;
+        this.maxHealth = health;
     }
 
     getPosition(): FPoint {
@@ -26,7 +32,31 @@ class Enemy {
         return this.direction;
     }
 
+    getHealth(): number {
+        return this.health;
+    }
+
+    getMaxHealth(): number {
+        return this.maxHealth;
+    }
+
+    isAlive(): boolean {
+        return this.alive;
+    }
+
+    takeDamage(damage: number): void {
+        if (!this.alive) return;
+
+        this.health -= damage;
+        if (this.health <= 0) {
+            this.health = 0;
+            this.alive = false;
+        }
+    }
+
     move(dx: number, dy: number): void {
+        if (!this.alive) return;
+
         this.position.x += dx;
         this.position.y += dy;
 
@@ -56,16 +86,6 @@ class Enemy {
             y: this.position.y,
             width: swordSize,
             height: swordSize
-        };
-    }
-
-    // Новый метод для получения границ врага (для коллизии)
-    getBounds(): FPoint {
-        return {
-            x: this.position.x,
-            y: this.position.y,
-            width: this.position.width,
-            height: this.position.height
         };
     }
 }

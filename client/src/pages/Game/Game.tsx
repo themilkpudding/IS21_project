@@ -66,8 +66,26 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
         canvas.rectangle(x, y, width, height, ARROW_COLOR);
     }
 
-    function printEnemy(canvas: Canvas, { x = 0, y = 0, width = 0, height = 0 }): void {
+    function printEnemy(canvas: Canvas, { x = 0, y = 0, width = 0, height = 0 }, health: number, maxHealth: number): void {
         canvas.rectangle(x, y, width, height, ENEMY_COLOR);
+
+        const healthBarWidth = width;
+        const healthBarHeight = 8;
+        const healthBarY = y - 15;
+
+        canvas.rectangle(x, healthBarY, healthBarWidth, healthBarHeight, '#000000');
+
+        const healthPercent = health / maxHealth;
+        const healthWidth = healthBarWidth * healthPercent;
+        let healthColor = '#00ff00';
+
+        if (healthPercent < 0.3) {
+            healthColor = '#ff0000';
+        } else if (healthPercent < 0.6) {
+            healthColor = '#ffff00';
+        }
+
+        canvas.rectangle(x, healthBarY, healthWidth, healthBarHeight, healthColor);
     }
 
     function render(FPS: number): void {
@@ -76,7 +94,7 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
             const scene = gameRef.current.getScene();
             const { Hero, Walls, Sword, Arrows, Enemies } = scene;
 
-            // Рисуем стены
+            //стены
             if (Walls.length > 0) {
                 Walls.forEach(wall => {
                     printWall(canvasRef.current!, {
@@ -88,19 +106,21 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
                 });
             }
 
-            // Рисуем врагов
-            if (Enemies && Enemies.length > 0) {
+            //враги
+            if (Enemies.length > 0) {
                 Enemies.forEach(enemy => {
-                    printEnemy(canvasRef.current!, {
-                        x: enemy.position.x,
-                        y: enemy.position.y,
-                        width: enemy.position.width,
-                        height: enemy.position.height
-                    });
+                    if (enemy.isAlive) {
+                        printEnemy(canvasRef.current!, {
+                            x: enemy.position.x,
+                            y: enemy.position.y,
+                            width: enemy.position.width,
+                            height: enemy.position.height
+                        }, enemy.health, enemy.maxHealth);
+                    }
                 });
             }
 
-            // Рисуем стрелы
+            //стрелы
             if (Arrows.length > 0) {
                 Arrows.forEach(arrow => {
                     printArrow(canvasRef.current!, {
@@ -112,8 +132,8 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
                 });
             }
 
-            // Рисуем меч
-            if (swordVisibleRef.current && attackModeRef.current === 'sword') {
+            //меч
+            if (swordVisibleRef.current && attackModeRef.current === 'sword' && gameRef.current.isSwordActive()) {
                 printSword(canvasRef.current!, {
                     x: Sword.x,
                     y: Sword.y,
@@ -122,15 +142,12 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
                 });
             }
 
-            // Рисуем героя
+            //герой
             const { x, y, width, height } = Hero;
             printHero(canvasRef.current, { x, y, width, height });
 
-            // Рисуем FPS
+            //fps
             canvasRef.current.text(WINDOW.LEFT + 20, WINDOW.TOP + 50, String(FPS), GREEN);
-
-            // Рисуем информацию о врагах
-            canvasRef.current.text(WINDOW.LEFT + 20, WINDOW.TOP + 80, `Врагов: ${Enemies.length}`, GREEN);
 
             canvasRef.current.render();
             updateDebugInfo();
@@ -157,8 +174,10 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
 
     const mouseClick = (_x: number, _y: number) => {
         if (attackModeRef.current === 'sword') {
-            // Используем меч
             swordVisibleRef.current = true;
+            if (gameRef.current) {
+                gameRef.current.activateSword();
+            }
 
             if (swordTimerRef.current) {
                 clearTimeout(swordTimerRef.current);
@@ -168,14 +187,12 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
                 swordVisibleRef.current = false;
             }, 500);
         } else if (attackModeRef.current === 'bow') {
-            // Используем лук
             if (gameRef.current) {
                 gameRef.current.shoot();
             }
         }
     };
 
-    // Функция для переключения режима атаки
     const switchAttackMode = (mode: AttackMode) => {
         setAttackMode(mode);
         attackModeRef.current = mode;
@@ -225,10 +242,7 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
     };
 
     useEffect(() => {
-        // Инициализация игры
         gameRef.current = new Game();
-
-        // Инициализация канваса
         canvasRef.current = CanvasComponent({
             parentId: GAME_FIELD,
             WIDTH: WINDOW.WIDTH,
@@ -241,14 +255,11 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
             },
         });
 
-        // Добавляем лук для тестирования
         gameRef.current.addBowToInventory();
 
-        // Интервалы для обновления игры
         movementIntervalRef.current = setInterval(handleMovement, 8);
         shootingIntervalRef.current = setInterval(handleShooting, 100);
 
-        // Интервал для обновления состояния игры (стрел)
         gameUpdateIntervalRef.current = setInterval(() => {
             if (gameRef.current) {
                 gameRef.current.update();
@@ -256,7 +267,6 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
         }, 8);
 
         return () => {
-            // Очистка ресурсов
             gameRef.current?.destructor();
             canvasRef.current?.destructor();
             canvasRef.current = null;

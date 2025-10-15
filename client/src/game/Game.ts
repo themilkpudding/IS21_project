@@ -10,7 +10,10 @@ class Game {
     private Sword: FPoint;
     private gameMap: Map;
     private Arrows: Projectile[];
-    private Enemies: Enemy[]; // Добавляем массив врагов
+    private Enemies: Enemy[];
+    private swordActive: boolean = false;
+    private swordTimer: NodeJS.Timeout | null = null;
+    private damagedEnemies: Set<Enemy> = new Set();
 
     constructor() {
         this.hero = new Hero(650, 400, KNIGHT);
@@ -23,12 +26,16 @@ class Game {
     }
 
     private initializeEnemies(): void {
-        this.Enemies.push(new Enemy(300, 300));
+        this.Enemies.push(new Enemy(500, 200, 100));
     }
 
     destructor() {
         this.Arrows = [];
         this.Enemies = [];
+        if (this.swordTimer) {
+            clearTimeout(this.swordTimer);
+        }
+        this.damagedEnemies.clear();
     }
 
     getScene() {
@@ -39,7 +46,10 @@ class Game {
             Arrows: this.Arrows.map(arrow => arrow.getPosition()),
             Enemies: this.Enemies.map(enemy => ({
                 position: enemy.getPosition(),
-                direction: enemy.getDirection()
+                direction: enemy.getDirection(),
+                health: enemy.getHealth(),
+                maxHealth: enemy.getMaxHealth(),
+                isAlive: enemy.isAlive()
             }))
         };
     }
@@ -64,7 +74,6 @@ class Game {
         let newX = currentPos.x;
         let newY = currentPos.y;
 
-        // Создаем временную позицию для проверки коллизий
         const tempHeroPos: FPoint = {
             x: currentPos.x,
             y: currentPos.y,
@@ -80,15 +89,13 @@ class Game {
                 this.check_rect_collision(tempHeroPos, wall)
             );
 
-            const collidingEnemy = this.Enemies.find(enemy => {
-                const enemyPos = enemy.getPosition();
-                return this.check_rect_collision(tempHeroPos, enemyPos);
-            });
+            const collidingEnemy = this.Enemies.find(enemy =>
+                enemy.isAlive() && this.check_rect_collision(tempHeroPos, enemy.getPosition())
+            );
 
             if (!collidingWall && !collidingEnemy) {
                 this.hero.move(dx, 0);
             } else {
-                // Если есть коллизия, сбрасываем X координату для проверки Y
                 tempHeroPos.x = currentPos.x;
             }
         }
@@ -101,10 +108,9 @@ class Game {
                 this.check_rect_collision(tempHeroPos, wall)
             );
 
-            const collidingEnemy = this.Enemies.find(enemy => {
-                const enemyPos = enemy.getPosition();
-                return this.check_rect_collision(tempHeroPos, enemyPos);
-            });
+            const collidingEnemy = this.Enemies.find(enemy =>
+                enemy.isAlive() && this.check_rect_collision(tempHeroPos, enemy.getPosition())
+            );
 
             if (!collidingWall && !collidingEnemy) {
                 this.hero.move(0, dy);
@@ -118,20 +124,22 @@ class Game {
         this.hero.updateProjectiles();
         this.syncArrowsWithHero();
         this.checkArrowCollisions();
+        this.checkSwordCollisions();
         this.updateEnemies();
+        this.removeDeadEnemies();
     }
 
     private updateEnemies(): void {
         const heroPos = this.hero.getPosition();
 
         this.Enemies.forEach((enemy, index) => {
+            if (!enemy.isAlive()) return;
+
             const enemyPos = enemy.getPosition();
 
-            // Преследование героя
             const dx = heroPos.x - enemyPos.x;
             const dy = heroPos.y - enemyPos.y;
 
-            // Нормализация направления
             const distance = Math.sqrt(dx * dx + dy * dy);
             const speed = 2;
 
@@ -139,11 +147,9 @@ class Game {
                 const normalizedDx = (dx / distance) * speed;
                 const normalizedDy = (dy / distance) * speed;
 
-                // Проверка коллизии перед движением
                 const newX = enemyPos.x + normalizedDx;
                 const newY = enemyPos.y + normalizedDy;
 
-                // Создаем временный прямоугольник для проверки коллизии
                 const tempEnemyPos: FPoint = {
                     x: newX,
                     y: newY,
@@ -151,44 +157,44 @@ class Game {
                     height: enemyPos.height
                 };
 
-                // Проверяем коллизию со стенами
                 const wallCollision = this.Walls.find(wall =>
                     this.check_rect_collision(tempEnemyPos, wall)
                 );
 
-                // Проверяем коллизию с героем
                 const heroCollision = this.check_rect_collision(tempEnemyPos, heroPos);
 
-                // Проверяем коллизию с другими врагами
                 const enemyCollision = this.Enemies.some((otherEnemy, otherIndex) => {
-                    if (index === otherIndex) return false;
+                    if (index === otherIndex || !otherEnemy.isAlive()) return false;
                     const otherPos = otherEnemy.getPosition();
                     return this.check_rect_collision(tempEnemyPos, otherPos);
                 });
 
-                // Двигаем врага только если нет коллизий
                 if (!wallCollision && !enemyCollision) {
                     enemy.move(normalizedDx, normalizedDy);
                 }
 
-                // Обработка столкновения с героем
                 if (heroCollision) {
-                    // Здесь можно добавить логику урона герою
-                    console.log("Враг столкнулся с героем!");
-                    // Можно оттолкнуть врага немного назад
-                    enemy.move(-normalizedDx * 2, -normalizedDy * 2);
+                    enemy.move(-normalizedDx, -normalizedDy);
                 }
             }
         });
     }
 
-    private syncArrowsWithHero(): void {
-        const heroArrows = this.hero.getProjectiles();
-        this.Arrows = heroArrows.filter(arrow => arrow.isActive);
-    }
+    private checkSwordCollisions(): void {
+        if (!this.Sword || !this.swordActive) return;
 
-    shoot(): void {
-        this.hero.shoot();
+        this.Enemies.forEach(enemy => {
+            if (!enemy.isAlive()) return;
+
+            if (this.damagedEnemies.has(enemy)) return;
+
+            const enemyPos = enemy.getPosition();
+            if (this.check_rect_collision(this.Sword, enemyPos)) {
+                const damage = this.hero.getCharacterClass().damage;
+                enemy.takeDamage(damage);
+                this.damagedEnemies.add(enemy);
+            }
+        });
     }
 
     private checkArrowCollisions(): void {
@@ -196,14 +202,53 @@ class Game {
             if (!arrow.isActive) return;
 
             const arrowPos = arrow.getPosition();
+
             const wallCollision = this.Walls.find(wall =>
                 this.check_rect_collision(arrowPos, wall)
             );
 
             if (wallCollision) {
                 arrow.isActive = false;
+                return;
             }
+
+            this.Enemies.forEach(enemy => {
+                if (!enemy.isAlive()) return;
+
+                const enemyPos = enemy.getPosition();
+                if (this.check_rect_collision(arrowPos, enemyPos)) {
+                    enemy.takeDamage(arrow.damage);
+                    arrow.isActive = false;
+                }
+            });
         });
+    }
+
+    private removeDeadEnemies(): void {
+        this.Enemies = this.Enemies.filter(enemy => enemy.isAlive());
+    }
+
+    private syncArrowsWithHero(): void {
+        const heroArrows = this.hero.getProjectiles();
+        this.Arrows = heroArrows.filter(arrow => arrow.isActive);
+    }
+
+    activateSword(): void {
+        this.swordActive = true;
+        this.damagedEnemies.clear();
+
+        if (this.swordTimer) {
+            clearTimeout(this.swordTimer);
+        }
+
+        this.swordTimer = setTimeout(() => {
+            this.swordActive = false;
+            this.damagedEnemies.clear();
+        }, 500);
+    }
+
+    shoot(): void {
+        this.hero.shoot();
     }
 
     addBowToInventory(): void {
@@ -227,6 +272,9 @@ class Game {
         return [...this.Enemies];
     }
 
+    isSwordActive(): boolean {
+        return this.swordActive;
+    }
 }
 
 export default Game;
