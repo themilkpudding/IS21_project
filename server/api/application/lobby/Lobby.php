@@ -45,7 +45,7 @@ class Lobby {
     }
 
     public function joinToRoom($roomId, $userId) { 
-        // проверка, есть ли такая комната
+        //проверка, есть ли такая комната
         $room = $this->db->getRoomById($roomId);
         if (!$room) {
             return ['error' => 2003];
@@ -72,7 +72,7 @@ class Lobby {
             $this->leaveParticipantFromRoom($userId);
         }
         
-        // добавляем юзера в комнату
+        //добавляем юзера в комнату
         $this->db->addRoomMember($roomId, $userId, 'participant');
         $this->db->updateRoomHash(md5(rand()));
         return true;
@@ -81,16 +81,16 @@ class Lobby {
     public function leaveRoom($userId) {
         $userType = $this->getUserTypeInRoom($userId);
         
-        // если юзер не в комнате, то ошибка
+        //если юзер не в комнате, то ошибка
         if (!$userType) {
             return ['error' => 2008];
         }
         
-        // если юзер === 'owner', то комната распускается, а если юзер НЕ 'owner', то он удалется из комнаты
+        //если юзер === 'owner', то комната распускается, а если юзер НЕ 'owner', то он удалется из комнаты
         if ($userType === 'owner') {
             $roomMember = $this->db->getRoomMemberByUserId($userId);
             if ($roomMember) {
-                // удаляем всех участников комнаты и саму комнату
+                //удаляем всех участников комнаты и саму комнату
                 $this->db->deleteAllRoomMembers($roomMember->room_id);
                 $this->db->deleteRoom($roomMember->room_id);
             }
@@ -103,15 +103,15 @@ class Lobby {
     }
 
     public function dropFromRoom($userId, $targetToken) {
-        // получаем информацию о владельце
+        //получаем инфу о юзере
         $roomMember = $this->db->getRoomMemberByUserId($userId);
         
-        // проверяем, что владелец вообще в комнате и является owner
+        //проверяем, что владелец вообще в комнате и является owner
         if (!$roomMember || $roomMember->type !== 'owner') {
             return ['error' => 2010];
         }
         
-        // получаем цель по его токену
+        //получаем цель по его токену
         $targetUser = $this->db->getUserByToken($targetToken);
         if (!$targetUser) {
             return ['error' => 705];
@@ -120,15 +120,15 @@ class Lobby {
         //находим его id
         $targetId = $targetUser->id;
         
-        // проверяем, что владелец не пытается кикнуть себя
+        //проверяем, что владелец не пытается кикнуть себя
         if ($userId == $targetId) {
             return ['error' => 2009];
         }
         
-        // получаем информацию о цели для кика в комнате
+        //получаем информацию о цели для кика в комнате
         $targetRoomMember = $this->db->getRoomMemberByUserId($targetId);
         
-        // проверяем, что цель вообще находится в той же комнате
+        //проверяем, что цель вообще находится в той же комнате
         if (!$targetRoomMember || $targetRoomMember->room_id != $roomMember->room_id) {
             return ['error' => 2011];
         }
@@ -137,5 +137,61 @@ class Lobby {
         $this->db->leaveParticipantFromRoom($targetId);
         $this->db->updateRoomHash(md5(rand()));
         return true;
+    }
+
+    public function startGame($userId) {
+        //получаем инфу о юзере
+        $roomMember = $this->db->getRoomMemberByUserId($userId);
+        
+        //проверяем, что владелец вообще в комнате и является owner
+        if (!$roomMember || $roomMember->type !== 'owner') {
+            return ['error' => 2014];
+        }
+        
+        //есть ли такая комната и открыта ли она
+        $room = $this->db->getRoomById($roomMember->room_id);
+        if (!$room || $room->status != 'open') {
+            return ['error' => 2015];
+        }
+        
+        //получаем всех участников комнаты
+        $roomMembers = $this->db->getAllRoomMembers($roomMember->room_id);
+        
+        //проверка, есть ли в комнате 3 пользователя со статусом ready
+        $readyPlayers = 0;
+        foreach ($roomMembers as $member) {
+            if ($member['status'] === 'ready') {
+                $readyPlayers++;
+            }
+        }
+        
+        if ($readyPlayers < 3) {
+            return ['error' => 2013];
+        }
+        
+        //меняем статус комнаты и участников на started
+        $this->db->updateRoomStatus($roomMember->room_id, 'started');
+        $this->db->updateAllRoomMembersStatus($roomMember->room_id, 'started');
+        
+        $this->db->updateRoomHash(md5(rand()));
+        return true;
+    }
+
+    public function getRooms($roomHash) {
+        $currentHash = $this->db->getRoomHash();
+        
+        //если хэш совпадает, то данные не изменились
+        if ($roomHash === $currentHash) {
+            return ['status' => 'unchanged'];
+        }
+        
+        //получаем все открытые комнаты
+        $rooms = $this->db->getOpenRooms();
+        
+        return [
+            'status' => 'updated',
+            'hash' => $currentHash,
+            'rooms' => $rooms
+        ];
     }
 }

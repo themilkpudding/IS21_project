@@ -4,6 +4,7 @@ require_once ('user/User.php');
 require_once ('chat/Chat.php');
 require_once ('math/Math.php');
 require_once ('lobby/Lobby.php');
+require_once('menu/Menu.php');
 
 class Application {
     function __construct() {
@@ -11,6 +12,7 @@ class Application {
         $this->user = new User($db);
         $this->math = new Math();
         $this->lobby = new Lobby($db);
+        $this->menu = new Menu($db);
     }
 
     public function login($params) {
@@ -114,6 +116,79 @@ class Application {
             if ($user) {
                 return $this->lobby->dropFromRoom($user->id, $params['targetToken']);
             }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+
+    public function deleteUser($params) {
+        if ($params['token']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->user->deleteUser($params['token']);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+
+    public function startGame($params) {
+        if ($params['token']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->lobby->startGame($user->id);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+
+    public function getRooms($params) {
+        if ($params['token'] && $params['room_hash']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->lobby->getRooms($params['room_hash']);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+    //menu
+    public function getUserInfo($params) {
+        if (!empty($params['token'])) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) return $this->menu->getUserInfo($user->id);
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+
+    public function getClasses($params) {
+        return $this->menu->getClasses();
+    }
+
+    public function getUserOwnedClasses($params) {
+        if (!empty($params['token'])) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) return $this->menu->getUserOwnedClasses($user->id);
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+
+    public function buyClass($params) {
+        if (!empty($params['token']) && !empty($params['classId'])) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) return $this->menu->buyClass($user->id, $params['classId']);
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+
+    public function selectClass($params) {
+        if (!empty($params['token']) && !empty($params['classId'])) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) return $this->menu->selectClass($user->id, $params['classId']);
             return ['error' => 705];
         }
         return ['error' => 242];

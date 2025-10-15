@@ -4,6 +4,7 @@ import cn from 'classnames';
 
 export type TButton = {
     variant?: string;
+    id?:string;
     isHover?: boolean;
     className?: string;
     text?: string;
@@ -16,7 +17,8 @@ const Button: React.FC<TButton> = (props: TButton) => {
         variant = 'main',
         isHover = false,
         className,
-        text = '',
+        id = 'test-button',
+        text = 'No Text',
         onClick = () => { },
         isDisabled = false,
     } = props;
@@ -33,6 +35,7 @@ const Button: React.FC<TButton> = (props: TButton) => {
     return (<button
         className={cn('button', `button-${variant}`, className, { 'hover': isHover, 'disabled': isDisabled })}
         onClick={handleClick}
+        id={id}
         disabled={isDisabled}
     >
         {text}

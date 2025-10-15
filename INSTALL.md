@@ -29,7 +29,7 @@ C:\OSPanel\home\knightwars.local\.osp
 
 [knightwars.local]
 php_engine = PHP-8.3
-public_dir = {base_dir}/server/api
+public_dir = {base_dir}/server
 
 
 Для phpMyAdmin создать отдельный .osp файл:
@@ -73,9 +73,9 @@ $cfg['Servers'][$i]['AllowNoPassword'] = true;
 
 Через phpMyAdmin создать базу данных:
 
-knightwars_db
+knightwars
 
-Импортировать дамп knightwars_db.sql.
+Импортировать дамп knightwars.sql.
 
 Таблица users содержит следующие поля:
 
@@ -101,4 +101,5 @@ http://knightwars.local/api?method=login
 Для теста логина с данными из таблицы users:
 
 http://knightwars.local/api?method=login&login=admin&password=123
+
 

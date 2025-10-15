@@ -27,11 +27,26 @@ class Answer {
         '2009' => 'Owner cannot kick yourself',
         '2010' => 'Only the owner can kick out participants of the room.',
         '2011' => 'User to kick not found in room',
+        '2012' => 'Error deleting user',
+        '2013' => 'Not enough players to start game (need 3 players)',
+        '2014' => 'You cannot start a room: you are either not the owner or you are not in the room',
+        '2015' => 'Room not found or not open',
+        '2016' => 'Rooms data not changed',
          //menu answers
-        '3000' => 'Placeholder',
+        '3001' => 'User not found',
+        '3002' => 'No classes found',
+        '3003' => 'User owns no classes',
+        '3004' => 'Class not found',
+        '3005' => 'User not found',
+        '3006' => 'Insufficient funds',
+        '3007' => 'Error during purchase',
+        '3008' => 'Class not owned',
+        '3009' => 'Class already purchased',
+        //math
         '8001' => 'Enter at least one value',
         '8002' => 'The discriminant cannot be less than zero',
         '8003' => 'No real roots found',
+        //other
         '9000' => 'Unknown error'
     );
 
