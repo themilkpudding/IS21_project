@@ -30,13 +30,13 @@ public function buyClass($userId, $classId) {
     $class = $this->db->getPersonClassById($classId);
     $user = $this->db->getUserById($userId);
 
-    if (!$class) return ['error' => 3003];
-    if (!$user) return ['error' => 3004];
+    if (!$class) return ['error' => 3002];
+    if (!$user) return ['error' => 3003];
 
     $owned = $this->db->getUserPersonClass($userId, $classId);
-    if ($owned) return ['error' => 3008];
+    if ($owned) return ['error' => 3007];
 
-    if ($user->money < $class->cost) return ['error' => 3005];
+    if ($user->money < $class->cost) return ['error' => 3004];
 
     try {
         $this->db->beginTransaction();
@@ -46,18 +46,19 @@ public function buyClass($userId, $classId) {
         return ['success' => true];
     } catch (Exception $e) {
         $this->db->rollBack();
-        return ['error' => 3006];
+        return ['error' => 3005];
     }
 }
 
 
     public function selectClass($userId, $classId) {
         $owned = $this->db->getUserPersonClass($userId, $classId);
-        if (!$owned) return ['error' => 3007];
+        if (!$owned) return ['error' => 3006];
 
         $this->db->clearSelectedUserClasses($userId);
         $this->db->setUserSelectedPersonClass($userId, $classId);
         return ['success' => true];
     }
 }
+
 
