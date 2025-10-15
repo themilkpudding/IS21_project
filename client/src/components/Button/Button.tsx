@@ -18,7 +18,7 @@ const Button: React.FC<TButton> = (props: TButton) => {
         isHover = false,
         className,
         id = 'test-button',
-        text = 'No Text',
+        text = '',
         onClick = () => { },
         isDisabled = false,
     } = props;

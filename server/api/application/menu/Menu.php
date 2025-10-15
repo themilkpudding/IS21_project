@@ -8,7 +8,7 @@ class Menu {
 
     public function getUserInfo($userId) {
         $user = $this->db->getUserById($userId);
-        if (!$user) return ['error' => 3001];
+        if (!$user) return ['error' => 705];
 
         return [
             'id' => $user->id,
@@ -22,21 +22,25 @@ class Menu {
         return $this->db->getAllPersonClasses();
     }
 
-    public function getUserOwnedClasses($userId) {
-        return $this->db->getUserOwnedClasses($userId);
+public function getUserOwnedClasses($userId) {
+    $classes = $this->db->getUserOwnedClasses($userId);
+    if (!$classes || count($classes) === 0) {
+        return ['error' => 3001];
     }
+    return $classes;
+}
 
 public function buyClass($userId, $classId) {
     $class = $this->db->getPersonClassById($classId);
     $user = $this->db->getUserById($userId);
 
-    if (!$class) return ['error' => 3004];
-    if (!$user) return ['error' => 3005];
+    if (!$class) return ['error' => 3002];
+    if (!$user) return ['error' => 3003];
 
     $owned = $this->db->getUserPersonClass($userId, $classId);
-    if ($owned) return ['error' => 3009];
+    if ($owned) return ['error' => 3007];
 
-    if ($user->money < $class->cost) return ['error' => 3006];
+    if ($user->money < $class->cost) return ['error' => 3004];
 
     try {
         $this->db->beginTransaction();
@@ -46,17 +50,20 @@ public function buyClass($userId, $classId) {
         return ['success' => true];
     } catch (Exception $e) {
         $this->db->rollBack();
-        return ['error' => 3007];
+        return ['error' => 3005];
     }
 }
 
 
     public function selectClass($userId, $classId) {
         $owned = $this->db->getUserPersonClass($userId, $classId);
-        if (!$owned) return ['error' => 3008];
+        if (!$owned) return ['error' => 3006];
 
         $this->db->clearSelectedUserClasses($userId);
         $this->db->setUserSelectedPersonClass($userId, $classId);
         return ['success' => true];
     }
 }
+
+
+
