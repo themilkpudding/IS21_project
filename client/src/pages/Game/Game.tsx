@@ -11,6 +11,7 @@ const GAME_FIELD = 'game-field';
 const GREEN = '#00e81c';
 const WALL_COLOR = '#8B4513';
 const ARROW_COLOR = '#8B4513';
+const ENEMY_COLOR = '#ff0000';
 
 type AttackMode = 'sword' | 'bow';
 
@@ -65,11 +66,15 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
         canvas.rectangle(x, y, width, height, ARROW_COLOR);
     }
 
+    function printEnemy(canvas: Canvas, { x = 0, y = 0, width = 0, height = 0 }): void {
+        canvas.rectangle(x, y, width, height, ENEMY_COLOR);
+    }
+
     function render(FPS: number): void {
         if (canvasRef.current && gameRef.current) {
             canvasRef.current.clear();
             const scene = gameRef.current.getScene();
-            const { Hero, Walls, Sword, Arrows } = scene;
+            const { Hero, Walls, Sword, Arrows, Enemies } = scene;
 
             // Рисуем стены
             if (Walls.length > 0) {
@@ -79,6 +84,18 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
                         y: wall.y,
                         width: wall.width,
                         height: wall.height
+                    });
+                });
+            }
+
+            // Рисуем врагов
+            if (Enemies && Enemies.length > 0) {
+                Enemies.forEach(enemy => {
+                    printEnemy(canvasRef.current!, {
+                        x: enemy.position.x,
+                        y: enemy.position.y,
+                        width: enemy.position.width,
+                        height: enemy.position.height
                     });
                 });
             }
@@ -111,6 +128,9 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
 
             // Рисуем FPS
             canvasRef.current.text(WINDOW.LEFT + 20, WINDOW.TOP + 50, String(FPS), GREEN);
+
+            // Рисуем информацию о врагах
+            canvasRef.current.text(WINDOW.LEFT + 20, WINDOW.TOP + 80, `Врагов: ${Enemies ? Enemies.length : 0}`, GREEN);
 
             canvasRef.current.render();
             updateDebugInfo();
@@ -320,6 +340,7 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
             <h1>Игра</h1>
             <Button onClick={backClickHandler} text='Назад' />
             <div className="debug-info">
+                <p>Врагов: {gameRef.current?.getEnemies().length || 0}</p>
                 <p>Стрелы: {debugInfo.arrowsCount} | Лук: {debugInfo.hasBow ? 'Есть' : 'Нет'} | Режим: {debugInfo.attackMode}</p>
                 <p>Управление: WASD - движение, ЛКМ - атака, 1 - меч, 2 - лук</p>
             </div>

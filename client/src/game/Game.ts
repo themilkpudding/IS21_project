@@ -1,13 +1,16 @@
 import CONFIG, { FPoint } from "../config";
 import { Map } from "./map";
 import Hero, { KNIGHT } from "./hero";
-import { Projectile } from "./hero"
+import { Projectile } from "./hero";
+import Enemy from "./enemy";
+
 class Game {
     private hero: Hero;
     private Walls: FPoint[];
     private Sword: FPoint;
     private gameMap: Map;
     private Arrows: Projectile[];
+    private Enemies: Enemy[]; // Добавляем массив врагов
 
     constructor() {
         this.hero = new Hero(650, 400, KNIGHT);
@@ -15,10 +18,17 @@ class Game {
         this.Walls = this.gameMap.getWalls();
         this.Sword = this.hero.getAttackPosition();
         this.Arrows = [];
+        this.Enemies = [];
+        this.initializeEnemies();
+    }
+
+    private initializeEnemies(): void {
+        this.Enemies.push(new Enemy(300, 300));
     }
 
     destructor() {
         this.Arrows = [];
+        this.Enemies = [];
     }
 
     getScene() {
@@ -27,6 +37,10 @@ class Game {
             Walls: this.Walls,
             Sword: this.Sword,
             Arrows: this.Arrows.map(arrow => arrow.getPosition()),
+            Enemies: this.Enemies.map(enemy => ({
+                position: enemy.getPosition(),
+                direction: enemy.getDirection()
+            }))
         };
     }
 
@@ -77,6 +91,23 @@ class Game {
         this.hero.updateProjectiles();
         this.syncArrowsWithHero();
         this.checkArrowCollisions();
+        this.updateEnemies();
+    }
+
+    private updateEnemies(): void {
+        this.Enemies.forEach(enemy => {
+            const currentPos = enemy.getPosition();
+            // Если враг достиг границы, меняем направление
+            if (currentPos.x > 900) {
+                enemy.setDirection('left');
+            } else if (currentPos.x < 200) {
+                enemy.setDirection('right');
+            }
+
+            const speed = 2;
+            const dx = enemy.getDirection() === 'right' ? speed : -speed;
+            enemy.move(dx, 0);
+        });
     }
 
     private syncArrowsWithHero(): void {
@@ -119,6 +150,11 @@ class Game {
     getArrows(): Projectile[] {
         return [...this.Arrows];
     }
+
+    getEnemies(): Enemy[] {
+        return [...this.Enemies];
+    }
+
 }
 
 export default Game;
