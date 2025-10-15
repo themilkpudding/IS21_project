@@ -1,8 +1,8 @@
 import CONFIG, { FPoint } from "../config";
-import { Map } from "./map";
-import Hero, { KNIGHT } from "./hero";
-import { Projectile } from "./hero";
-import Enemy from "./enemy";
+import { Map } from "./Map";
+import Hero, { KNIGHT } from "./Hero";
+import { Projectile } from "./Hero";
+import Enemy from "./Enemy";
 
 class Game {
     private hero: Hero;
@@ -54,14 +54,6 @@ class Game {
         };
     }
 
-    check_collision(heroX: number, heroY: number, wall: FPoint): boolean {
-        const heroPos = this.hero.getPosition();
-        return ((heroX + heroPos.width) > wall.x) &&
-            (heroX < (wall.x + wall.width)) &&
-            ((heroY + heroPos.height) > wall.y) &&
-            (heroY < (wall.y + wall.height));
-    }
-
     check_rect_collision(rect1: FPoint, rect2: FPoint): boolean {
         return (rect1.x + rect1.width > rect2.x) &&
             (rect1.x < rect2.x + rect2.width) &&
@@ -89,11 +81,7 @@ class Game {
                 this.check_rect_collision(tempHeroPos, wall)
             );
 
-            const collidingEnemy = this.Enemies.find(enemy =>
-                enemy.isAlive() && this.check_rect_collision(tempHeroPos, enemy.getPosition())
-            );
-
-            if (!collidingWall && !collidingEnemy) {
+            if (!collidingWall) {
                 this.hero.move(dx, 0);
             } else {
                 tempHeroPos.x = currentPos.x;
@@ -108,11 +96,7 @@ class Game {
                 this.check_rect_collision(tempHeroPos, wall)
             );
 
-            const collidingEnemy = this.Enemies.find(enemy =>
-                enemy.isAlive() && this.check_rect_collision(tempHeroPos, enemy.getPosition())
-            );
-
-            if (!collidingWall && !collidingEnemy) {
+            if (!collidingWall) {
                 this.hero.move(0, dy);
             }
         }
@@ -161,20 +145,8 @@ class Game {
                     this.check_rect_collision(tempEnemyPos, wall)
                 );
 
-                const heroCollision = this.check_rect_collision(tempEnemyPos, heroPos);
-
-                const enemyCollision = this.Enemies.some((otherEnemy, otherIndex) => {
-                    if (index === otherIndex || !otherEnemy.isAlive()) return false;
-                    const otherPos = otherEnemy.getPosition();
-                    return this.check_rect_collision(tempEnemyPos, otherPos);
-                });
-
-                if (!wallCollision && !enemyCollision) {
+                if (!wallCollision) {
                     enemy.move(normalizedDx, normalizedDy);
-                }
-
-                if (heroCollision) {
-                    enemy.move(-normalizedDx, -normalizedDy);
                 }
             }
         });

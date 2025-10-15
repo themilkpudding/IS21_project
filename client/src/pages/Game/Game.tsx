@@ -95,42 +95,36 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
             const { Hero, Walls, Sword, Arrows, Enemies } = scene;
 
             //стены
-            if (Walls.length > 0) {
-                Walls.forEach(wall => {
-                    printWall(canvasRef.current!, {
-                        x: wall.x,
-                        y: wall.y,
-                        width: wall.width,
-                        height: wall.height
-                    });
+            Walls.forEach(wall => {
+                printWall(canvasRef.current!, {
+                    x: wall.x,
+                    y: wall.y,
+                    width: wall.width,
+                    height: wall.height
                 });
-            }
+            });
 
             //враги
-            if (Enemies.length > 0) {
-                Enemies.forEach(enemy => {
-                    if (enemy.isAlive) {
-                        printEnemy(canvasRef.current!, {
-                            x: enemy.position.x,
-                            y: enemy.position.y,
-                            width: enemy.position.width,
-                            height: enemy.position.height
-                        }, enemy.health, enemy.maxHealth);
-                    }
-                });
-            }
+            Enemies.forEach(enemy => {
+                if (enemy.isAlive) {
+                    printEnemy(canvasRef.current!, {
+                        x: enemy.position.x,
+                        y: enemy.position.y,
+                        width: enemy.position.width,
+                        height: enemy.position.height
+                    }, enemy.health, enemy.maxHealth);
+                }
+            });
 
             //стрелы
-            if (Arrows.length > 0) {
-                Arrows.forEach(arrow => {
-                    printArrow(canvasRef.current!, {
-                        x: arrow.x,
-                        y: arrow.y,
-                        width: arrow.width,
-                        height: arrow.height
-                    });
+            Arrows.forEach(arrow => {
+                printArrow(canvasRef.current!, {
+                    x: arrow.x,
+                    y: arrow.y,
+                    width: arrow.width,
+                    height: arrow.height
                 });
-            }
+            });
 
             //меч
             if (swordVisibleRef.current && attackModeRef.current === 'sword' && gameRef.current.isSwordActive()) {
