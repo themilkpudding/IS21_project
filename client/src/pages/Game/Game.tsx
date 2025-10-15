@@ -130,7 +130,7 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
             canvasRef.current.text(WINDOW.LEFT + 20, WINDOW.TOP + 50, String(FPS), GREEN);
 
             // Рисуем информацию о врагах
-            canvasRef.current.text(WINDOW.LEFT + 20, WINDOW.TOP + 80, `Врагов: ${Enemies ? Enemies.length : 0}`, GREEN);
+            canvasRef.current.text(WINDOW.LEFT + 20, WINDOW.TOP + 80, `Врагов: ${Enemies.length}`, GREEN);
 
             canvasRef.current.render();
             updateDebugInfo();

@@ -58,6 +58,16 @@ class Enemy {
             height: swordSize
         };
     }
+
+    // Новый метод для получения границ врага (для коллизии)
+    getBounds(): FPoint {
+        return {
+            x: this.position.x,
+            y: this.position.y,
+            width: this.position.width,
+            height: this.position.height
+        };
+    }
 }
 
 export default Enemy;

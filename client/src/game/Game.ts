@@ -64,22 +64,49 @@ class Game {
         let newX = currentPos.x;
         let newY = currentPos.y;
 
+        // Создаем временную позицию для проверки коллизий
+        const tempHeroPos: FPoint = {
+            x: currentPos.x,
+            y: currentPos.y,
+            width: currentPos.width,
+            height: currentPos.height
+        };
+
         if (dx !== 0) {
             newX = currentPos.x + dx;
+            tempHeroPos.x = newX;
+
             const collidingWall = this.Walls.find(wall =>
-                this.check_collision(newX, currentPos.y, wall)
+                this.check_rect_collision(tempHeroPos, wall)
             );
-            if (!collidingWall) {
+
+            const collidingEnemy = this.Enemies.find(enemy => {
+                const enemyPos = enemy.getPosition();
+                return this.check_rect_collision(tempHeroPos, enemyPos);
+            });
+
+            if (!collidingWall && !collidingEnemy) {
                 this.hero.move(dx, 0);
+            } else {
+                // Если есть коллизия, сбрасываем X координату для проверки Y
+                tempHeroPos.x = currentPos.x;
             }
         }
 
         if (dy !== 0) {
             newY = currentPos.y + dy;
+            tempHeroPos.y = newY;
+
             const collidingWall = this.Walls.find(wall =>
-                this.check_collision(currentPos.x, newY, wall)
+                this.check_rect_collision(tempHeroPos, wall)
             );
-            if (!collidingWall) {
+
+            const collidingEnemy = this.Enemies.find(enemy => {
+                const enemyPos = enemy.getPosition();
+                return this.check_rect_collision(tempHeroPos, enemyPos);
+            });
+
+            if (!collidingWall && !collidingEnemy) {
                 this.hero.move(0, dy);
             }
         }
@@ -95,18 +122,63 @@ class Game {
     }
 
     private updateEnemies(): void {
-        this.Enemies.forEach(enemy => {
-            const currentPos = enemy.getPosition();
-            // Если враг достиг границы, меняем направление
-            if (currentPos.x > 900) {
-                enemy.setDirection('left');
-            } else if (currentPos.x < 200) {
-                enemy.setDirection('right');
-            }
+        const heroPos = this.hero.getPosition();
 
+        this.Enemies.forEach((enemy, index) => {
+            const enemyPos = enemy.getPosition();
+
+            // Преследование героя
+            const dx = heroPos.x - enemyPos.x;
+            const dy = heroPos.y - enemyPos.y;
+
+            // Нормализация направления
+            const distance = Math.sqrt(dx * dx + dy * dy);
             const speed = 2;
-            const dx = enemy.getDirection() === 'right' ? speed : -speed;
-            enemy.move(dx, 0);
+
+            if (distance > 0) {
+                const normalizedDx = (dx / distance) * speed;
+                const normalizedDy = (dy / distance) * speed;
+
+                // Проверка коллизии перед движением
+                const newX = enemyPos.x + normalizedDx;
+                const newY = enemyPos.y + normalizedDy;
+
+                // Создаем временный прямоугольник для проверки коллизии
+                const tempEnemyPos: FPoint = {
+                    x: newX,
+                    y: newY,
+                    width: enemyPos.width,
+                    height: enemyPos.height
+                };
+
+                // Проверяем коллизию со стенами
+                const wallCollision = this.Walls.find(wall =>
+                    this.check_rect_collision(tempEnemyPos, wall)
+                );
+
+                // Проверяем коллизию с героем
+                const heroCollision = this.check_rect_collision(tempEnemyPos, heroPos);
+
+                // Проверяем коллизию с другими врагами
+                const enemyCollision = this.Enemies.some((otherEnemy, otherIndex) => {
+                    if (index === otherIndex) return false;
+                    const otherPos = otherEnemy.getPosition();
+                    return this.check_rect_collision(tempEnemyPos, otherPos);
+                });
+
+                // Двигаем врага только если нет коллизий
+                if (!wallCollision && !enemyCollision) {
+                    enemy.move(normalizedDx, normalizedDy);
+                }
+
+                // Обработка столкновения с героем
+                if (heroCollision) {
+                    // Здесь можно добавить логику урона герою
+                    console.log("Враг столкнулся с героем!");
+                    // Можно оттолкнуть врага немного назад
+                    enemy.move(-normalizedDx * 2, -normalizedDy * 2);
+                }
+            }
         });
     }
 
