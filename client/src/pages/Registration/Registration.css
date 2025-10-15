@@ -90,7 +90,7 @@
     transition: filter 0.1s ease;
 }
 
-.haveAccount:hover {
+.haveAccount-Button:hover {
     filter: brightness(2);
 }
 
