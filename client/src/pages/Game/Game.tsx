@@ -11,13 +11,22 @@ const GAME_FIELD = 'game-field';
 const GREEN = '#00e81c';
 const WALL_COLOR = '#8B4513';
 const ARROW_COLOR = '#8B4513';
-const ENEMY_COLOR = '#ff0000';
 
 type AttackMode = 'sword' | 'bow';
 
 const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
     const { WINDOW } = CONFIG;
     const { setPage } = props;
+
+    const game = new Game(server);
+    new Canvas();
+
+    function render() {
+        game.getScene()
+    }
+
+
+
 
     const gameRef = useRef<Game | null>(null);
     const canvasRef = useRef<Canvas | null>(null);
@@ -66,68 +75,38 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
         canvas.rectangle(x, y, width, height, ARROW_COLOR);
     }
 
-    function printEnemy(canvas: Canvas, { x = 0, y = 0, width = 0, height = 0 }, health: number, maxHealth: number): void {
-        canvas.rectangle(x, y, width, height, ENEMY_COLOR);
-
-        const healthBarWidth = width;
-        const healthBarHeight = 8;
-        const healthBarY = y - 15;
-
-        canvas.rectangle(x, healthBarY, healthBarWidth, healthBarHeight, '#000000');
-
-        const healthPercent = health / maxHealth;
-        const healthWidth = healthBarWidth * healthPercent;
-        let healthColor = '#00ff00';
-
-        if (healthPercent < 0.3) {
-            healthColor = '#ff0000';
-        } else if (healthPercent < 0.6) {
-            healthColor = '#ffff00';
-        }
-
-        canvas.rectangle(x, healthBarY, healthWidth, healthBarHeight, healthColor);
-    }
-
     function render(FPS: number): void {
         if (canvasRef.current && gameRef.current) {
             canvasRef.current.clear();
             const scene = gameRef.current.getScene();
-            const { Hero, Walls, Sword, Arrows, Enemies } = scene;
+            const { Hero, Walls, Sword, Arrows } = scene;
 
-            //стены
-            Walls.forEach(wall => {
-                printWall(canvasRef.current!, {
-                    x: wall.x,
-                    y: wall.y,
-                    width: wall.width,
-                    height: wall.height
+            // Рисуем стены
+            if (Walls.length > 0) {
+                Walls.forEach(wall => {
+                    printWall(canvasRef.current!, {
+                        x: wall.x,
+                        y: wall.y,
+                        width: wall.width,
+                        height: wall.height
+                    });
                 });
-            });
+            }
 
-            //враги
-            Enemies.forEach(enemy => {
-                if (enemy.isAlive) {
-                    printEnemy(canvasRef.current!, {
-                        x: enemy.position.x,
-                        y: enemy.position.y,
-                        width: enemy.position.width,
-                        height: enemy.position.height
-                    }, enemy.health, enemy.maxHealth);
-                }
-            });
-
-            //стрелы
-            Arrows.forEach(arrow => {
-                printArrow(canvasRef.current!, {
-                    x: arrow.x,
-                    y: arrow.y,
-                    width: arrow.width,
-                    height: arrow.height
+            // Рисуем стрелы
+            if (Arrows.length > 0) {
+                Arrows.forEach(arrow => {
+                    printArrow(canvasRef.current!, {
+                        x: arrow.x,
+                        y: arrow.y,
+                        width: arrow.width,
+                        height: arrow.height
+                    });
                 });
-            });
+            }
 
-            //меч
-            if (swordVisibleRef.current && attackModeRef.current === 'sword' && gameRef.current.isSwordActive()) {
+            // Рисуем меч
+            if (swordVisibleRef.current && attackModeRef.current === 'sword') {
                 printSword(canvasRef.current!, {
                     x: Sword.x,
                     y: Sword.y,
@@ -136,11 +115,11 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
                 });
             }
 
-            //герой
+            // Рисуем героя
             const { x, y, width, height } = Hero;
             printHero(canvasRef.current, { x, y, width, height });
 
-            //fps
+            // Рисуем FPS
             canvasRef.current.text(WINDOW.LEFT + 20, WINDOW.TOP + 50, String(FPS), GREEN);
 
             canvasRef.current.render();
@@ -168,10 +147,8 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
 
     const mouseClick = (_x: number, _y: number) => {
         if (attackModeRef.current === 'sword') {
+            // Используем меч
             swordVisibleRef.current = true;
-            if (gameRef.current) {
-                gameRef.current.activateSword();
-            }
 
             if (swordTimerRef.current) {
                 clearTimeout(swordTimerRef.current);
@@ -181,12 +158,14 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
                 swordVisibleRef.current = false;
             }, 500);
         } else if (attackModeRef.current === 'bow') {
+            // Используем лук
             if (gameRef.current) {
                 gameRef.current.shoot();
             }
         }
     };
 
+    // Функция для переключения режима атаки
     const switchAttackMode = (mode: AttackMode) => {
         setAttackMode(mode);
         attackModeRef.current = mode;
@@ -236,7 +215,10 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
     };
 
     useEffect(() => {
+        // Инициализация игры
         gameRef.current = new Game();
+
+        // Инициализация канваса
         canvasRef.current = CanvasComponent({
             parentId: GAME_FIELD,
             WIDTH: WINDOW.WIDTH,
@@ -249,11 +231,14 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
             },
         });
 
+        // Добавляем лук для тестирования
         gameRef.current.addBowToInventory();
 
+        // Интервалы для обновления игры
         movementIntervalRef.current = setInterval(handleMovement, 8);
         shootingIntervalRef.current = setInterval(handleShooting, 100);
 
+        // Интервал для обновления состояния игры (стрел)
         gameUpdateIntervalRef.current = setInterval(() => {
             if (gameRef.current) {
                 gameRef.current.update();
@@ -261,6 +246,7 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
         }, 8);
 
         return () => {
+            // Очистка ресурсов
             gameRef.current?.destructor();
             canvasRef.current?.destructor();
             canvasRef.current = null;
@@ -344,7 +330,6 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
             <h1>Игра</h1>
             <Button onClick={backClickHandler} text='Назад' />
             <div className="debug-info">
-                <p>Врагов: {gameRef.current?.getEnemies().length || 0}</p>
                 <p>Стрелы: {debugInfo.arrowsCount} | Лук: {debugInfo.hasBow ? 'Есть' : 'Нет'} | Режим: {debugInfo.attackMode}</p>
                 <p>Управление: WASD - движение, ЛКМ - атака, 1 - меч, 2 - лук</p>
             </div>
