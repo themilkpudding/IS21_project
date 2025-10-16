@@ -4,6 +4,6 @@
 | **Приоритет** | Высокий |
 | **Название тест-кейса** | Успешная регистрация нового пользователя |
 | **Указание на модуль тестирования** | User → registration |
-| **Исходные данные** | Логин: `newuser`<br> Пароль: `pass123`<br> Никнейм: `NewUserNick` |
-| **Шаги тест-кейса** | 1. Выполнить команду: `http://knightwars.local/api?method=registration&login=newuser&passwordHash=md5(pass123)&nickname=NewUserNick`<br>2. Проверить ответ |
+| **Исходные данные** | Логин: `testtest`<br> Пароль: `testtest`<br> Никнейм: `testtest` |
+| **Шаги тест-кейса** | 1. Выполнить команду: `http://knightwars.local/api?method=registration&login=testtest&passwordHash=md5(testtest)&nickname=testtest`<br>2. Проверить ответ |
 | **Ожидаемый результат** | Ответ содержит `result: 'ok'`, `data` с объектом пользователя (id, nickname, token) |
