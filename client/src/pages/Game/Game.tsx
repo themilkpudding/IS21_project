@@ -18,6 +18,16 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
     const { WINDOW } = CONFIG;
     const { setPage } = props;
 
+    const game = new Game(server);
+    new Canvas();
+
+    function render() {
+        game.getScene()
+    }
+
+
+
+
     const gameRef = useRef<Game | null>(null);
     const canvasRef = useRef<Canvas | null>(null);
     const swordVisibleRef = useRef(false);

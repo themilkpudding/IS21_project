@@ -1,6 +1,5 @@
 import { FPoint } from "../config";
 
-// Базовый класс персонажа
 class CharacterClass {
     constructor(
         public name: string,
@@ -11,18 +10,16 @@ class CharacterClass {
     ) { }
 }
 
-// Классы персонажей
 export const KNIGHT = new CharacterClass(
     "KNIGHT",
     100,
-    15,
+    20,
     5,
     ["Iron Sword", "Wooden Shield", "Leather Armor"]
 );
 
 export type Direction = 'left' | 'right';
 
-// Класс для снарядов (стрел)
 export class Projectile {
     position: FPoint;
     isActive: boolean = true;
@@ -173,7 +170,6 @@ class Hero {
     updateProjectiles(): void {
         this.projectiles.forEach(projectile => projectile.update());
 
-        // Удаляем неактивные снаряды
         this.projectiles = this.projectiles.filter(projectile => projectile.isActive);
     }
 

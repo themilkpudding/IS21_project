@@ -2,23 +2,38 @@ import CONFIG, { FPoint } from "../config";
 import { Map } from "./map";
 import Hero, { KNIGHT } from "./hero";
 import { Projectile } from "./hero"
+import Server from "../services/server/Server";
+
+// heroes
+// bots
+// arrows
+// walls
+// pits (?)
+
 class Game {
+    private server: Server;
     private hero: Hero;
     private Walls: FPoint[];
     private Sword: FPoint;
     private gameMap: Map;
     private Arrows: Projectile[];
+    private interval: NodeJS.Timer | null = null;
 
-    constructor() {
+    constructor(server: Server) {
+        this.server = server;
         this.hero = new Hero(650, 400, KNIGHT);
         this.gameMap = new Map();
         this.Walls = this.gameMap.getWalls();
         this.Sword = this.hero.getAttackPosition();
         this.Arrows = [];
+
+        this.server.startGetScene(() => this.getSceneFromBackend());
+        this.startUpdateScene();
     }
 
     destructor() {
-        this.Arrows = [];
+        this.stopUpdateScene();
+        this.server.stopGetScene();
     }
 
     getScene() {
@@ -30,20 +45,47 @@ class Game {
         };
     }
 
-    check_collision(heroX: number, heroY: number, wall: FPoint): boolean {
-        const heroPos = this.hero.getPosition();
-        return ((heroX + heroPos.width) > wall.x) &&
-            (heroX < (wall.x + wall.width)) &&
-            ((heroY + heroPos.height) > wall.y) &&
-            (heroY < (wall.y + wall.height));
+    private startUpdateScene() {
+        if (this.interval) {
+            this.stopUpdateScene();
+        }
+        this.interval = setInterval(
+            () => this.updateScene(),
+            CONFIG.GAME_UPDATE_TIMESTAMP
+        );
     }
 
-    check_rect_collision(rect1: FPoint, rect2: FPoint): boolean {
-        return (rect1.x + rect1.width > rect2.x) &&
-            (rect1.x < rect2.x + rect2.width) &&
-            (rect1.y + rect1.height > rect2.y) &&
-            (rect1.y < rect2.y + rect2.height);
+    private stopUpdateScene() {
+        if (this.interval) {
+            clearInterval(this.interval);
+            this.interval = null;
+        }
     }
+
+    // 100 ms
+    private getSceneFromBackend() {
+        // если пришёл ответ
+        // распарсить его
+        // принудительно применить к сцене игры
+    }
+
+    // 20, 50 ms
+    private updateScene() {
+        let isUpdated = false;
+        // передвинуть героев
+        // передвинуть ботов
+        // передвинуть стрелы
+        // воткнуть стрелы
+        // нанести удары ботами
+        // посчитать нанесённую дамагу
+        // умереть всех причастных
+        if (isUpdated && this.userIsOwner()) {
+            //JSON.stringify()
+            this.server.updateScene();
+        }
+    }
+
+    /*
 
     move(dx: number, dy: number): void {
         const currentPos = this.hero.getPosition();
@@ -119,6 +161,7 @@ class Game {
     getArrows(): Projectile[] {
         return [...this.Arrows];
     }
+    */
 }
 
 export default Game;
