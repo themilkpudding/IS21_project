@@ -61,18 +61,6 @@ class Server {
         return null;
     }
 
-    async autoLogin(): Promise<TUser | null> {
-        const token = this.store.getToken();
-        if (!token) return null;
-
-        const user = await this.request<TUser>('autoLogin', { token });
-        if (user) {
-            this.store.setUser(user);
-            return user;
-        }
-        return null;
-    }
-
     async logout() {
         const result = await this.request<boolean>('logout');
         if (result) {
@@ -117,6 +105,25 @@ class Server {
             this.chatInterval = null;
             this.store.clearMessages();
         }
+    }
+
+    async getUserInfo(): Promise<{ id: number; login: string; nickname: string; money: number } | null> {
+        const token = this.store.getToken();
+        if (!token) return null;
+
+        const userInfo = await this.request<{ id: number; login: string; nickname: string; money: number }>('getUserInfo', { token });
+        if (userInfo) {
+            const user: TUser = {
+                id: userInfo.id,
+                login: userInfo.login,
+                nickname: userInfo.nickname,
+                money: userInfo.money,
+                token: token
+            };
+            this.store.setUser(user);
+        }
+
+        return userInfo;
     }
 }
 

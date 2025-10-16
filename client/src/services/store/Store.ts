@@ -19,7 +19,7 @@ class Store {
             localStorage.setItem(REMEMBER_ME, 'true');
             localStorage.setItem(TOKEN, token);
         } else {
-            localStorage.removeItem(REMEMBER_ME);
+            localStorage.setItem(REMEMBER_ME, 'false');
             sessionStorage.setItem(TOKEN, token);
         }
 
@@ -45,7 +45,9 @@ class Store {
 
     clearUser(): void {
         this.user = null;
-        this.setToken('');
+        sessionStorage.removeItem(TOKEN);
+        localStorage.removeItem(TOKEN);
+        localStorage.removeItem(REMEMBER_ME);
         this.rememberMe = false;
     }
 
