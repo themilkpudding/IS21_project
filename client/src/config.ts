@@ -1,9 +1,6 @@
-export type TPoint = {
+export type Trect = {
     x: number;
     y: number;
-}
-
-export type FPoint = TPoint & {
     width: number;
     height: number;
 }
