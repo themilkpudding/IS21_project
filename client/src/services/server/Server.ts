@@ -23,7 +23,7 @@ class Server {
             if (token) {
                 params.token = token;
             }
-            
+
             const response = await fetch(`${this.HOST}/?${Object.keys(params).map(key => `${key}=${params[key]}`).join('&')}`);
 
             const answer: TAnswer<T> = await response.json();
@@ -54,6 +54,18 @@ class Server {
         const rnd = Math.round(Math.random() * 100000);
         const passwordHash = md5(`${md5(`${login}${password}`)}${rnd}`)
         const user = await this.request<TUser>('login', { login, passwordHash, rnd: `${rnd}` });
+        if (user) {
+            this.store.setUser(user);
+            return user;
+        }
+        return null;
+    }
+
+    async autoLogin(): Promise<TUser | null> {
+        const token = this.store.getToken();
+        if (!token) return null;
+
+        const user = await this.request<TUser>('autoLogin', { token });
         if (user) {
             this.store.setUser(user);
             return user;
