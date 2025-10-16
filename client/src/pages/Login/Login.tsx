@@ -43,17 +43,24 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
     const registrationClickHandler = () => { setPage(PAGES.REGISTRATION) };
 
     useEffect(() => {
-        const token = server.store.getToken();
-        const savedRememberMe = server.store.getRememberMe();
+        const autoLogin = async () => {
+            const token = server.store.getToken();
+            const savedRememberMe = server.store.getRememberMe();
 
-        server.showError((err: TError) => {
-            if (err.code === 1002 || err.code === 1005) setError('неверный логин или пароль');
-            clearAuthFields();
-        });
+            server.showError((err: TError) => {
+                if (err.code === 1002 || err.code === 1005) setError('неверный логин или пароль');
+                clearAuthFields();
+            });
 
-        if (token && savedRememberMe) {
-            setPage(PAGES.MENU);
-        }
+            if (token && savedRememberMe) {
+                const user = await server.autoLogin();
+                if (user) {
+                    setPage(PAGES.MENU);
+                }
+            }
+        };
+
+        autoLogin();
     }, []);
 
     return (<div className='login'>
