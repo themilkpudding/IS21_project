@@ -1,4 +1,4 @@
-export type Trect = {
+export type TRect = {
     x: number;
     y: number;
     width: number;
