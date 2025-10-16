@@ -3,9 +3,7 @@ export type TPoint = {
     y: number;
 }
 
-export type FPoint = {
-    x: number;
-    y: number;
+export type FPoint = TPoint & {
     width: number;
     height: number;
 }
