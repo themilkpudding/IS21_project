@@ -173,7 +173,7 @@ width: clamp(160px, 19vw, 200px);
     .registration-label-nick,
     .registration-label-pass,
     .registration-label-certpass {
-        left: 5%;
+        left: 24%;
         font-size: clamp(14px, 2.8vh, 20px);
     }
     
@@ -181,7 +181,7 @@ width: clamp(160px, 19vw, 200px);
     .input-nicknameReg,
     .input-passwordReg,
     .input-certpasswordReg {
-        left: 5%;
+        left: 24%;
         width: clamp(280px, 85vw, 500px);
     }
 }
@@ -214,20 +214,20 @@ width: clamp(160px, 19vw, 200px);
     .registration-label-nick,
     .registration-label-pass,
     .registration-label-certpass {
-        left: 50%;
+        left: 10%;
         transform: translateX(-50%);
         text-align: center;
-        width: 100%;
+        width: 10%;
     }
     
     .registration-label-log { top: 12vh; }
-    .input-loginReg { top: 16vh; }
+    .input-loginReg { top: 16vh; left: 10%; }
     .registration-label-nick { top: 22vh; }
-    .input-nicknameReg { top: 26vh; }
+    .input-nicknameReg { top: 26vh; left: 10%; }
     .registration-label-pass { top: 32vh; }
-    .input-passwordReg { top: 36vh; }
+    .input-passwordReg { top: 36vh; left: 10%; }
     .registration-label-certpass { top: 42vh; }
-    .input-certpasswordReg { top: 46vh; }
+    .input-certpasswordReg { top: 46vh; left: 10%; }
     
     .errors { top: 52vh; }
     .registration-button { top: 60vh; }
@@ -240,9 +240,9 @@ width: clamp(160px, 19vw, 200px);
     .registration-label-nick { top: 24vh; }
     .input-nicknameReg { top: 30vh; }
     .registration-label-pass { top: 36vh; }
-    .input-passwordReg { top: 42vh; }
+    .input-passwordReg { top: 42vh;}
     .registration-label-certpass { top: 48vh; }
-    .input-certpasswordReg { top: 54vh; }
+    .input-certpasswordReg { top: 54vh;}
     .errors { top: 67vh; }
     .registration-button { top: 72vh; }
     .haveAccount-Button { top: 80vh; }
