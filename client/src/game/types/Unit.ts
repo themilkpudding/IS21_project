@@ -34,17 +34,6 @@ class Unit {
         this.direction = dx >= 0 ? EDIRECTION.RIGHT : EDIRECTION.LEFT;
     }
 
-    /*
-    setPosition(x: number, y: number): void {
-        this.rect.x = x;
-        this.rect.y = y;
-    }
-    */
-
-    setDirection(direction: EDIRECTION): void {
-        this.direction = direction;
-    }
-
     checkRectCollision(rect1: TRect, rect2: TRect): boolean {
         return (rect1.x + rect1.width > rect2.x) &&
             (rect1.x < rect2.x + rect2.width) &&
