@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: MySQL-8.0
--- Время создания: Окт 10 2025 г., 16:30
+-- Время создания: Окт 17 2025 г., 16:24
 -- Версия сервера: 8.0.41
 -- Версия PHP: 8.3.14
 
@@ -20,8 +20,93 @@ SET time_zone = "+00:00";
 --
 -- База данных: `knightwars`
 --
-CREATE DATABASE IF NOT EXISTS `knightwars` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
-USE `knightwars`;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `characters`
+--
+
+CREATE TABLE `characters` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `hp` int DEFAULT '100',
+  `defense` int DEFAULT '10',
+  `arrows` int DEFAULT '0',
+  `potions` int DEFAULT '0',
+  `money` int DEFAULT '100'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `characters_armor`
+--
+
+CREATE TABLE `characters_armor` (
+  `id` int NOT NULL,
+  `character_id` int NOT NULL,
+  `helmet_id` int DEFAULT NULL,
+  `chestplate_id` int DEFAULT NULL,
+  `leggings_id` int DEFAULT NULL,
+  `shield_id` int DEFAULT NULL,
+  `selected` tinyint(1) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `characters_classes`
+--
+
+CREATE TABLE `characters_classes` (
+  `id` int NOT NULL,
+  `character_id` int NOT NULL,
+  `class_id` int NOT NULL,
+  `selected` tinyint(1) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `characters_weapons`
+--
+
+CREATE TABLE `characters_weapons` (
+  `id` int NOT NULL,
+  `character_id` int NOT NULL,
+  `weapon_id` int NOT NULL,
+  `selected` tinyint(1) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `chestplates`
+--
+
+CREATE TABLE `chestplates` (
+  `id` int NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `defense` int NOT NULL,
+  `hp` int DEFAULT '0',
+  `cost` int DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `classes`
+--
+
+CREATE TABLE `classes` (
+  `id` int NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `cost` int DEFAULT '0',
+  `hp` int DEFAULT '50',
+  `defense` int DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -45,6 +130,34 @@ INSERT INTO `hashes` (`id`, `chat_hash`, `room_hash`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `helmets`
+--
+
+CREATE TABLE `helmets` (
+  `id` int NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `defense` int NOT NULL,
+  `hp` int DEFAULT '0',
+  `cost` int DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `leggings`
+--
+
+CREATE TABLE `leggings` (
+  `id` int NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `defense` int NOT NULL,
+  `hp` int DEFAULT '0',
+  `cost` int DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `messages`
 --
 
@@ -53,20 +166,6 @@ CREATE TABLE `messages` (
   `user_id` int NOT NULL,
   `message` text NOT NULL,
   `created` datetime DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `person_classes`
---
-
-CREATE TABLE `person_classes` (
-  `id` int NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `type` varchar(255) NOT NULL,
-  `cost` int DEFAULT '0',
-  `hp` int DEFAULT '50'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -97,6 +196,19 @@ CREATE TABLE `room_members` (
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `shields`
+--
+
+CREATE TABLE `shields` (
+  `id` int NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `defense` int NOT NULL,
+  `cost` int DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `users`
 --
 
@@ -105,26 +217,84 @@ CREATE TABLE `users` (
   `login` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `nickname` varchar(255) NOT NULL,
-  `token` varchar(255) DEFAULT NULL,
-  `money` int DEFAULT '100'
+  `token` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп данных таблицы `users`
+--
+
+INSERT INTO `users` (`id`, `login`, `password`, `nickname`, `token`) VALUES
+(34, 'kloddef1', '123456', 'KloddeF', '9277db550ae00251d19a08b4abd3204c'),
+(41, 'anton2', '123456', 'Anton2', 'f83b21a31e4564877d25dc30e8a06aa6'),
+(42, 'vadim3', '123456', 'Vadim3', '13d8cb038b3925a78e12c5e292932afc');
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `users_person_classes`
+-- Структура таблицы `weapons`
 --
 
-CREATE TABLE `users_person_classes` (
+CREATE TABLE `weapons` (
   `id` int NOT NULL,
-  `user_id` int NOT NULL,
-  `person_class_id` int NOT NULL,
-  `selected` tinyint(1) DEFAULT '0'
+  `name` varchar(255) NOT NULL,
+  `weapon_type` enum('sword','bow','axe','staff','dagger') NOT NULL,
+  `damage` int NOT NULL,
+  `attack_speed` int DEFAULT '1',
+  `cost` int DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Индексы сохранённых таблиц
 --
+
+--
+-- Индексы таблицы `characters`
+--
+ALTER TABLE `characters`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_id` (`user_id`),
+  ADD UNIQUE KEY `user_id_2` (`user_id`),
+  ADD UNIQUE KEY `user_id_3` (`user_id`);
+
+--
+-- Индексы таблицы `characters_armor`
+--
+ALTER TABLE `characters_armor`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `character_id` (`character_id`),
+  ADD KEY `helmet_id` (`helmet_id`),
+  ADD KEY `chestplate_id` (`chestplate_id`),
+  ADD KEY `leggings_id` (`leggings_id`),
+  ADD KEY `shield_id` (`shield_id`);
+
+--
+-- Индексы таблицы `characters_classes`
+--
+ALTER TABLE `characters_classes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `class_id` (`class_id`),
+  ADD KEY `character_id` (`character_id`);
+
+--
+-- Индексы таблицы `characters_weapons`
+--
+ALTER TABLE `characters_weapons`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `character_id` (`character_id`),
+  ADD KEY `weapon_id` (`weapon_id`);
+
+--
+-- Индексы таблицы `chestplates`
+--
+ALTER TABLE `chestplates`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `classes`
+--
+ALTER TABLE `classes`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Индексы таблицы `hashes`
@@ -133,17 +303,23 @@ ALTER TABLE `hashes`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Индексы таблицы `helmets`
+--
+ALTER TABLE `helmets`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `leggings`
+--
+ALTER TABLE `leggings`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `messages`
 --
 ALTER TABLE `messages`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`);
-
---
--- Индексы таблицы `person_classes`
---
-ALTER TABLE `person_classes`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Индексы таблицы `rooms`
@@ -160,6 +336,12 @@ ALTER TABLE `room_members`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Индексы таблицы `shields`
+--
+ALTER TABLE `shields`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `users`
 --
 ALTER TABLE `users`
@@ -167,16 +349,62 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `login` (`login`);
 
 --
--- Индексы таблицы `users_person_classes`
+-- Индексы таблицы `weapons`
 --
-ALTER TABLE `users_person_classes`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `user_id` (`user_id`,`person_class_id`),
-  ADD KEY `person_class_id` (`person_class_id`);
+ALTER TABLE `weapons`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT для сохранённых таблиц
 --
+
+--
+-- AUTO_INCREMENT для таблицы `characters`
+--
+ALTER TABLE `characters`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `characters_armor`
+--
+ALTER TABLE `characters_armor`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `characters_classes`
+--
+ALTER TABLE `characters_classes`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `characters_weapons`
+--
+ALTER TABLE `characters_weapons`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `chestplates`
+--
+ALTER TABLE `chestplates`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `classes`
+--
+ALTER TABLE `classes`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `helmets`
+--
+ALTER TABLE `helmets`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `leggings`
+--
+ALTER TABLE `leggings`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `messages`
@@ -185,38 +413,69 @@ ALTER TABLE `messages`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `person_classes`
---
-ALTER TABLE `person_classes`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT для таблицы `rooms`
 --
 ALTER TABLE `rooms`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT для таблицы `room_members`
 --
 ALTER TABLE `room_members`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+
+--
+-- AUTO_INCREMENT для таблицы `shields`
+--
+ALTER TABLE `shields`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
--- AUTO_INCREMENT для таблицы `users_person_classes`
+-- AUTO_INCREMENT для таблицы `weapons`
 --
-ALTER TABLE `users_person_classes`
+ALTER TABLE `weapons`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
 --
+
+--
+-- Ограничения внешнего ключа таблицы `characters`
+--
+ALTER TABLE `characters`
+  ADD CONSTRAINT `characters_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `characters_armor`
+--
+ALTER TABLE `characters_armor`
+  ADD CONSTRAINT `characters_armor_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `characters` (`id`),
+  ADD CONSTRAINT `characters_armor_ibfk_2` FOREIGN KEY (`helmet_id`) REFERENCES `helmets` (`id`),
+  ADD CONSTRAINT `characters_armor_ibfk_3` FOREIGN KEY (`chestplate_id`) REFERENCES `chestplates` (`id`),
+  ADD CONSTRAINT `characters_armor_ibfk_4` FOREIGN KEY (`leggings_id`) REFERENCES `leggings` (`id`),
+  ADD CONSTRAINT `characters_armor_ibfk_5` FOREIGN KEY (`shield_id`) REFERENCES `shields` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `characters_classes`
+--
+ALTER TABLE `characters_classes`
+  ADD CONSTRAINT `characters_classes_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `characters` (`id`),
+  ADD CONSTRAINT `characters_classes_ibfk_2` FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`),
+  ADD CONSTRAINT `characters_classes_ibfk_3` FOREIGN KEY (`character_id`) REFERENCES `characters` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `characters_weapons`
+--
+ALTER TABLE `characters_weapons`
+  ADD CONSTRAINT `characters_weapons_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `characters` (`id`),
+  ADD CONSTRAINT `characters_weapons_ibfk_2` FOREIGN KEY (`weapon_id`) REFERENCES `weapons` (`id`);
 
 --
 -- Ограничения внешнего ключа таблицы `messages`
@@ -230,13 +489,6 @@ ALTER TABLE `messages`
 ALTER TABLE `room_members`
   ADD CONSTRAINT `room_members_ibfk_1` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `room_members_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
-
---
--- Ограничения внешнего ключа таблицы `users_person_classes`
---
-ALTER TABLE `users_person_classes`
-  ADD CONSTRAINT `users_person_classes_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `users_person_classes_ibfk_2` FOREIGN KEY (`person_class_id`) REFERENCES `person_classes` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
