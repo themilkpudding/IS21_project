@@ -49,7 +49,7 @@
 | - | - | - |
 | id | integer | primary key |
 | name | string | not null |
-| weapon_type | enum | 'sword','bow','axe','staff','dagger' |
+| weapon_type | enum | 'sword'/'bow'/'axe'/'staff'/'dagger' |
 | damage | integer | not null |
 | attack_speed | integer | 1 by default |
 | cost | integer | 0 by default |
