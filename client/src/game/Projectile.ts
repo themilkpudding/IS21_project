@@ -9,16 +9,6 @@ export class Projectile extends Unit {
         this.damage = 10;
         this.speed = 5;
     }
-
-    update(): void {
-        if (!this.isActive) return;
-
-        if (this.direction === 'right') {
-            this.rect.x += this.speed;
-        } else {
-            this.rect.x -= this.speed;
-        }
-    }
 }
 
 export default Projectile;
