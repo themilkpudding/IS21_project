@@ -137,6 +137,15 @@ class Server {
 
         return userInfo;
     }
+
+    startGetScene(callback: () => void): void {
+    }
+
+    stopGetScene(): void {
+    }
+
+    updateScene(): void {
+    }
 }
 
 export default Server;
