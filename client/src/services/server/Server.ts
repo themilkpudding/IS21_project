@@ -2,7 +2,6 @@ import md5 from 'md5';
 import CONFIG from "../../config";
 import Store from "../store/Store";
 import { TAnswer, TError, TMessagesResponse, TUser } from "./types";
-import { TupleType } from 'typescript';
 
 const { CHAT_TIMESTAMP, HOST } = CONFIG;
 
@@ -24,7 +23,7 @@ class Server {
             if (token) {
                 params.token = token;
             }
-            
+
             const response = await fetch(`${this.HOST}/?${Object.keys(params).map(key => `${key}=${params[key]}`).join('&')}`);
 
             const answer: TAnswer<T> = await response.json();
@@ -106,6 +105,25 @@ class Server {
             this.chatInterval = null;
             this.store.clearMessages();
         }
+    }
+
+    async getUserInfo(): Promise<{ id: number; login: string; nickname: string; money: number } | null> {
+        const token = this.store.getToken();
+        if (!token) return null;
+
+        const userInfo = await this.request<{ id: number; login: string; nickname: string; money: number }>('getUserInfo', { token });
+        if (userInfo) {
+            const user: TUser = {
+                id: userInfo.id,
+                login: userInfo.login,
+                nickname: userInfo.nickname,
+                money: userInfo.money,
+                token: token
+            };
+            this.store.setUser(user);
+        }
+
+        return userInfo;
     }
 }
 

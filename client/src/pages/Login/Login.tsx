@@ -10,25 +10,25 @@ import './Login.scss'
 const Login: React.FC<IBasePage> = (props: IBasePage) => {
     const { setPage } = props;
     const server = useContext(ServerContext);
-    const loginRef = useRef<HTMLInputElement>(null);
-    const passwordRef = useRef<HTMLInputElement>(null);
-    const { isFormValid, error,  setError, checkFilled, showError } = useCheckLogin();
+    const loginRef = useRef<HTMLInputElement>(null!);
+    const passwordRef = useRef<HTMLInputElement>(null!);
+    const { isFormValid, error, setError, checkFilled, showError } = useCheckLogin();
     const [rememberMe, setRememberMe] = useState(false);
 
     const hideErrorOnInput = () => {
         setError('');
-        checkFilled(loginRef.current!.value, passwordRef.current!.value);
+        checkFilled(loginRef.current.value, passwordRef.current.value);
     };
 
     const clearAuthFields = () => {
-        loginRef.current!.value = '';
-        passwordRef.current!.value = '';
-        checkFilled(loginRef.current!.value, passwordRef.current!.value);
+        loginRef.current.value = '';
+        passwordRef.current.value = '';
+        checkFilled(loginRef.current.value, passwordRef.current.value);
     };
 
     const loginClickHandler = async () => {
-        const login = loginRef.current!.value;
-        const password = passwordRef.current!.value;
+        const login = loginRef.current.value;
+        const password = passwordRef.current.value;
 
         if (!showError(login, password)) return;
 
@@ -43,17 +43,30 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
     const registrationClickHandler = () => { setPage(PAGES.REGISTRATION) };
 
     useEffect(() => {
-        const token = server.store.getToken();
-        const savedRememberMe = server.store.getRememberMe();
+        const autoLogin = async () => {
+            const token = server.store.getToken();
 
-        server.showError((err: TError) => {
-            if (err.code === 1002 || err.code === 1005) setError('неверный логин или пароль');
-            clearAuthFields();
-        });
+            server.showError((err: TError) => {
+                if (err.code === 1002 || err.code === 1005) setError('неверный логин или пароль');
+                clearAuthFields();
 
-        if (token && savedRememberMe) {
-            setPage(PAGES.MENU);
-        }
+                sessionStorage.removeItem('token');
+                localStorage.removeItem('token');
+                localStorage.removeItem('rememberMe');
+
+                server.store.user = null;
+                server.store.rememberMe = false;
+            });
+
+            if (token) {
+                const user = await server.getUserInfo();
+                if (user) {
+                    setPage(PAGES.MENU);
+                }
+            }
+        };
+
+        autoLogin();
     }, []);
 
     return (<div className='login'>
@@ -65,9 +78,10 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
                 type="text"
                 placeholder="ваш логин"
                 onChange={hideErrorOnInput}
-                onKeyUp={() => checkFilled(loginRef.current!.value, passwordRef.current!.value)}
+                onKeyUp={() => checkFilled(loginRef.current.value, passwordRef.current.value)}
                 className='input-login'
                 id='test-input-login'
+                autoComplete='off'
             />
         </div>
 
@@ -78,9 +92,10 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
                 type="password"
                 placeholder="ваш пароль"
                 onChange={hideErrorOnInput}
-                onKeyUp={() => checkFilled(loginRef.current!.value, passwordRef.current!.value)}
+                onKeyUp={() => checkFilled(loginRef.current.value, passwordRef.current.value)}
                 className='input-password'
                 id='test-input-password'
+                autoComplete='off'
             />
         </div>
 
