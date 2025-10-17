@@ -1,4 +1,4 @@
-import CONFIG, { FPoint } from "../config";
+/*import CONFIG, { FPoint } from "../config";
 import { Map } from "./map";
 import Hero, { KNIGHT } from "./hero";
 import { Projectile } from "./hero"
@@ -161,7 +161,7 @@ class Game {
     getArrows(): Projectile[] {
         return [...this.Arrows];
     }
-    */
+
 }
 
-export default Game;
+export default Game;*/

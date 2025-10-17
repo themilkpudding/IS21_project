@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+/*import React, { useEffect, useState, useRef } from 'react';
 import CONFIG from '../../config';
 import Button from '../../components/Button/Button';
 import { IBasePage, PAGES } from '../PageManager';
@@ -338,4 +338,4 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
     );
 };
 
-export default GamePage;
+export default GamePage;*/

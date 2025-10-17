@@ -1,7 +1,7 @@
-import { FPoint } from "../config";
+import { TRect } from "../config";
 
 export class Map {
-    private walls: FPoint[];
+    private walls: TRect[];
 
     constructor() {
         this.walls = [
@@ -12,7 +12,7 @@ export class Map {
         ];
     }
 
-    getWalls(): FPoint[] {
+    getWalls(): TRect[] {
         return this.walls;
     }
 }
