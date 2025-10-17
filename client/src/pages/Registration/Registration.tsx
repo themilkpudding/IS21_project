@@ -5,7 +5,7 @@ import { IBasePage, PAGES } from '../PageManager';
 import { ServerContext } from '../../App';
 import { TError } from '../../services/server/types';
 import logo from '../../assets/img/logo/logo.svg'
-import './Registration.css';
+import './Registration.scss';
 
 const Registration: React.FC<IBasePage> = (props: IBasePage) => {
     const { setPage } = props;
@@ -57,7 +57,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
     return (<div className='registration'>
         <img src={logo} className="logoReg" height={80} />
         <div className='registration-wrapper'>
-            <p className='registration-label'>логин</p>
+            <p className='registration-label-log'>логин</p>
             <input
                 ref={loginRef}
                 type="text"
@@ -68,7 +68,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
                 id='test-input-loginReg'
                 autoComplete='off'
             />
-            <p className='registration-label'>никнейм</p>
+            <p className='registration-label-nick'>никнейм</p>
             <input
                 ref={nicknameRef}
                 type="text"
@@ -79,7 +79,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
                 id='test-input-nicknameReg'
                 autoComplete='off'
             />
-            <p className='registration-label'>пароль</p>
+            <p className='registration-label-pass'>пароль</p>
             <input
                 ref={passwordRef}
                 type="password"
@@ -90,7 +90,7 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
                 id='test-input-passwordReg'
                 autoComplete='off'
             />
-            <p className='registration-label'>подтверждение пароля</p>
+            <p className='registration-label-certpass'>подтверждение пароля</p>
             <input
                 ref={confirmPasswordRef}
                 type="password"
