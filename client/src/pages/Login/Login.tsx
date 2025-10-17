@@ -45,15 +45,21 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
     useEffect(() => {
         const autoLogin = async () => {
             const token = server.store.getToken();
-            const savedRememberMe = server.store.getRememberMe();
 
             server.showError((err: TError) => {
                 if (err.code === 1002 || err.code === 1005) setError('неверный логин или пароль');
                 clearAuthFields();
+
+                sessionStorage.removeItem('token');
+                localStorage.removeItem('token');
+                localStorage.removeItem('rememberMe');
+
+                server.store.user = null;
+                server.store.rememberMe = false;
             });
 
-            if (token && savedRememberMe) {
-                const user = await server.autoLogin();
+            if (token) {
+                const user = await server.getUserInfo();
                 if (user) {
                     setPage(PAGES.MENU);
                 }
