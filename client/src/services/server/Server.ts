@@ -107,6 +107,18 @@ class Server {
         }
     }
 
+    async deleteUser(): Promise<boolean | null> {
+        const token = this.store.getToken();
+        if (!token) return null;
+
+        const result = await this.request<boolean>('deleteUser', { token })
+        if (result) {
+            this.store.clearUser();
+            return true;
+        }
+        return false;
+    }
+
     async getUserInfo(): Promise<{ id: number; login: string; nickname: string; money: number } | null> {
         const token = this.store.getToken();
         if (!token) return null;
