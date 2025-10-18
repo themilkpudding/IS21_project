@@ -62,6 +62,17 @@
 | weapon_id | integer | not null |
 | selected | boolean | false by default |
 
+**arrows**
+| name | type | comment |
+| - | - | - |   
+| id | integer | primary key |
+| room_id | integer | not null |
+| x | integer | |
+| y | integer | |
+| direction | string | 'left', 'right' |
+| speed | integer | |
+| damage | integer | |
+
 ## Система брони
 
 **helmets**
@@ -143,6 +154,13 @@
 | user_id | integer | not null |
 | message | string | |
 | created | datetime | current datetime |
+
+**bots**
+| name | type | comment |
+| - | - | - |
+| id | integer | primary key |
+| room_id | integer | not null |
+| data | string | JSON.stringfy() |
 
 
 
