@@ -378,7 +378,7 @@ ALTER TABLE `rooms`
 --
 ALTER TABLE `room_members`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `room_id` (`room_id`),
+  ADD UNIQUE KEY `room_id` (`room_id`,`user_id`),
   ADD KEY `user_id` (`user_id`);
 
 --
@@ -480,7 +480,7 @@ ALTER TABLE `rooms`
 -- AUTO_INCREMENT для таблицы `room_members`
 --
 ALTER TABLE `room_members`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
 -- AUTO_INCREMENT для таблицы `shields`
@@ -557,8 +557,8 @@ ALTER TABLE `messages`
 -- Ограничения внешнего ключа таблицы `room_members`
 --
 ALTER TABLE `room_members`
-  ADD CONSTRAINT `room_members_ibfk_1` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`),
-  ADD CONSTRAINT `room_members_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `room_members_ibfk_1` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `room_members_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
