@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.3
+-- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
--- Хост: MySQL-8.0:3306
--- Время создания: Окт 19 2025 г., 00:42
+-- Хост: MySQL-8.0
+-- Время создания: Окт 17 2025 г., 16:24
 -- Версия сервера: 8.0.41
 -- Версия PHP: 8.3.14
 
@@ -217,11 +217,11 @@ CREATE TABLE `room_members` (
   `id` int NOT NULL,
   `room_id` int NOT NULL,
   `user_id` int NOT NULL,
-  `type` varchar(20) NOT NULL,
-  `status` varchar(20) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
   `x` int DEFAULT NULL,
   `y` int DEFAULT NULL,
-  `direction` varchar(10) DEFAULT NULL,
+  `direction` varchar(255) DEFAULT NULL,
   `hp` int DEFAULT NULL
 ) ;
 
