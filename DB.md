@@ -135,8 +135,12 @@
 | id | integer | primary key |
 | room_id | integer | not null |
 | user_id | integer | not null |
-| type | enum | 'owner'/'participant' |
-| status | enum | 'ready'/'started' |
+| type | string | 'owner'/'participant' |
+| status | string | 'ready'/'started' |
+| x | integer |  |
+| y | integer |  |
+| direction | string | 'left', 'right' |
+| hp | integer |  |
 
 ## Вспомогательные таблицы
 
