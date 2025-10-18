@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.2
+-- version 5.2.3
 -- https://www.phpmyadmin.net/
 --
--- Хост: MySQL-8.0
--- Время создания: Окт 17 2025 г., 16:24
+-- Хост: MySQL-8.0:3306
+-- Время создания: Окт 19 2025 г., 00:42
 -- Версия сервера: 8.0.41
 -- Версия PHP: 8.3.14
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- База данных: `knightwars`
+-- База данных: `Knightwars`
 --
 
 -- --------------------------------------------------------
@@ -217,9 +217,13 @@ CREATE TABLE `room_members` (
   `id` int NOT NULL,
   `room_id` int NOT NULL,
   `user_id` int NOT NULL,
-  `type` enum('owner','participant') DEFAULT 'participant',
-  `status` enum('ready','started') DEFAULT 'ready'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `type` varchar(20) NOT NULL,
+  `status` varchar(20) NOT NULL,
+  `x` int DEFAULT NULL,
+  `y` int DEFAULT NULL,
+  `direction` varchar(10) DEFAULT NULL,
+  `hp` int DEFAULT NULL
+) ;
 
 -- --------------------------------------------------------
 
@@ -374,7 +378,7 @@ ALTER TABLE `rooms`
 --
 ALTER TABLE `room_members`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `room_id` (`room_id`,`user_id`),
+  ADD KEY `room_id` (`room_id`),
   ADD KEY `user_id` (`user_id`);
 
 --
@@ -476,7 +480,7 @@ ALTER TABLE `rooms`
 -- AUTO_INCREMENT для таблицы `room_members`
 --
 ALTER TABLE `room_members`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `shields`
@@ -553,8 +557,8 @@ ALTER TABLE `messages`
 -- Ограничения внешнего ключа таблицы `room_members`
 --
 ALTER TABLE `room_members`
-  ADD CONSTRAINT `room_members_ibfk_1` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `room_members_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `room_members_ibfk_1` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`),
+  ADD CONSTRAINT `room_members_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
