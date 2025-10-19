@@ -18,8 +18,36 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- База данных: `knightwars`
+-- База данных: `Knightwars`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `arrows`
+--
+
+CREATE TABLE `arrows` (
+  `id` int NOT NULL,
+  `room_id` int NOT NULL,
+  `x` int DEFAULT NULL,
+  `y` int DEFAULT NULL,
+  `direction` enum('left','right') DEFAULT NULL,
+  `speed` int DEFAULT NULL,
+  `damage` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `bots`
+--
+
+CREATE TABLE `bots` (
+  `id` int NOT NULL,
+  `room_id` int NOT NULL,
+  `data` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -189,9 +217,13 @@ CREATE TABLE `room_members` (
   `id` int NOT NULL,
   `room_id` int NOT NULL,
   `user_id` int NOT NULL,
-  `type` enum('owner','participant') DEFAULT 'participant',
-  `status` enum('ready','started') DEFAULT 'ready'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `type` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `x` int DEFAULT NULL,
+  `y` int DEFAULT NULL,
+  `direction` varchar(255) DEFAULT NULL,
+  `hp` int DEFAULT NULL
+) ;
 
 -- --------------------------------------------------------
 
@@ -247,6 +279,20 @@ CREATE TABLE `weapons` (
 --
 -- Индексы сохранённых таблиц
 --
+
+--
+-- Индексы таблицы `arrows`
+--
+ALTER TABLE `arrows`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `room_id` (`room_id`);
+
+--
+-- Индексы таблицы `bots`
+--
+ALTER TABLE `bots`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `room_id` (`room_id`);
 
 --
 -- Индексы таблицы `characters`
@@ -359,6 +405,18 @@ ALTER TABLE `weapons`
 --
 
 --
+-- AUTO_INCREMENT для таблицы `arrows`
+--
+ALTER TABLE `arrows`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `bots`
+--
+ALTER TABLE `bots`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT для таблицы `characters`
 --
 ALTER TABLE `characters`
@@ -445,6 +503,18 @@ ALTER TABLE `weapons`
 --
 -- Ограничения внешнего ключа сохраненных таблиц
 --
+
+--
+-- Ограничения внешнего ключа таблицы `arrows`
+--
+ALTER TABLE `arrows`
+  ADD CONSTRAINT `arrows_ibfk_1` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`) ON DELETE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `bots`
+--
+ALTER TABLE `bots`
+  ADD CONSTRAINT `bots_ibfk_1` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`) ON DELETE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `characters`

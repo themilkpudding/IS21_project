@@ -62,6 +62,17 @@
 | weapon_id | integer | not null |
 | selected | boolean | false by default |
 
+**arrows**
+| name | type | comment |
+| - | - | - |   
+| id | integer | primary key |
+| room_id | integer | not null |
+| x | integer | |
+| y | integer | |
+| direction | string | 'left', 'right' |
+| speed | integer | |
+| damage | integer | |
+
 ## Система брони
 
 **helmets**
@@ -124,8 +135,12 @@
 | id | integer | primary key |
 | room_id | integer | not null |
 | user_id | integer | not null |
-| type | enum | 'owner'/'participant' |
-| status | enum | 'ready'/'started' |
+| type | string | 'owner'/'participant' |
+| status | string | 'ready'/'started' |
+| x | integer |  |
+| y | integer |  |
+| direction | string | 'left', 'right' |
+| hp | integer |  |
 
 ## Вспомогательные таблицы
 
@@ -143,6 +158,13 @@
 | user_id | integer | not null |
 | message | string | |
 | created | datetime | current datetime |
+
+**bots**
+| name | type | comment |
+| - | - | - |
+| id | integer | primary key |
+| room_id | integer | not null |
+| data | string | JSON.stringfy() |
 
 
 
