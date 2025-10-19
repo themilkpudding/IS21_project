@@ -1,4 +1,4 @@
-import CONFIG, { FPoint } from "../config";
+import CONFIG, { TRect } from "../config";
 import { Map } from "./map";
 import Hero, { KNIGHT } from "./hero";
 import { Projectile } from "./hero"
@@ -13,8 +13,8 @@ import Server from "../services/server/Server";
 class Game {
     private server: Server;
     private hero: Hero;
-    private Walls: FPoint[];
-    private Sword: FPoint;
+    private Walls: TRect[];
+    private Sword: TRect;
     private gameMap: Map;
     private Arrows: Projectile[];
     private interval: NodeJS.Timer | null = null;
@@ -43,6 +43,9 @@ class Game {
             Sword: this.Sword,
             Arrows: this.Arrows.map(arrow => arrow.getPosition()),
         };
+    }
+
+    private userIsOwner() {
     }
 
     private startUpdateScene() {

@@ -1,9 +1,11 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
+import { ServerContext } from '../../App';
 import CONFIG from '../../config';
 import Button from '../../components/Button/Button';
 import { IBasePage, PAGES } from '../PageManager';
 import Game from '../../game/Game';
 import Canvas from '../../services/canvas/Canvas';
+import Unit from '../../game/types/Unit';
 import useCanvas from '../../services/canvas/useCanvas';
 import useSprites from './hooks/useSprites';
 
@@ -17,19 +19,28 @@ type AttackMode = 'sword' | 'bow';
 const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
     const { WINDOW } = CONFIG;
     const { setPage } = props;
+    const server = useContext(ServerContext);
 
     const game = new Game(server);
-    new Canvas();
-
-    function render() {
-        game.getScene()
-    }
-
+    new Canvas(
+        {
+            parentId: GAME_FIELD,
+            WIDTH: WINDOW.WIDTH,
+            HEIGHT: WINDOW.HEIGHT,
+            WINDOW: WINDOW,
+            callbacks: {
+                mouseMove: (x: number, y: number) => { },
+                mouseClick: (x: number, y: number) => { },
+                mouseRightClick: () => { },
+            },
+        }
+    );
 
 
 
     const gameRef = useRef<Game | null>(null);
     const canvasRef = useRef<Canvas | null>(null);
+    const unitRef = useRef<Unit | null>(null);
     const swordVisibleRef = useRef(false);
     const swordTimerRef = useRef<NodeJS.Timeout | null>(null);
     const [attackMode, setAttackMode] = useState<AttackMode>('sword');
@@ -76,6 +87,9 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
     }
 
     function render(FPS: number): void {
+        game.getScene()
+
+
         if (canvasRef.current && gameRef.current) {
             canvasRef.current.clear();
             const scene = gameRef.current.getScene();
@@ -123,11 +137,11 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
             canvasRef.current.text(WINDOW.LEFT + 20, WINDOW.TOP + 50, String(FPS), GREEN);
 
             canvasRef.current.render();
-            updateDebugInfo();
+            // updateDebugInfo();
         }
     }
 
-    const updateDebugInfo = () => {
+    /*const updateDebugInfo = () => {
         if (gameRef.current) {
             const hero = gameRef.current.getHero();
             const hasBow = hero.getInventory().some(item => item.toLowerCase().includes('bow')) ||
@@ -139,7 +153,7 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
                 attackMode: attackModeRef.current
             });
         }
-    };
+    };*/
 
     const backClickHandler = () => {
         setPage(PAGES.NOT_FOUND);
@@ -157,19 +171,19 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
             swordTimerRef.current = setTimeout(() => {
                 swordVisibleRef.current = false;
             }, 500);
-        } else if (attackModeRef.current === 'bow') {
+        } /*else if (attackModeRef.current === 'bow') {
             // Используем лук
             if (gameRef.current) {
                 gameRef.current.shoot();
             }
-        }
+        }*/
     };
 
     // Функция для переключения режима атаки
     const switchAttackMode = (mode: AttackMode) => {
         setAttackMode(mode);
         attackModeRef.current = mode;
-        updateDebugInfo();
+        //updateDebugInfo();
     };
 
     const normalizeVector = (dx: number, dy: number): { dx: number; dy: number } => {
@@ -207,7 +221,7 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
         const normalized = normalizeVector(dx, dy);
 
         if (dx !== 0 || dy !== 0) {
-            gameRef.current.move(normalized.dx, normalized.dy);
+            unitRef.current.move(normalized.dx, normalized.dy);
         }
     };
 
@@ -216,7 +230,7 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
 
     useEffect(() => {
         // Инициализация игры
-        gameRef.current = new Game();
+        gameRef.current = new Game(server);
 
         // Инициализация канваса
         canvasRef.current = CanvasComponent({
@@ -232,7 +246,7 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
         });
 
         // Добавляем лук для тестирования
-        gameRef.current.addBowToInventory();
+        // gameRef.current.addBowToInventory();
 
         // Интервалы для обновления игры
         movementIntervalRef.current = setInterval(handleMovement, 8);
@@ -241,7 +255,7 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
         // Интервал для обновления состояния игры (стрел)
         gameUpdateIntervalRef.current = setInterval(() => {
             if (gameRef.current) {
-                gameRef.current.update();
+                // gameRef.current.update();
             }
         }, 8);
 
