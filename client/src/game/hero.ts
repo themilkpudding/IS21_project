@@ -9,6 +9,9 @@ class Hero extends Unit {
 
     constructor() {
         super();
+        this.rect.x = 100;
+        this.rect.y = 100;
+        this.speed = 20;
         this.rect.width = 100;
         this.rect.height = 100
     };
