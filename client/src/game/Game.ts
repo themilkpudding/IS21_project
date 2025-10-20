@@ -50,10 +50,6 @@ class Game {
         this.movement = { dx, dy };
     }
 
-    move(dx: number, dy: number): void {
-        this.setMovement(dx, dy);
-    }
-
     private startUpdateScene() {
         if (this.interval) {
             this.stopUpdateScene();
