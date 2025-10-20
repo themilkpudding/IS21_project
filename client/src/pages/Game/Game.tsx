@@ -89,13 +89,10 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
         if (w) dy -= 1;
         if (s) dy += 1;
 
-        // Передаем нормализованное направление движения
-        // Фактическая скорость будет применена в Game с учетом deltaTime
         if (dx !== 0 || dy !== 0) {
-            gameRef.current?.move(dx, dy);
+            gameRef.current?.setMovement(dx, dy);
         } else {
-            // Если клавиши не нажаты, останавливаем движение
-            gameRef.current?.move(0, 0);
+            gameRef.current?.setMovement(0, 0);
         }
     }, []);
 
