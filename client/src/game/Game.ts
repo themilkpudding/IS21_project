@@ -50,6 +50,9 @@ class Game {
         this.movement = { dx, dy };
     }
 
+    private userIsOwner() {
+    }
+
     private startUpdateScene() {
         if (this.interval) {
             this.stopUpdateScene();
