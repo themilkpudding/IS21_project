@@ -62,17 +62,6 @@
 | weapon_id | integer | not null |
 | selected | boolean | false by default |
 
-**arrows**
-| name | type | comment |
-| - | - | - |   
-| id | integer | primary key |
-| room_id | integer | not null |
-| x | integer | |
-| y | integer | |
-| direction | string | 'left', 'right' |
-| speed | integer | |
-| damage | integer | |
-
 ## Система брони
 
 **helmets**
@@ -110,16 +99,37 @@
 | defense | integer | not null |
 | cost | integer | 0 by default |
 
-**characters_armor**
+**characters_helmets**
 | name | type | comment |
 | - | - | - |
 | id | integer | primary key |
 | character_id | integer | not null |
-| helmet_id | integer | nullable |
-| chestplate_id | integer | nullable |
-| leggings_id | integer | nullable |
-| shield_id | integer | nullable |
-| selected | boolean | false by default |
+| helmet_id | integer | not null |
+| selected | boolean| false by default |
+
+**characters_chestplates**
+| name | type | comment |
+| - | - | - |
+| id | integer | primary key |
+| character_id | integer | not null |
+| chestplate_id | integer | not null |
+| selected | boolean| false by default |
+
+**characters_leggings**
+| name | type | comment |
+| - | - | - |
+| id | integer | primary key |
+| character_id | integer | not null |
+| legging_id | integer | not null |
+| selected | boolean| false by default |
+
+**characters_shields**
+| name | type | comment |
+| - | - | - |
+| id | integer | primary key |
+| character_id | integer | not null |
+| shield_id | integer | not null |
+| selected | boolean| false by default |
 
 ## Лобби и комнаты
 
@@ -135,12 +145,32 @@
 | id | integer | primary key |
 | room_id | integer | not null |
 | user_id | integer | not null |
-| type | string | 'owner'/'participant' |
-| status | string | 'ready'/'started' |
+| type | enum | 'owner'/'participant' |
+| status | enum | 'ready'/'started' |
 | x | integer |  |
 | y | integer |  |
-| direction | string | 'left', 'right' |
+| direction | enum | 'left'/'right' |
 | hp | integer |  |
+
+## Игровые объекты
+
+**arrows**
+| name | type | comment |
+| - | - | - |
+| id | integer | primary key |
+| room_id | integer | not null |
+| x | integer | position by X |
+| y | integer | position by Y |
+| direction | enum | 'left'/'right' |
+| speed | integer | |
+| damage | integer | |
+
+**bots**
+| name | type | comment |
+| - | - | - |
+| id | integer | primary key |
+| room_id | integer | not null |
+| data | string | JSON |
 
 ## Вспомогательные таблицы
 
@@ -158,13 +188,6 @@
 | user_id | integer | not null |
 | message | string | |
 | created | datetime | current datetime |
-
-**bots**
-| name | type | comment |
-| - | - | - |
-| id | integer | primary key |
-| room_id | integer | not null |
-| data | string | JSON.stringfy() |
 
 
 
