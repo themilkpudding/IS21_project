@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: MySQL-8.0
--- Время создания: Окт 17 2025 г., 16:24
+-- Время создания: Окт 20 2025 г., 15:03
 -- Версия сервера: 8.0.41
 -- Версия PHP: 8.3.14
 
@@ -20,6 +20,36 @@ SET time_zone = "+00:00";
 --
 -- База данных: `knightwars`
 --
+CREATE DATABASE IF NOT EXISTS `knightwars` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `knightwars`;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `arrows`
+--
+
+CREATE TABLE `arrows` (
+  `id` int NOT NULL,
+  `room_id` int NOT NULL,
+  `x` int DEFAULT NULL,
+  `y` int DEFAULT NULL,
+  `direction` enum('left','right') DEFAULT NULL,
+  `speed` int DEFAULT NULL,
+  `damage` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `bots`
+--
+
+CREATE TABLE `bots` (
+  `id` int NOT NULL,
+  `room_id` int NOT NULL,
+  `data` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -40,16 +70,13 @@ CREATE TABLE `characters` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `characters_armor`
+-- Структура таблицы `characters_chestplates`
 --
 
-CREATE TABLE `characters_armor` (
+CREATE TABLE `characters_chestplates` (
   `id` int NOT NULL,
   `character_id` int NOT NULL,
-  `helmet_id` int DEFAULT NULL,
-  `chestplate_id` int DEFAULT NULL,
-  `leggings_id` int DEFAULT NULL,
-  `shield_id` int DEFAULT NULL,
+  `chestplate_id` int NOT NULL,
   `selected` tinyint(1) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -63,6 +90,45 @@ CREATE TABLE `characters_classes` (
   `id` int NOT NULL,
   `character_id` int NOT NULL,
   `class_id` int NOT NULL,
+  `selected` tinyint(1) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `characters_helmets`
+--
+
+CREATE TABLE `characters_helmets` (
+  `id` int NOT NULL,
+  `character_id` int NOT NULL,
+  `helmet_id` int NOT NULL,
+  `selected` tinyint(1) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `characters_leggings`
+--
+
+CREATE TABLE `characters_leggings` (
+  `id` int NOT NULL,
+  `character_id` int NOT NULL,
+  `legging_id` int NOT NULL,
+  `selected` tinyint(1) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `characters_shields`
+--
+
+CREATE TABLE `characters_shields` (
+  `id` int NOT NULL,
+  `character_id` int NOT NULL,
+  `shield_id` int NOT NULL,
   `selected` tinyint(1) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -189,8 +255,12 @@ CREATE TABLE `room_members` (
   `id` int NOT NULL,
   `room_id` int NOT NULL,
   `user_id` int NOT NULL,
-  `type` enum('owner','participant') DEFAULT 'participant',
-  `status` enum('ready','started') DEFAULT 'ready'
+  `type` enum('owner','participant') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'participant',
+  `status` enum('ready','started') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'ready',
+  `x` int DEFAULT NULL,
+  `y` int DEFAULT NULL,
+  `direction` enum('left','right') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'right',
+  `hp` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -220,15 +290,6 @@ CREATE TABLE `users` (
   `token` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Дамп данных таблицы `users`
---
-
-INSERT INTO `users` (`id`, `login`, `password`, `nickname`, `token`) VALUES
-(34, 'kloddef1', '123456', 'KloddeF', '9277db550ae00251d19a08b4abd3204c'),
-(41, 'anton2', '123456', 'Anton2', 'f83b21a31e4564877d25dc30e8a06aa6'),
-(42, 'vadim3', '123456', 'Vadim3', '13d8cb038b3925a78e12c5e292932afc');
-
 -- --------------------------------------------------------
 
 --
@@ -249,6 +310,20 @@ CREATE TABLE `weapons` (
 --
 
 --
+-- Индексы таблицы `arrows`
+--
+ALTER TABLE `arrows`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `room_id` (`room_id`);
+
+--
+-- Индексы таблицы `bots`
+--
+ALTER TABLE `bots`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `room_id` (`room_id`);
+
+--
 -- Индексы таблицы `characters`
 --
 ALTER TABLE `characters`
@@ -258,15 +333,12 @@ ALTER TABLE `characters`
   ADD UNIQUE KEY `user_id_3` (`user_id`);
 
 --
--- Индексы таблицы `characters_armor`
+-- Индексы таблицы `characters_chestplates`
 --
-ALTER TABLE `characters_armor`
+ALTER TABLE `characters_chestplates`
   ADD PRIMARY KEY (`id`),
   ADD KEY `character_id` (`character_id`),
-  ADD KEY `helmet_id` (`helmet_id`),
-  ADD KEY `chestplate_id` (`chestplate_id`),
-  ADD KEY `leggings_id` (`leggings_id`),
-  ADD KEY `shield_id` (`shield_id`);
+  ADD KEY `chestplate_id` (`chestplate_id`);
 
 --
 -- Индексы таблицы `characters_classes`
@@ -275,6 +347,30 @@ ALTER TABLE `characters_classes`
   ADD PRIMARY KEY (`id`),
   ADD KEY `class_id` (`class_id`),
   ADD KEY `character_id` (`character_id`);
+
+--
+-- Индексы таблицы `characters_helmets`
+--
+ALTER TABLE `characters_helmets`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `character_id` (`character_id`),
+  ADD KEY `helmet_id` (`helmet_id`);
+
+--
+-- Индексы таблицы `characters_leggings`
+--
+ALTER TABLE `characters_leggings`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `character_id` (`character_id`),
+  ADD KEY `legging_id` (`legging_id`);
+
+--
+-- Индексы таблицы `characters_shields`
+--
+ALTER TABLE `characters_shields`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `character_id` (`character_id`),
+  ADD KEY `shield_id` (`shield_id`);
 
 --
 -- Индексы таблицы `characters_weapons`
@@ -359,21 +455,51 @@ ALTER TABLE `weapons`
 --
 
 --
+-- AUTO_INCREMENT для таблицы `arrows`
+--
+ALTER TABLE `arrows`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `bots`
+--
+ALTER TABLE `bots`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT для таблицы `characters`
 --
 ALTER TABLE `characters`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `characters_armor`
+-- AUTO_INCREMENT для таблицы `characters_chestplates`
 --
-ALTER TABLE `characters_armor`
+ALTER TABLE `characters_chestplates`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `characters_classes`
 --
 ALTER TABLE `characters_classes`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `characters_helmets`
+--
+ALTER TABLE `characters_helmets`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `characters_leggings`
+--
+ALTER TABLE `characters_leggings`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `characters_shields`
+--
+ALTER TABLE `characters_shields`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
@@ -447,20 +573,29 @@ ALTER TABLE `weapons`
 --
 
 --
+-- Ограничения внешнего ключа таблицы `arrows`
+--
+ALTER TABLE `arrows`
+  ADD CONSTRAINT `arrows_ibfk_1` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`) ON DELETE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `bots`
+--
+ALTER TABLE `bots`
+  ADD CONSTRAINT `bots_ibfk_1` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`) ON DELETE CASCADE;
+
+--
 -- Ограничения внешнего ключа таблицы `characters`
 --
 ALTER TABLE `characters`
   ADD CONSTRAINT `characters_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
--- Ограничения внешнего ключа таблицы `characters_armor`
+-- Ограничения внешнего ключа таблицы `characters_chestplates`
 --
-ALTER TABLE `characters_armor`
-  ADD CONSTRAINT `characters_armor_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `characters` (`id`),
-  ADD CONSTRAINT `characters_armor_ibfk_2` FOREIGN KEY (`helmet_id`) REFERENCES `helmets` (`id`),
-  ADD CONSTRAINT `characters_armor_ibfk_3` FOREIGN KEY (`chestplate_id`) REFERENCES `chestplates` (`id`),
-  ADD CONSTRAINT `characters_armor_ibfk_4` FOREIGN KEY (`leggings_id`) REFERENCES `leggings` (`id`),
-  ADD CONSTRAINT `characters_armor_ibfk_5` FOREIGN KEY (`shield_id`) REFERENCES `shields` (`id`);
+ALTER TABLE `characters_chestplates`
+  ADD CONSTRAINT `characters_chestplates_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `characters` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `characters_chestplates_ibfk_2` FOREIGN KEY (`chestplate_id`) REFERENCES `chestplates` (`id`) ON DELETE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `characters_classes`
@@ -469,6 +604,27 @@ ALTER TABLE `characters_classes`
   ADD CONSTRAINT `characters_classes_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `characters` (`id`),
   ADD CONSTRAINT `characters_classes_ibfk_2` FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`),
   ADD CONSTRAINT `characters_classes_ibfk_3` FOREIGN KEY (`character_id`) REFERENCES `characters` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `characters_helmets`
+--
+ALTER TABLE `characters_helmets`
+  ADD CONSTRAINT `characters_helmets_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `characters` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `characters_helmets_ibfk_2` FOREIGN KEY (`helmet_id`) REFERENCES `helmets` (`id`) ON DELETE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `characters_leggings`
+--
+ALTER TABLE `characters_leggings`
+  ADD CONSTRAINT `characters_leggings_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `characters` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `characters_leggings_ibfk_2` FOREIGN KEY (`legging_id`) REFERENCES `leggings` (`id`) ON DELETE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `characters_shields`
+--
+ALTER TABLE `characters_shields`
+  ADD CONSTRAINT `characters_shields_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `characters` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `characters_shields_ibfk_2` FOREIGN KEY (`shield_id`) REFERENCES `shields` (`id`) ON DELETE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `characters_weapons`

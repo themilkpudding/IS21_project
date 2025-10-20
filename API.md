@@ -69,6 +69,13 @@ User: {
     nickname: string;
     token: string;
 }
+
+UserInfo: {
+    id: number;
+    login: string;
+    nickname: string;
+    money: number;
+}
 ```
 
 ### 2.3. Математика

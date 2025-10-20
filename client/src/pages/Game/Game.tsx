@@ -1,9 +1,11 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
+import { ServerContext } from '../../App';
 import CONFIG from '../../config';
 import Button from '../../components/Button/Button';
 import { IBasePage, PAGES } from '../PageManager';
 import Game from '../../game/Game';
 import Canvas from '../../services/canvas/Canvas';
+import Unit from '../../game/types/Unit';
 import useCanvas from '../../services/canvas/useCanvas';
 import Store from '../../services/store/Store';
 import Server from '../../services/server/Server';
@@ -67,7 +69,7 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
 
             canvasRef.current.render();
         }
-    };
+    };*/
 
     const CanvasComponent = useCanvas(render);
 
