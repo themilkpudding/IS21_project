@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useContext } from 'react';
+import React, { useEffect, useState, useRef, useContext, useCallback } from 'react';
 import { ServerContext } from '../../App';
 import CONFIG from '../../config';
 import Button from '../../components/Button/Button';
@@ -69,7 +69,7 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
 
             canvasRef.current.render();
         }
-    };*/
+    };
 
     const CanvasComponent = useCanvas(render);
 
