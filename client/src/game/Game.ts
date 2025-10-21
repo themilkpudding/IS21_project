@@ -1,14 +1,9 @@
-import CONFIG, { TRect } from "../config";
-import { Map } from "./map";
-import Hero, { KNIGHT } from "./hero";
-import { Projectile } from "./hero"
+import CONFIG, { TRect, EDIRECTION } from "../config";
+import Map from "./types/Map";
+import Hero from "./types/Hero";
 import Server from "../services/server/Server";
-
-// heroes
-// bots
-// arrows
-// walls
-// pits (?)
+import Projectile from "./types/Projectile";
+import Unit from "./types/Unit";
 
 class Game {
     private server: Server;
@@ -17,32 +12,42 @@ class Game {
     private Sword: TRect;
     private gameMap: Map;
     private Arrows: Projectile[];
+    private Bots: Unit[];
     private interval: NodeJS.Timer | null = null;
+    private movement: { dx: number; dy: number } = { dx: 0, dy: 0 };
+    private lastUpdateTime: number = 0;
 
     constructor(server: Server) {
         this.server = server;
-        this.hero = new Hero(650, 400, KNIGHT);
+        this.hero = new Hero();
         this.gameMap = new Map();
         this.Walls = this.gameMap.getWalls();
         this.Sword = this.hero.getAttackPosition();
         this.Arrows = [];
+        this.Bots = [];
+        this.lastUpdateTime = Date.now();
 
-        this.server.startGetScene(() => this.getSceneFromBackend());
+        //this.server.startGetScene(() => this.getSceneFromBackend());
         this.startUpdateScene();
     }
 
     destructor() {
         this.stopUpdateScene();
-        this.server.stopGetScene();
+        //this.server.stopGetScene();
     }
 
     getScene() {
         return {
-            Hero: this.hero.getPosition(),
+            Hero: this.hero,
             Walls: this.Walls,
             Sword: this.Sword,
-            Arrows: this.Arrows.map(arrow => arrow.getPosition()),
+            Arrows: this.Arrows.map(arrow => arrow),
+            Bots: this.Bots.map(bot => bot),
         };
+    }
+
+    setMovement(dx: number, dy: number): void {
+        this.movement = { dx, dy };
     }
 
     private userIsOwner() {
@@ -72,99 +77,28 @@ class Game {
         // принудительно применить к сцене игры
     }
 
-    // 20, 50 ms
     private updateScene() {
+        const currentTime = Date.now();
+        this.lastUpdateTime = currentTime;
+
         let isUpdated = false;
-        // передвинуть героев
-        // передвинуть ботов
-        // передвинуть стрелы
-        // воткнуть стрелы
-        // нанести удары ботами
-        // посчитать нанесённую дамагу
-        // умереть всех причастных
-        if (isUpdated && this.userIsOwner()) {
-            //JSON.stringify()
-            this.server.updateScene();
-        }
-    }
 
-    /*
-
-    move(dx: number, dy: number): void {
-        const currentPos = this.hero.getPosition();
-        let newX = currentPos.x;
-        let newY = currentPos.y;
-
-        if (dx !== 0) {
-            newX = currentPos.x + dx;
-            const collidingWall = this.Walls.find(wall =>
-                this.check_collision(newX, currentPos.y, wall)
-            );
-            if (!collidingWall) {
-                this.hero.move(dx, 0);
-            }
+        // Применяем движение
+        if (this.movement.dx || this.movement.dy) {
+            isUpdated = true;
+            this.hero.move(this.movement.dx * this.hero.speed, this.movement.dy * this.hero.speed)
         }
 
-        if (dy !== 0) {
-            newY = currentPos.y + dy;
-            const collidingWall = this.Walls.find(wall =>
-                this.check_collision(currentPos.x, newY, wall)
-            );
-            if (!collidingWall) {
-                this.hero.move(0, dy);
-            }
-        }
-
+        // Передвинуть ботов
+        // Передвинуть стрелы
+        // Обновляем позицию меча после всех перемещений
         this.Sword = this.hero.getAttackPosition();
+
+        if (isUpdated) {
+            // Логика отправки на сервер
+        }
     }
 
-    update(): void {
-        this.hero.updateProjectiles();
-        this.syncArrowsWithHero();
-        this.checkArrowCollisions();
-    }
-
-    private syncArrowsWithHero(): void {
-        const heroArrows = this.hero.getProjectiles();
-        this.Arrows = heroArrows.filter(arrow => arrow.isActive);
-    }
-
-    shoot(): void {
-        this.hero.shoot();
-    }
-
-    private checkArrowCollisions(): void {
-        this.Arrows.forEach(arrow => {
-            if (!arrow.isActive) return;
-
-            const arrowPos = arrow.getPosition();
-            const wallCollision = this.Walls.find(wall =>
-                this.check_rect_collision(arrowPos, wall)
-            );
-
-            if (wallCollision) {
-                arrow.isActive = false;
-            }
-        });
-    }
-
-    addBowToInventory(): void {
-        this.hero.addToInventory("Bow");
-        this.hero.addToInventory("Arrows");
-    }
-
-    getHero(): Hero {
-        return this.hero;
-    }
-
-    getMap(): Map {
-        return this.gameMap;
-    }
-
-    getArrows(): Projectile[] {
-        return [...this.Arrows];
-    }
-    */
 }
 
 export default Game;
