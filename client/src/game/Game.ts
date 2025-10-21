@@ -84,8 +84,9 @@ class Game {
         let isUpdated = false;
 
         // Применяем движение
-        if (this.moveHero()) {
+        if (this.movement.dx || this.movement.dy) {
             isUpdated = true;
+            this.hero.move(this.movement.dx * this.hero.speed, this.movement.dy * this.hero.speed)
         }
 
         // Передвинуть ботов
@@ -98,64 +99,6 @@ class Game {
         }
     }
 
-    private moveHero(): boolean {
-        if (this.movement.dx !== 0 || this.movement.dy !== 0) {
-            // Нормализуем вектор движения для диагонального движения
-            let dx = this.movement.dx;
-            let dy = this.movement.dy;
-
-            // Если движение по диагонали, нормализуем вектор
-            if (dx !== 0 && dy !== 0) {
-                const length = Math.sqrt(dx * dx + dy * dy);
-                dx = (dx / length) * this.hero.speed;
-                dy = (dy / length) * this.hero.speed;
-            } else {
-                // Прямое движение
-                dx = dx !== 0 ? (dx > 0 ? this.hero.speed : -this.hero.speed) : 0;
-                dy = dy !== 0 ? (dy > 0 ? this.hero.speed : -this.hero.speed) : 0;
-            }
-
-            // Проверяем коллизии перед перемещением
-            const newX = this.hero.rect.x + dx;
-            const newY = this.hero.rect.y + dy;
-
-            // Проверяем коллизии с каждой стеной
-            let canMoveX = true;
-            let canMoveY = true;
-
-            for (const wall of this.Walls) {
-                if (this.hero.checkRectCollision(this.hero.rect, wall)) {
-                    // Если есть коллизия по X
-                    const tempRectX = { ...this.hero.rect, x: newX };
-                    if (this.hero.checkRectCollision(tempRectX, wall)) {
-                        canMoveX = false;
-                    }
-
-                    // Если есть коллизия по Y
-                    const tempRectY = { ...this.hero.rect, y: newY };
-                    if (this.hero.checkRectCollision(tempRectY, wall)) {
-                        canMoveY = false;
-                    }
-                }
-            }
-
-            // Применяем движение с учетом коллизий
-            if (canMoveX) {
-                this.hero.rect.x = newX;
-            }
-            if (canMoveY) {
-                this.hero.rect.y = newY;
-            }
-
-            // Обновляем направление только если было движение
-            if (canMoveX && dx !== 0) {
-                this.hero.direction = dx >= 0 ? EDIRECTION.RIGHT : EDIRECTION.LEFT;
-            }
-
-            return canMoveX || canMoveY;
-        }
-        return false;
-    }
 }
 
 export default Game;
