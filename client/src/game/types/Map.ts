@@ -1,6 +1,6 @@
-import { TRect } from "../config";
+import { TRect } from "../../config";
 
-export class Map {
+class Map {
     private walls: TRect[];
 
     constructor() {
@@ -16,3 +16,4 @@ export class Map {
         return this.walls;
     }
 }
+export default Map;

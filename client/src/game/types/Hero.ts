@@ -1,6 +1,6 @@
-import { TRect } from "../config";
-import CharacterClass, { KNIGHT } from "./types/CharacterClass";
-import Unit from "./types/Unit";
+import { TRect } from "../../config";
+import CharacterClass, { KNIGHT } from "./CharacterClass";
+import Unit from "./Unit";
 
 class Hero extends Unit {
     private characterClass: CharacterClass = KNIGHT;

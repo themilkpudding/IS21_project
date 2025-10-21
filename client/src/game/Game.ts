@@ -1,8 +1,8 @@
 import CONFIG, { TRect, EDIRECTION } from "../config";
-import { Map } from "./Map";
-import Hero from "./Hero";
+import Map from "./types/Map";
+import Hero from "./types/Hero";
 import Server from "../services/server/Server";
-import Projectile from "./Projectile";
+import Projectile from "./types/Projectile";
 import Unit from "./types/Unit";
 
 class Game {

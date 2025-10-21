@@ -1,4 +1,4 @@
-import Unit from "./types/Unit";
+import Unit from "./Unit";
 
 export class Projectile extends Unit {
     isActive: boolean = true;
