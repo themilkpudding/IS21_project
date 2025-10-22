@@ -774,11 +774,16 @@
       ],
       "value": ""
     }, {
-      "id": "81facf64-0858-47ff-9f17-fcb30e155185",
+      "id": "d2cf15db-af7c-4e25-a3d9-d3a7d1b9c883",
       "comment": "",
-      "command": "open",
-      "target": "http://localhost:3000",
-      "targets": [],
+      "command": "click",
+      "target": "xpath=(//button[@id='test-button'])[4]",
+      "targets": [
+        ["xpath=(//button[@id='test-button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/button[4]", "xpath:idRelative"],
+        ["xpath=//button[4]", "xpath:position"],
+        ["xpath=//button[contains(.,'Удалить аккаунт')]", "xpath:innerText"]
+      ],
       "value": ""
     }, {
       "id": "08203fdf-3dc5-4f7e-a433-3e5441229ea5",
@@ -861,11 +866,16 @@
       ],
       "value": ""
     }, {
-      "id": "23e761da-06a1-4420-a532-e7225316705b",
+      "id": "0e84255c-68e0-46e3-9710-8d2c25725934",
       "comment": "",
-      "command": "open",
-      "target": "http://localhost:3000",
-      "targets": [],
+      "command": "click",
+      "target": "xpath=(//button[@id='test-button'])[4]",
+      "targets": [
+        ["xpath=(//button[@id='test-button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/button[4]", "xpath:idRelative"],
+        ["xpath=//button[4]", "xpath:position"],
+        ["xpath=//button[contains(.,'Удалить аккаунт')]", "xpath:innerText"]
+      ],
       "value": ""
     }, {
       "id": "90b9e5c5-a42d-4b8c-82cb-dca82e1ec697",
@@ -945,6 +955,18 @@
         ["xpath=//div[@id='root']/div/div/div/div[2]/button", "xpath:idRelative"],
         ["xpath=//button", "xpath:position"],
         ["xpath=//button[contains(.,'No Text')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e671cd40-1e6f-4013-a87c-e80ace6b8008",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=(//button[@id='test-button'])[4]",
+      "targets": [
+        ["xpath=(//button[@id='test-button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/button[4]", "xpath:idRelative"],
+        ["xpath=//button[4]", "xpath:position"],
+        ["xpath=//button[contains(.,'Удалить аккаунт')]", "xpath:innerText"]
       ],
       "value": ""
     }]
@@ -1624,11 +1646,16 @@
       ],
       "value": ""
     }, {
-      "id": "ada21bdf-3eb7-44b3-91b0-7af61bc2437f",
+      "id": "ac7ea19d-cc6f-44f3-81b1-20919bab2837",
       "comment": "",
-      "command": "open",
-      "target": "http://localhost:3000",
-      "targets": [],
+      "command": "click",
+      "target": "xpath=(//button[@id='test-button'])[4]",
+      "targets": [
+        ["xpath=(//button[@id='test-button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/button[4]", "xpath:idRelative"],
+        ["xpath=//button[4]", "xpath:position"],
+        ["xpath=//button[contains(.,'Удалить аккаунт')]", "xpath:innerText"]
+      ],
       "value": ""
     }, {
       "id": "14919576-4ade-4661-9633-2102ab7306b9",
@@ -1710,11 +1737,16 @@
       ],
       "value": ""
     }, {
-      "id": "0e6fc540-2744-4902-a180-a35dbcfe2ecf",
+      "id": "75d28d11-596a-46b2-9850-c7beb261eb65",
       "comment": "",
-      "command": "open",
-      "target": "http://localhost:3000",
-      "targets": [],
+      "command": "click",
+      "target": "xpath=(//button[@id='test-button'])[4]",
+      "targets": [
+        ["xpath=(//button[@id='test-button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/button[4]", "xpath:idRelative"],
+        ["xpath=//button[4]", "xpath:position"],
+        ["xpath=//button[contains(.,'Удалить аккаунт')]", "xpath:innerText"]
+      ],
       "value": ""
     }, {
       "id": "48067f37-7991-40da-802c-a3aebd15524d",
@@ -1793,6 +1825,18 @@
         ["xpath=//button[@id='test-registration-button']", "xpath:attributes"],
         ["xpath=//div[@id='root']/div/div/div/div[2]/button", "xpath:idRelative"],
         ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c0b99795-667e-4d32-aa97-45d9c20e2a77",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=(//button[@id='test-button'])[4]",
+      "targets": [
+        ["xpath=(//button[@id='test-button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/button[4]", "xpath:idRelative"],
+        ["xpath=//button[4]", "xpath:position"],
+        ["xpath=//button[contains(.,'Удалить аккаунт')]", "xpath:innerText"]
       ],
       "value": ""
     }]
