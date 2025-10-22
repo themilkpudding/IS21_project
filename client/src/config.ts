@@ -27,7 +27,6 @@ const CONFIG = {
 
     CHAT_TIMESTAMP: 200, //ms
     GAME_UPDATE_TIMESTAMP: 50,
-
     SPRITE_SIZE: 64, // размер спрайта в пикселях
     LINE_OF_SPRITES: 10, // количество спрайтов в карте спрайтов
     WIDTH: 50, // ширина карты
