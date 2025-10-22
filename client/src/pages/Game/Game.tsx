@@ -10,9 +10,9 @@ import useCanvas from '../../services/canvas/useCanvas';
 const GAME_FIELD = 'game-field';
 const GREEN = '#00e81c';
 const WALL_COLOR = '#8B4513';
-const server = useContext(ServerContext);
 
 const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
+    const server = useContext(ServerContext);
     const { WINDOW } = CONFIG;
     const { setPage } = props;
     const gameRef = useRef<Game | null>(null);

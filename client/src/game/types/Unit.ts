@@ -1,12 +1,32 @@
 import { EDIRECTION, TRect } from "../../config";
 
 class Unit {
-    public rect: TRect = { x: 0, y: 0, width: 0, height: 0 };
-    public direction: EDIRECTION = EDIRECTION.RIGHT;
-    public name: string = "";
-    public health: number = 0;
-    public damage: number = 0;
-    public speed: number = 0;
+    public rect: TRect;
+    public direction: EDIRECTION;
+    public name: string;
+    public health: number;
+    public damage: number;
+    public speed: number;
+
+    constructor(rect = { x: 0, y: 0, width: 0, height: 0 }, direction = EDIRECTION.RIGHT, name = "", health = 0, damage = 0, speed = 0) {
+        this.rect = rect;
+        this.direction = direction;
+        this.name = name;
+        this.health = health;
+        this.damage = damage;
+        this.speed = speed;
+    }
+
+    get() {
+        return {
+            rect: this.rect,
+            direction: this.direction,
+            name: this.name,
+            health: this.health,
+            damage: this.damage,
+            speed: this.speed
+        };
+    }
 
     move(dx: number, dy: number): void {
         this.rect.x += dx;
