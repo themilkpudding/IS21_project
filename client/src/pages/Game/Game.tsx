@@ -5,16 +5,12 @@ import Button from '../../components/Button/Button';
 import { IBasePage, PAGES } from '../PageManager';
 import Game from '../../game/Game';
 import Canvas from '../../services/canvas/Canvas';
-import Unit from '../../game/types/Unit';
 import useCanvas from '../../services/canvas/useCanvas';
-import Store from '../../services/store/Store';
-import Server from '../../services/server/Server';
 
 const GAME_FIELD = 'game-field';
 const GREEN = '#00e81c';
 const WALL_COLOR = '#8B4513';
-const store = new Store();
-const server = new Server(store);
+const server = useContext(ServerContext);
 
 const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
     const { WINDOW } = CONFIG;
