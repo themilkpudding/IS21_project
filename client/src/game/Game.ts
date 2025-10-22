@@ -50,6 +50,15 @@ class Game {
         this.movement = { dx, dy };
     }
 
+    addArrow(): void {
+        const arrow = new Projectile();
+
+        arrow.direction = this.hero.direction;
+        arrow.rect.x = arrow.direction == "right" ? this.hero.rect.x + this.hero.rect.width + 1 : this.hero.rect.x - 31;
+        arrow.rect.y = this.hero.rect.y + (this.hero.rect.height / 2);
+        this.Arrows.push(arrow);
+    }
+
     private userIsOwner() {
     }
 
@@ -77,20 +86,53 @@ class Game {
         // принудительно применить к сцене игры
     }
 
+    private canMove(newX: number, newY: number): boolean {
+        const newRect: TRect = {
+            x: newX,
+            y: newY,
+            width: this.hero.rect.width,
+            height: this.hero.rect.height
+        };
+
+        // Проверяем коллизию с каждой стеной
+        for (const wall of this.Walls) {
+            if (this.hero.checkRectCollision(newRect, wall)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     private updateScene() {
         const currentTime = Date.now();
         this.lastUpdateTime = currentTime;
 
         let isUpdated = false;
 
-        // Применяем движение
+        // Применяем движение с проверкой коллизий
         if (this.movement.dx || this.movement.dy) {
-            isUpdated = true;
-            this.hero.move(this.movement.dx * this.hero.speed, this.movement.dy * this.hero.speed)
+            const dx = this.movement.dx * this.hero.speed;
+            const dy = this.movement.dy * this.hero.speed;
+
+            // Пробуем переместиться
+            if ((dx || dy) && this.canMove(this.hero.rect.x + dx, this.hero.rect.y + dy)) {
+                this.hero.move(dx, dy);
+                isUpdated = true;
+            }
         }
 
         // Передвинуть ботов
         // Передвинуть стрелы
+        if (this.Arrows) {
+            this.Arrows.forEach(arrow => {
+                if (arrow.direction == "right") {
+                    arrow.move(10, 0)
+                } else {
+                    arrow.move(-10, 0)
+                }
+            });
+        }
         // Обновляем позицию меча после всех перемещений
         this.Sword = this.hero.getAttackPosition();
 
@@ -98,7 +140,6 @@ class Game {
             // Логика отправки на сервер
         }
     }
-
 }
 
 export default Game;

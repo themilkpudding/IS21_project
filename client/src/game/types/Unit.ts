@@ -31,7 +31,9 @@ class Unit {
     move(dx: number, dy: number): void {
         this.rect.x += dx;
         this.rect.y += dy;
-        this.direction = dx >= 0 ? EDIRECTION.RIGHT : EDIRECTION.LEFT;
+        if (dx) {
+            this.direction = dx > 0 ? EDIRECTION.RIGHT : EDIRECTION.LEFT;
+        }
     }
 
     checkRectCollision(rect1: TRect, rect2: TRect): boolean {

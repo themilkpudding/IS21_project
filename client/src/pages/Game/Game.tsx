@@ -22,6 +22,7 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
     const gameRef = useRef<Game | null>(null);
     const canvasRef = useRef<Canvas | null>(null);
     const animationFrameRef = useRef<number>(0);
+    let isAttacking = false;
 
     const keysPressedRef = useRef({
         w: false,
@@ -44,7 +45,7 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
         if (canvasRef.current && gameRef.current) {
             canvasRef.current.clear();
             const scene = gameRef.current.getScene();
-            const { Hero, Walls, Sword } = scene;
+            const { Hero, Walls, Sword, Arrows } = scene;
 
             // Рисуем стены
             if (Walls.length > 0) {
@@ -62,7 +63,24 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
             printGameObject(canvasRef.current, Hero.rect, 'blue');
 
             // Рисуем меч
-            //printGameObject(canvasRef.current, Sword, 'red');
+            if (isAttacking) {
+                printGameObject(canvasRef.current, Sword, 'red');
+            }
+
+            // Рисуем стрелы
+            if (Arrows) {
+                Arrows.forEach(arrow => {
+                    // Проверяем, активна ли стрела перед отрисовкой
+                    if (arrow.isActive) {
+                        printGameObject(canvasRef.current!, {
+                            x: arrow.rect.x,
+                            y: arrow.rect.y,
+                            width: arrow.rect.width,
+                            height: arrow.rect.height
+                        }, "red");
+                    }
+                });
+            }
 
             // Рисуем FPS
             canvasRef.current.text(WINDOW.LEFT + 20, WINDOW.TOP + 50, String(FPS), GREEN);
@@ -77,7 +95,15 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
         setPage(PAGES.NOT_FOUND);
     };
 
-    const mouseClick = (_x: number, _y: number) => {
+    const mouseClick = () => {
+        isAttacking = true;
+        setTimeout(() => {
+            isAttacking = false;
+        }, 500);
+    };
+
+    const mouseRightClick = () => {
+        gameRef.current?.addArrow();
     };
 
     const handleMovement = useCallback(() => {
@@ -111,7 +137,7 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
             callbacks: {
                 mouseMove: () => { },
                 mouseClick,
-                mouseRightClick: () => { },
+                mouseRightClick,
             },
         });
 
