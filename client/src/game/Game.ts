@@ -104,6 +104,17 @@ class Game {
         return true;
     }
 
+    private checkArrowCollisions(): void {
+        this.Arrows = this.Arrows.filter(arrow => {
+            for (const wall of this.Walls) {
+                if (this.hero.checkRectCollision(arrow.rect, wall)) {
+                    return false;
+                }
+            }
+            return true;
+        });
+    }
+
     private updateScene() {
         const currentTime = Date.now();
         this.lastUpdateTime = currentTime;
@@ -132,7 +143,9 @@ class Game {
                     arrow.move(-10, 0)
                 }
             });
+            this.checkArrowCollisions();
         }
+
         // Обновляем позицию меча после всех перемещений
         this.Sword = this.hero.getAttackPosition();
 

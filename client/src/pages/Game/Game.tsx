@@ -216,7 +216,7 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
             <h1>Игра</h1>
             <Button onClick={backClickHandler} text='Назад' />
             <div className="debug-info">
-                <p>Управление: WASD - движение</p>
+                <p>Управление: WASD - движение, ЛКМ - атака мечом, ПКМ - выстрел из лука</p>
             </div>
             <div id={GAME_FIELD} className={GAME_FIELD}></div>
         </div>
