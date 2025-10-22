@@ -48,16 +48,14 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
             const { Hero, Walls, Sword, Arrows } = scene;
 
             // Рисуем стены
-            if (Walls.length > 0) {
-                Walls.forEach(wall => {
-                    printGameObject(canvasRef.current!, {
-                        x: wall.x,
-                        y: wall.y,
-                        width: wall.width,
-                        height: wall.height
-                    }, WALL_COLOR);
-                });
-            }
+            Walls.forEach(wall => {
+                printGameObject(canvasRef.current!, {
+                    x: wall.x,
+                    y: wall.y,
+                    width: wall.width,
+                    height: wall.height
+                }, WALL_COLOR);
+            });
 
             // Рисуем героя
             printGameObject(canvasRef.current, Hero.rect, 'blue');
@@ -68,19 +66,15 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
             }
 
             // Рисуем стрелы
-            if (Arrows) {
-                Arrows.forEach(arrow => {
-                    // Проверяем, активна ли стрела перед отрисовкой
-                    if (arrow.isActive) {
-                        printGameObject(canvasRef.current!, {
-                            x: arrow.rect.x,
-                            y: arrow.rect.y,
-                            width: arrow.rect.width,
-                            height: arrow.rect.height
-                        }, "red");
-                    }
-                });
-            }
+            Arrows.forEach(arrow => {
+                // Проверяем, активна ли стрела перед отрисовкой
+                printGameObject(canvasRef.current!, {
+                    x: arrow.rect.x,
+                    y: arrow.rect.y,
+                    width: arrow.rect.width,
+                    height: arrow.rect.height
+                }, "red");
+            });
 
             // Рисуем FPS
             canvasRef.current.text(WINDOW.LEFT + 20, WINDOW.TOP + 50, String(FPS), GREEN);

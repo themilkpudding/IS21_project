@@ -15,17 +15,15 @@ class Game {
     private Bots: Unit[];
     private interval: NodeJS.Timer | null = null;
     private movement: { dx: number; dy: number } = { dx: 0, dy: 0 };
-    private lastUpdateTime: number = 0;
 
     constructor(server: Server) {
         this.server = server;
         this.hero = new Hero();
         this.gameMap = new Map();
-        this.Walls = this.gameMap.getWalls();
+        this.Walls = this.gameMap.walls;
         this.Sword = this.hero.getAttackPosition();
         this.Arrows = [];
         this.Bots = [];
-        this.lastUpdateTime = Date.now();
 
         //this.server.startGetScene(() => this.getSceneFromBackend());
         this.startUpdateScene();
@@ -95,10 +93,8 @@ class Game {
         };
 
         // Проверяем коллизию с каждой стеной
-        for (const wall of this.Walls) {
-            if (this.hero.checkRectCollision(newRect, wall)) {
-                return false;
-            }
+        if (this.Walls.find(wall => this.hero.checkRectCollision(newRect, wall))) {
+            return false;
         }
 
         return true;
@@ -106,19 +102,14 @@ class Game {
 
     private checkArrowCollisions(): void {
         this.Arrows = this.Arrows.filter(arrow => {
-            for (const wall of this.Walls) {
-                if (this.hero.checkRectCollision(arrow.rect, wall)) {
-                    return false;
-                }
+            if (this.Walls.find(wall => this.hero.checkRectCollision(arrow.rect, wall))) {
+                return false;
             }
             return true;
         });
     }
 
     private updateScene() {
-        const currentTime = Date.now();
-        this.lastUpdateTime = currentTime;
-
         let isUpdated = false;
 
         // Применяем движение с проверкой коллизий
@@ -127,7 +118,7 @@ class Game {
             const dy = this.movement.dy * this.hero.speed;
 
             // Пробуем переместиться
-            if ((dx || dy) && this.canMove(this.hero.rect.x + dx, this.hero.rect.y + dy)) {
+            if (this.canMove(this.hero.rect.x + dx, this.hero.rect.y + dy)) {
                 this.hero.move(dx, dy);
                 isUpdated = true;
             }

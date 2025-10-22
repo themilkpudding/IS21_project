@@ -1,7 +1,6 @@
 import Unit from "./Unit";
 
 export class Projectile extends Unit {
-    isActive: boolean = true;
     constructor() {
         super();
         this.rect.width = 30;

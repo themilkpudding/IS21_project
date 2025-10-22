@@ -1,7 +1,7 @@
 import { TRect } from "../../config";
 
 class Map {
-    private walls: TRect[];
+    walls: TRect[];
 
     constructor() {
         this.walls = [
@@ -10,10 +10,6 @@ class Map {
             { x: 1290, y: 0, width: 10, height: 800 },
             { x: 0, y: 790, width: 1300, height: 10 },
         ];
-    }
-
-    getWalls(): TRect[] {
-        return this.walls;
     }
 }
 export default Map;
