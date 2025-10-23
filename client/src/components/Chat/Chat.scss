@@ -1,0 +1,11 @@
+.chat {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgb(240, 248, 255, 0.5);
+
+    .chat-toggle {
+        background-color: rgb(255, 255, 0, 0.5);
+        cursor: pointer;
+    }
+}
