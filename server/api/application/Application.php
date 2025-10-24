@@ -13,6 +13,7 @@ class Application {
         $this->math = new Math();
         $this->lobby = new Lobby($db);
         $this->menu = new Menu($db);
+        $this->chat = new Chat($db);
     }
 
     public function login($params) {

@@ -108,10 +108,8 @@ class Server {
     }
 
     async deleteUser(): Promise<boolean | null> {
-        const token = this.store.getToken();
-        if (!token) return null;
 
-        const result = await this.request<boolean>('deleteUser', { token })
+        const result = await this.request<boolean>('deleteUser')
         if (result) {
             this.store.clearUser();
             return true;

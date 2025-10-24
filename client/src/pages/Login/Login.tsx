@@ -21,6 +21,9 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
     };
 
     const clearAuthFields = () => {
+        if (!loginRef.current || !passwordRef.current) {
+            return;
+        }
         loginRef.current.value = '';
         passwordRef.current.value = '';
         checkFilled(loginRef.current.value, passwordRef.current.value);
@@ -54,8 +57,7 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
                 localStorage.removeItem('token');
                 localStorage.removeItem('rememberMe');
 
-                server.store.user = null;
-                server.store.rememberMe = false;
+                server.store.clearUser();
             });
 
             if (token) {
