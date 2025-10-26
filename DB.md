@@ -42,94 +42,35 @@
 | class_id | integer | not null |
 | selected | boolean | false by default |
 
-## Система оружия
+## Система предметов
 
-**weapons**
+**items**
 | name | type | comment |
 | - | - | - |
 | id | integer | primary key |
 | name | string | not null |
-| weapon_type | enum | 'sword'/'bow'/'axe'/'staff'/'dagger' |
-| damage | integer | not null |
-| attack_speed | integer | 1 by default |
+| item_type | enum | 'weapon'/'helmet'/'chestplate'/'leggings'/'shield' |
+| weapon_type | enum | 'sword'/'bow'/'axe'/'staff'/'dagger' or null |
+| damage | integer | 0 by default |
+| attack_speed | integer | 0 by default |
+| attack_distance | integer | 0 by default |
+| bonus_defense | integer | 0 by default |
+| bonus_hp | integer | 0 by default |
 | cost | integer | 0 by default |
 
-**characters_weapons**
+**characters_items**
+
+**character_items**
 | name | type | comment |
 | - | - | - |
 | id | integer | primary key |
-| character_id | integer | not null |
-| weapon_id | integer | not null |
+| item_id | integer | not null |
+| character_id | integer | nullable |
+| room_id | integer | nullable |
+| x | integer | |
+| y | integer | |
 | selected | boolean | false by default |
-
-## Система брони
-
-**helmets**
-| name | type | comment |
-| - | - | - |
-| id | integer | primary key |
-| name | string | not null |
-| defense | integer | not null |
-| hp | integer | 0 by default |
-| cost | integer | 0 by default |
-
-**chestplates**
-| name | type | comment |
-| - | - | - |
-| id | integer | primary key |
-| name | string | not null |
-| defense | integer | not null |
-| hp | integer | 0 by default |
-| cost | integer | 0 by default |
-
-**leggings**
-| name | type | comment |
-| - | - | - |
-| id | integer | primary key |
-| name | string | not null |
-| defense | integer | not null |
-| hp | integer | 0 by default |
-| cost | integer | 0 by default |
-
-**shields**
-| name | type | comment |
-| - | - | - |
-| id | integer | primary key |
-| name | string | not null |
-| defense | integer | not null |
-| cost | integer | 0 by default |
-
-**characters_helmets**
-| name | type | comment |
-| - | - | - |
-| id | integer | primary key |
-| character_id | integer | not null |
-| helmet_id | integer | not null |
-| selected | boolean| false by default |
-
-**characters_chestplates**
-| name | type | comment |
-| - | - | - |
-| id | integer | primary key |
-| character_id | integer | not null |
-| chestplate_id | integer | not null |
-| selected | boolean| false by default |
-
-**characters_leggings**
-| name | type | comment |
-| - | - | - |
-| id | integer | primary key |
-| character_id | integer | not null |
-| legging_id | integer | not null |
-| selected | boolean| false by default |
-
-**characters_shields**
-| name | type | comment |
-| - | - | - |
-| id | integer | primary key |
-| character_id | integer | not null |
-| shield_id | integer | not null |
-| selected | boolean| false by default |
+| quantity | integer | 1 by default |
 
 ## Лобби и комнаты
 
