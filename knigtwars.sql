@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: MySQL-8.0
--- Время создания: Окт 26 2025 г., 12:33
+-- Время создания: Окт 26 2025 г., 12:43
 -- Версия сервера: 8.0.41
 -- Версия PHP: 8.3.14
 
@@ -92,8 +92,8 @@ CREATE TABLE `character_items` (
   `item_id` int NOT NULL,
   `character_id` int DEFAULT NULL,
   `room_id` int DEFAULT NULL,
-  `x` int NOT NULL,
-  `y` int NOT NULL,
+  `x` int DEFAULT NULL,
+  `y` int DEFAULT NULL,
   `selected` tinyint(1) DEFAULT '0',
   `quantity` int DEFAULT '1'
 ) ;

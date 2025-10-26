@@ -67,8 +67,8 @@
 | item_id | integer | not null |
 | character_id | integer | nullable |
 | room_id | integer | nullable |
-| x | integer | |
-| y | integer | |
+| x | integer | nullable |
+| y | integer | nullable |
 | selected | boolean | false by default |
 | quantity | integer | 1 by default |
 
