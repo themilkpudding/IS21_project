@@ -65,7 +65,7 @@ CREATE TABLE `characters` (
   `arrows` int DEFAULT '0',
   `potions` int DEFAULT '0',
   `money` int DEFAULT '100',
-  `died` tinyint(1) DEFAULT '1'
+  `died` tinyint(1) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------

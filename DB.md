@@ -21,6 +21,7 @@
 | arrows | integer | 0 by default |
 | potions | integer | 0 by default |
 | money | integer | 100 by default |
+| died | boolean | false by default |
 
 ## Система классов
 
