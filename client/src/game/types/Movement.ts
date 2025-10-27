@@ -23,6 +23,8 @@ class Movement {
     }
 
     setMovement(dx: number, dy: number): void {
+        if (typingState.isTyping) return;
+        
         this.movement = { dx, dy };
     }
 
