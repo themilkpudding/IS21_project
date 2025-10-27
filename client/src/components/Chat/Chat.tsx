@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useMemo, useRef } from 'react';
+import React, { useContext, useEffect, useState, useMemo, useRef, KeyboardEvent } from 'react';
 import { ServerContext, StoreContext } from '../../App';
 import { TMessages } from '../../services/server/types';
 import Button from '../Button/Button';
@@ -9,6 +9,11 @@ interface IChat {
     onToggle: (isOpen: boolean) => void;
 }
 
+export const typingState = {
+    isTyping: false,
+    set: (typing: boolean) => typingState.isTyping = typing
+};
+
 const Chat: React.FC<IChat> = ({ isOpen, onToggle }) => {
     const server = useContext(ServerContext);
     const store = useContext(StoreContext);
@@ -16,8 +21,41 @@ const Chat: React.FC<IChat> = ({ isOpen, onToggle }) => {
     const [_, setHash] = useState<string>('');
     const messageRef = useRef<HTMLInputElement>(null);
     const [isHovered, setIsHovered] = useState(false);
+    const typingTimerRef = useRef<NodeJS.Timeout | null>(null);
     const autoCloseTimerRef = useRef<NodeJS.Timeout | null>(null);
     const user = store.getUser();
+
+    useEffect(() => {
+        const handleInputKeyDown = (e: Event) => {
+            if (!('key' in e)) return;
+
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                if (isOpen && document.activeElement === messageRef.current) {
+                    sendClickHandler();
+                } else if (!isOpen) {
+                    onToggle(true);
+                    setTimeout(() => {
+                        messageRef.current?.focus();
+                    }, 0);
+                }
+            }
+
+            if (e.key === 'Escape' && isOpen) {
+                e.preventDefault();
+                e.stopPropagation();
+                onToggle(false);
+                cancelAutoClose();
+            }
+        }
+
+        document.addEventListener('keydown', handleInputKeyDown);
+
+        return () => {
+            document.removeEventListener('keydown', handleInputKeyDown);
+        };
+
+    }, [isOpen, onToggle]);
 
     const cancelAutoClose = () => {
         if (autoCloseTimerRef.current) {
@@ -29,21 +67,38 @@ const Chat: React.FC<IChat> = ({ isOpen, onToggle }) => {
     const startAutoClose = () => {
         cancelAutoClose();
         autoCloseTimerRef.current = setTimeout(() => {
-            if (isOpen) {
+            if (isOpen && !typingState.isTyping) {
                 onToggle(false);
             }
         }, 3000);
     };
 
+    const handleInputChange = () => {
+        typingState.set(true);
+
+        if (typingTimerRef.current) {
+            clearTimeout(typingTimerRef.current);
+        }
+
+        typingTimerRef.current = setTimeout(() => {
+            typingState.set(false);
+        }, 2000);
+    };
+
     useEffect(() => {
-        if (isOpen && !isHovered) {
+        if (isOpen && !isHovered && !typingState.isTyping) {
             startAutoClose();
         } else {
             cancelAutoClose();
         }
 
-        return cancelAutoClose;
-    }, [isOpen, isHovered]);
+        return () => {
+            cancelAutoClose();
+            if (typingTimerRef.current) {
+                clearTimeout(typingTimerRef.current);
+            }
+        };
+    }, [isOpen, isHovered, typingState.isTyping]);
 
     useEffect(() => {
         const newMessages = (hash: string) => {
@@ -67,7 +122,12 @@ const Chat: React.FC<IChat> = ({ isOpen, onToggle }) => {
         }
     }, [user, server, store, isOpen, startAutoClose, cancelAutoClose]);
 
-    const input = useMemo(() => <input ref={messageRef} placeholder='сообщение' />, []);
+    const input = useMemo(() =>
+        <input
+            ref={messageRef}
+            placeholder='сообщение'
+            onChange={handleInputChange}
+        />, []);
 
     const sendClickHandler = () => {
         if (messageRef.current) {
@@ -76,7 +136,10 @@ const Chat: React.FC<IChat> = ({ isOpen, onToggle }) => {
             if (message) {
                 server.sendMessage(message);
                 messageRef.current.value = '';
+                typingState.set(false);
             }
+
+            messageRef.current.focus();
         }
     }
 
