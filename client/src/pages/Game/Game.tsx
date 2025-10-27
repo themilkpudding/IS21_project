@@ -6,6 +6,9 @@ import { IBasePage, PAGES } from '../PageManager';
 import Game from '../../game/Game';
 import Canvas from '../../services/canvas/Canvas';
 import useCanvas from '../../services/canvas/useCanvas';
+import Store from '../../services/store/Store';
+import Server from '../../services/server/Server';
+import Chat from '../../components/Chat/Chat';
 
 const GAME_FIELD = 'game-field';
 const GREEN = '#00e81c';
@@ -15,6 +18,7 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
     const server = useContext(ServerContext);
     const { WINDOW } = CONFIG;
     const { setPage } = props;
+    const [isChatOpen, setIsChatOpen] = useState(false);
     const gameRef = useRef<Game | null>(null);
     const canvasRef = useRef<Canvas | null>(null);
     const animationFrameRef = useRef<number>(0);
@@ -82,7 +86,7 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
     const CanvasComponent = useCanvas(render);
 
     const backClickHandler = () => {
-        setPage(PAGES.NOT_FOUND);
+        setPage(PAGES.MENU);
     };
 
     const mouseClick = () => {
@@ -209,6 +213,10 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
                 <p>Управление: WASD - движение, ЛКМ - атака мечом, ПКМ - выстрел из лука</p>
             </div>
             <div id={GAME_FIELD} className={GAME_FIELD}></div>
+            <Chat
+                isOpen={isChatOpen}
+                onToggle={setIsChatOpen}
+            />
         </div>
     );
 };

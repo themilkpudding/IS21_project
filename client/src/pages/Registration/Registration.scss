@@ -1,0 +1,333 @@
+.registration {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-image: url(../../assets/img/background/background.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.logoReg {
+    position: absolute;
+    top: 4.052vh;
+}
+
+.registration-wrapper {
+    font-family: Metanart_Big;
+    color: white;
+    font-size: 3.3vh;
+}
+
+.registration-label-log {
+    position: absolute;
+    top: 15vh;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 520px;
+    text-align: left;
+}
+
+.registration-label-nick {
+    position: absolute;
+    top: 26vh;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 520px;
+    text-align: left;
+}
+
+.registration-label-pass {
+    position: absolute;
+    top: 37vh;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 520px;
+    text-align: left;
+}
+
+.registration-label-certpass {
+    position: absolute;
+    top: 48vh;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 520px;
+    text-align: left;
+}
+
+.input-common {
+    position: absolute;
+    background-image: url('../../assets/img/input.svg');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    font-family: Metanart_Big;
+    color: white;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-size: 1.667vh;
+    padding-left: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.input-loginReg {
+    @extend .input-common;
+    top: 23vh;
+    width: 80%;
+    max-width: 520px;
+    height: 44px;
+}
+
+.input-nicknameReg {
+    @extend .input-common;
+    top: 34vh;
+    width: 80%;
+    max-width: 520px;
+    height: 43.5px;
+}
+
+.input-passwordReg {
+    @extend .input-common;
+    top: 45vh;
+    width: 80%;
+    max-width: 520px;
+    height: 43px;
+}
+
+.input-certpasswordReg {
+    @extend .input-common;
+    top: 56vh;
+    width: 80%;
+    max-width: 520px;
+    height: 43px;
+}
+
+.errors {
+    position: absolute;
+    top: 64.870vh;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    color: yellow;
+    font-family: Metanart_Big;
+    font-weight: 100;
+    font-style: normal;
+    font-size: 2.315vh;
+    text-align: center;
+    width: 90%;
+    max-width: 600px;
+}
+
+.registration-button {
+    background-image: url(../../assets/img/registrationButton.svg);
+    color: transparent;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 0;
+    background-color: transparent;
+    width: 189px;
+    height: 45px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 83.100vh;
+    transition: filter 0.1s ease;
+}
+
+.registration-button:hover {
+    filter: brightness(2);
+}
+
+.haveAccount-Button {
+    background-image: url(../../assets/img/haveAccountButton.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    color: transparent;
+    border: 0;
+    background-color: transparent;
+    width: 200px;
+    height: 34px;
+    position: absolute;
+    top: 89.100vh;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: filter 0.1s ease;
+}
+
+.haveAccount-Button:hover {
+    filter: brightness(2);
+}
+
+@media (max-width: 480px) or (max-height: 400px) {
+    .registration-wrapper {
+        font-size: 2.5vh;
+    }
+    
+    .input-common {
+        padding-left: 20px;
+        font-size: 1.4vh;
+    }
+    
+    .registration-label-log,
+    .registration-label-nick,
+    .registration-label-pass,
+    .registration-label-certpass {
+        width: 90%;
+        text-align: center;
+    }
+    
+    .input-loginReg,
+    .input-nicknameReg,
+    .input-passwordReg,
+    .input-certpasswordReg {
+        width: 90%;
+    }
+    
+    .errors {
+        font-size: 1.8vh;
+        width: 95%;
+    }
+    
+    .registration-button {
+        width: 160px;
+        height: 38px;
+    }
+    
+    .haveAccount-Button {
+        width: 170px;
+        height: 29px;
+    }
+}
+
+@media (min-width: 1200px) and (min-height: 800px) {
+    .input-loginReg,
+    .input-nicknameReg,
+    .input-passwordReg,
+    .input-certpasswordReg {
+        max-width: 600px;
+        padding: 10px;
+    }
+
+}
+
+@media (min-width: 1920px) and (min-height: 1080px) {
+    .input-loginReg,
+    .input-nicknameReg,
+    .input-passwordReg,
+    .input-certpasswordReg {
+        max-width: 700px;
+        padding: 20px;
+    }
+    
+    .registration-wrapper {
+        font-size: 2.4vh;
+    }
+}
+
+@media (min-width: 3000px) and (min-height: 2000px) {
+    .input-loginReg,
+    .input-nicknameReg,
+    .input-passwordReg,
+    .input-certpasswordReg {
+        max-width: 900px;
+        height: 60px;
+        font-size: 1.2vh;
+        padding: 20px;
+    }
+    
+    .registration-wrapper {
+        font-size: 2.2vh;
+    }
+    
+    .registration-button {
+        width: 500px;
+        height: 120px;
+    }
+    
+    .haveAccount-Button {
+        width: 520px;
+        height: 90px;
+    }
+    
+    .errors {
+        font-size: 2vh;
+    }
+}
+
+@media (orientation: portrait) and (max-height: 800px) {
+    .logoReg {
+        top: 2vh;
+    }
+    
+    .registration-label-log { top: 12vh; }
+    .input-loginReg { top: 20vh; }
+    .registration-label-nick { top: 24vh; }
+    .input-nicknameReg { top: 32vh; }
+    .registration-label-pass { top: 36vh; }
+    .input-passwordReg { top: 44vh; }
+    .registration-label-certpass { top: 48vh; }
+    .input-certpasswordReg { top: 56vh; }
+    .errors { top: 62vh; }
+    .registration-button { top: 70vh; }
+    .haveAccount-Button { top: 78vh; }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+    .logoReg {
+        top: 1vh;
+        height: 8vh;
+    }
+    
+    .registration-label-log { top: 10vh; }
+    .input-loginReg { top: 18vh; }
+    .registration-label-nick { top: 22vh; }
+    .input-nicknameReg { top: 30vh; }
+    .registration-label-pass { top: 34vh; }
+    .input-passwordReg { top: 42vh; }
+    .registration-label-certpass { top: 46vh; }
+    .input-certpasswordReg { top: 54vh; }
+    .errors { top: 60vh; }
+    .registration-button { top: 68vh; }
+    .haveAccount-Button { top: 76vh; }
+    
+    .registration-wrapper {
+        font-size: 2.8vh;
+    }
+}
+
+@media (min-height: 1300px) and (min-width: 1100px) {
+    .logoReg {
+        height: 180px;
+    }
+}
+
+@media ((max-width: 1100px) or (max-height: 1300px)) and (orientation: portrait) {
+    .logoReg {
+        top: 5vh;
+        width: 60.781vw;
+        height: 17.13vh;
+    }
+}
+
+@media ((max-width: 1300px) or (max-height: 1100px)) and (orientation: landscape) {
+    .logoReg {
+        width: 25.781vw;
+        height: 11.130vh;
+    }
+}

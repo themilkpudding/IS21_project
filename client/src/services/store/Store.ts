@@ -25,8 +25,9 @@ class Store {
 
     }
 
-    getToken(): string | null {
-        return sessionStorage.getItem(TOKEN) || localStorage.getItem(TOKEN);
+    getToken(): string {
+        const token = sessionStorage.getItem(TOKEN) || localStorage.getItem(TOKEN);
+        return token || '';
     }
 
     getRememberMe(): boolean {
@@ -51,12 +52,9 @@ class Store {
         this.rememberMe = false;
     }
 
-    addMessages(messages: TMessages): void {
-        // TODO сделать, чтобы работало вот так
-        //this.messages.concat(messages);
-        // а вот это - плохой код!
-        if (messages?.length) {
-            this.messages = messages;
+    addMessages(newMessages: TMessages): void {
+        if (newMessages?.length) {
+            this.messages = this.messages.concat(newMessages);
         }
     }
 
