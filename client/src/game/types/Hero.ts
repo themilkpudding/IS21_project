@@ -11,7 +11,7 @@ class Hero extends Unit {
         super();
         this.rect.x = 100;
         this.rect.y = 100;
-        this.speed = 20;
+        this.speed = 8;
         this.rect.width = 100;
         this.rect.height = 100
     };

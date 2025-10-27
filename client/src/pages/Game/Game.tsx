@@ -5,7 +5,6 @@ import Button from '../../components/Button/Button';
 import { IBasePage, PAGES } from '../PageManager';
 import Game from '../../game/Game';
 import Canvas from '../../services/canvas/Canvas';
-import Unit from '../../game/types/Unit';
 import useCanvas from '../../services/canvas/useCanvas';
 import Store from '../../services/store/Store';
 import Server from '../../services/server/Server';
@@ -14,16 +13,16 @@ import Chat from '../../components/Chat/Chat';
 const GAME_FIELD = 'game-field';
 const GREEN = '#00e81c';
 const WALL_COLOR = '#8B4513';
-const store = new Store();
-const server = new Server(store);
 
 const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
+    const server = useContext(ServerContext);
     const { WINDOW } = CONFIG;
     const { setPage } = props;
     const [isChatOpen, setIsChatOpen] = useState(false);
     const gameRef = useRef<Game | null>(null);
     const canvasRef = useRef<Canvas | null>(null);
     const animationFrameRef = useRef<number>(0);
+    const isAttackingRef = useRef(false);
 
     const keysPressedRef = useRef({
         w: false,
@@ -46,25 +45,44 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
         if (canvasRef.current && gameRef.current) {
             canvasRef.current.clear();
             const scene = gameRef.current.getScene();
-            const { Hero, Walls, Sword } = scene;
+            const { Heroes, Walls, Swords, Arrows } = scene;
 
             // Рисуем стены
-            if (Walls.length > 0) {
-                Walls.forEach(wall => {
-                    printGameObject(canvasRef.current!, {
-                        x: wall.x,
-                        y: wall.y,
-                        width: wall.width,
-                        height: wall.height
-                    }, WALL_COLOR);
+            Walls.forEach(wall => {
+                printGameObject(canvasRef.current!, {
+                    x: wall.x,
+                    y: wall.y,
+                    width: wall.width,
+                    height: wall.height
+                }, WALL_COLOR);
+            });
+
+            // Рисуем всех героев
+            Heroes.forEach((hero, index) => {
+                // Основной герой игрока - синий, остальные - другие цвета
+                const color = index === 0 ? 'blue' : ['green', 'yellow', 'purple'][index % 3];
+                printGameObject(canvasRef.current!, hero.rect, color);
+            });
+
+            // Рисуем мечи
+            if (isAttackingRef.current) {
+                Swords.forEach((sword, index) => {
+                    // Рисуем меч только для активного героя (например, первого)
+                    if (index === 0 && sword) {
+                        printGameObject(canvasRef.current!, sword, 'red');
+                    }
                 });
             }
 
-            // Рисуем героя
-            printGameObject(canvasRef.current, Hero.rect, 'blue');
-
-            // Рисуем меч
-            //printGameObject(canvasRef.current, Sword, 'red');
+            // Рисуем стрелы
+            Arrows.forEach(arrow => {
+                printGameObject(canvasRef.current!, {
+                    x: arrow.rect.x,
+                    y: arrow.rect.y,
+                    width: arrow.rect.width,
+                    height: arrow.rect.height
+                }, "red");
+            });
 
             // Рисуем FPS
             canvasRef.current.text(WINDOW.LEFT + 20, WINDOW.TOP + 50, String(FPS), GREEN);
@@ -79,7 +97,16 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
         setPage(PAGES.MENU);
     };
 
-    const mouseClick = (_x: number, _y: number) => {
+    const mouseClick = () => {
+        isAttackingRef.current = true;
+        setTimeout(() => {
+            isAttackingRef.current = false;
+        }, 500);
+    };
+
+    const mouseRightClick = () => {
+        // Добавляем стрелу для основного героя (индекс 0)
+        gameRef.current?.addArrow(0);
     };
 
     const handleMovement = useCallback(() => {
@@ -93,10 +120,11 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
         if (w) dy -= 1;
         if (s) dy += 1;
 
-        if (dx !== 0 || dy !== 0) {
-            gameRef.current?.setMovement(dx, dy);
-        } else {
-            gameRef.current?.setMovement(0, 0);
+        // Получаем сцену и устанавливаем движение для основного героя
+        if (gameRef.current) {
+            const scene = gameRef.current.getScene();
+            scene.Heroes[0].movement.dx = dx;
+            scene.Heroes[0].movement.dy = dy;
         }
     }, []);
 
@@ -113,7 +141,7 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
             callbacks: {
                 mouseMove: () => { },
                 mouseClick,
-                mouseRightClick: () => { },
+                mouseRightClick,
             },
         });
 
@@ -192,13 +220,13 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
             <h1>Игра</h1>
             <Button onClick={backClickHandler} text='Назад' />
             <div className="debug-info">
-                <p>Управление: WASD - движение</p>
+                <p>Управление: WASD - движение, ЛКМ - атака мечом, ПКМ - выстрел из лука</p>
             </div>
             <div id={GAME_FIELD} className={GAME_FIELD}></div>
             <Chat
-            isOpen={isChatOpen}
-            onToggle={setIsChatOpen}
-        />
+                isOpen={isChatOpen}
+                onToggle={setIsChatOpen}
+            />
         </div>
     );
 };

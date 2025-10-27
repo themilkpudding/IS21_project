@@ -1,7 +1,7 @@
-import Unit from "./Unit";
+import Movement from "./Movement";
 
-export class Projectile extends Unit {
-    isActive: boolean = true;
+export class Projectile extends Movement {
+    public damage: number;
     constructor() {
         super();
         this.rect.width = 30;
