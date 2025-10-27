@@ -45,6 +45,7 @@ const Chat: React.FC<IChat> = ({ isOpen, onToggle }) => {
                 e.preventDefault();
                 e.stopPropagation();
                 onToggle(false);
+                typingState.set(false);
                 cancelAutoClose();
             }
         }
