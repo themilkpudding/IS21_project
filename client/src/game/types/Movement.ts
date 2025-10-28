@@ -1,4 +1,5 @@
 import { EDIRECTION, TRect } from "../../config";
+import { typingState } from "../../components/Chat/Chat";
 
 class Movement {
     public rect: TRect;
@@ -22,10 +23,14 @@ class Movement {
     }
 
     setMovement(dx: number, dy: number): void {
+        if (typingState.isTyping) return;
+        
         this.movement = { dx, dy };
     }
 
     move(dx: number, dy: number): void {
+        if (typingState.isTyping) return;
+
         this.rect.x += dx;
         this.rect.y += dy;
         if (dx) {

@@ -52,18 +52,17 @@ const Login: React.FC<IBasePage> = (props: IBasePage) => {
             server.showError((err: TError) => {
                 if (err.code === 1002 || err.code === 1005) setError('неверный логин или пароль');
                 clearAuthFields();
-
-                sessionStorage.removeItem('token');
-                localStorage.removeItem('token');
-                localStorage.removeItem('rememberMe');
-
-                server.store.clearUser();
             });
 
             if (token) {
                 const user = await server.getUserInfo();
                 if (user) {
                     setPage(PAGES.MENU);
+                } else {
+                    sessionStorage.removeItem('token');
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('rememberMe');
+                    server.store.clearUser();
                 }
             }
         };

@@ -45,7 +45,6 @@ const Registration: React.FC<IBasePage> = (props: IBasePage) => {
         const user = await server.registration(login, password, nickname);
 
         if (user) {
-            server.store.setUser(user, false)
             setPage(PAGES.LOGIN);
         }
     }
