@@ -1,0 +1,334 @@
+{
+	"info": {
+		"_postman_id": "f04499e4-1ee8-4c67-b9d1-e4c041009a8f",
+		"name": "KnightWars API Tests - Авторизация и Регистрация",
+		"description": "Автоматизированные тесты для аутентификации и регистрации на основе тест-кейсов BE-1, BE-2, BE-3, BE-4, BE-15",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49609716",
+		"_collection_link": "https://ruzelruzel2211-4625263.postman.co/workspace/Ruzel's-Workspace~a66d1a99-804d-4d56-8946-104c4def32d4/collection/49609716-f04499e4-1ee8-4c67-b9d1-e4c041009a8f?action=share&source=collection_link&creator=49609716"
+	},
+	"item": [
+		{
+			"name": "BE-1 - Успешная регистрация нового пользователя",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус код должен быть 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const response = pm.response.json();",
+							"pm.test(\"Результат должен быть 'ok'\", function () {",
+							"    pm.expect(response.result).to.equal('ok');",
+							"});",
+							"",
+							"pm.test(\"Ответ должен содержать данные пользователя\", function () {",
+							"    pm.expect(response.data).to.be.an('object');",
+							"    pm.expect(response.data).to.have.property('id');",
+							"    pm.expect(response.data).to.have.property('nickname', 'autotest_nick_001');",
+							"    pm.expect(response.data).to.have.property('token');",
+							"});",
+							"",
+							"pm.test(\"Сохранить токен пользователя\", function () {",
+							"    if (response.result === 'ok' && response.data.token) {",
+							"        pm.collectionVariables.set(\"userToken\", response.data.token);",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}?method=registration&login=autotest_user_001&passwordHash=25d55ad283aa400af464c76d713c07ad&nickname=autotest_nick_001",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"query": [
+						{
+							"key": "method",
+							"value": "registration"
+						},
+						{
+							"key": "login",
+							"value": "autotest_user_001"
+						},
+						{
+							"key": "passwordHash",
+							"value": "25d55ad283aa400af464c76d713c07ad"
+						},
+						{
+							"key": "nickname",
+							"value": "autotest_nick_001"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BE-2 - Регистрация с уже занятым логином",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус код должен быть 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const response = pm.response.json();",
+							"pm.test(\"Результат должен быть 'error'\", function () {",
+							"    pm.expect(response.result).to.equal('error');",
+							"});",
+							"",
+							"pm.test(\"Код ошибки должен быть 1001\", function () {",
+							"    pm.expect(response.error).to.have.property('code', 1001);",
+							"});",
+							"",
+							"pm.test(\"Текст ошибки должен быть правильным\", function () {",
+							"    pm.expect(response.error).to.have.property('text', 'Is it unique login?');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}?method=registration&login=existing_user_123&passwordHash=5f4dcc3b5aa765d61d8327deb882cf99&nickname=existing_nick_123",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"query": [
+						{
+							"key": "method",
+							"value": "registration"
+						},
+						{
+							"key": "login",
+							"value": "existing_user_123"
+						},
+						{
+							"key": "passwordHash",
+							"value": "5f4dcc3b5aa765d61d8327deb882cf99"
+						},
+						{
+							"key": "nickname",
+							"value": "existing_nick_123"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BE-3 - Успешная авторизация пользователя",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус код должен быть 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const response = pm.response.json();",
+							"pm.test(\"Результат должен быть 'ok'\", function () {",
+							"    pm.expect(response.result).to.equal('ok');",
+							"});",
+							"",
+							"pm.test(\"Ответ должен содержать данные пользователя\", function () {",
+							"    pm.expect(response.data).to.be.an('object');",
+							"    pm.expect(response.data).to.have.property('id');",
+							"    pm.expect(response.data).to.have.property('nickname');",
+							"    pm.expect(response.data).to.have.property('token');",
+							"});",
+							"",
+							"pm.test(\"Обновить токен пользователя\", function () {",
+							"    if (response.result === 'ok' && response.data.token) {",
+							"        pm.collectionVariables.set(\"userToken\", response.data.token);",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}?method=login&login=valid_login_user&passwordHash=482c811da5d5b4bc6d497ffa98491e38&rnd=random12345",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"query": [
+						{
+							"key": "method",
+							"value": "login"
+						},
+						{
+							"key": "login",
+							"value": "valid_login_user"
+						},
+						{
+							"key": "passwordHash",
+							"value": "482c811da5d5b4bc6d497ffa98491e38"
+						},
+						{
+							"key": "rnd",
+							"value": "random12345"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BE-4 - Вход с неправильным паролем",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус код должен быть 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const response = pm.response.json();",
+							"pm.test(\"Результат должен быть 'error'\", function () {",
+							"    pm.expect(response.result).to.equal('error');",
+							"});",
+							"",
+							"pm.test(\"Код ошибки должен быть 1002\", function () {",
+							"    pm.expect(response.error).to.have.property('code', 1002);",
+							"});",
+							"",
+							"pm.test(\"Текст ошибки должен быть 'Wrong login or password'\", function () {",
+							"    pm.expect(response.error).to.have.property('text', 'Wrong login or password');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}?method=login&login=test_user_456&passwordHash=wrong_password_hash_123&rnd=54321",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"query": [
+						{
+							"key": "method",
+							"value": "login"
+						},
+						{
+							"key": "login",
+							"value": "test_user_456"
+						},
+						{
+							"key": "passwordHash",
+							"value": "wrong_password_hash_123"
+						},
+						{
+							"key": "rnd",
+							"value": "54321"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BE-15 - Успешный выход пользователя из системы",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус код должен быть 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const response = pm.response.json();",
+							"pm.test(\"Результат должен быть 'ok'\", function () {",
+							"    pm.expect(response.result).to.equal('ok');",
+							"});",
+							"",
+							"pm.test(\"Данные ответа должны быть true\", function () {",
+							"    pm.expect(response.data).to.equal(true);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}?method=logout&token={{userToken}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"query": [
+						{
+							"key": "method",
+							"value": "logout"
+						},
+						{
+							"key": "token",
+							"value": "{{userToken}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"console.log('Запуск тестов KnightWars API');"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Время ответа должно быть приемлемым\", function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+					"});"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://knightwars.local/api",
+			"type": "string"
+		},
+		{
+			"key": "userToken",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
