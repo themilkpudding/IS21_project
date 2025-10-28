@@ -48,11 +48,7 @@ class Game {
         if (heroIndex >= this.Heroes.length) return;
 
         const hero = this.Heroes[heroIndex];
-        const arrow = new Projectile();
-
-        arrow.direction = hero.direction;
-        arrow.rect.x = arrow.direction == "right" ? hero.rect.x + hero.rect.width + 1 : hero.rect.x - 31;
-        arrow.rect.y = hero.rect.y + (hero.rect.height / 2);
+        const arrow = new Projectile(hero.direction, hero.direction == "right" ? hero.rect.x + hero.rect.width + 1 : hero.rect.x - 31, hero.rect.y + (hero.rect.height / 2));
         this.Arrows.push(arrow);
     }
 
