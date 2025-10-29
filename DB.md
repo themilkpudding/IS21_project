@@ -59,8 +59,6 @@
 | bonus_hp | integer | 0 by default |
 | cost | integer | 0 by default |
 
-**characters_items**
-
 **character_items**
 | name | type | comment |
 | - | - | - |
@@ -86,7 +84,7 @@
 | - | - | - |
 | id | integer | primary key |
 | room_id | integer | not null |
-| user_id | integer | not null |
+| character_id | integer | not null |
 | type | enum | 'owner'/'participant' |
 | status | enum | 'ready'/'started' |
 | x | integer |  |
@@ -130,6 +128,7 @@
 | user_id | integer | not null |
 | message | string | |
 | created | datetime | current datetime |
+
 
 
 

@@ -5,17 +5,16 @@ class Answer {
         '101' => 'Param method not setted',
         '102' => 'Method not found',
         '242' => 'Params not set fully',
+        '404' => 'Not found',
         '705' => 'User is not found',
-        '1001' => 'Is it unique login?',
+        '706' => 'Character is not found',
+        '1001' => 'Params login or password not set',
         '1002' => 'Wrong login or password',
         '1003' => 'Error to logout user',
         '1004' => 'Error to register user',
         '1005' => 'User is no exists',
-        '404' => 'Not found',
-        '1001' => 'Params login or password not set',
-        '1005' => 'Other user is playing wright now. If you doesn`t, please change the password',
         '1006' => 'User with this email is already registered',
-        //lobby answers
+        //lobby
         '2001' => 'Error creating room',
         '2002' => 'Error adding user to room',
         '2003' => 'Room not found',
@@ -32,7 +31,7 @@ class Answer {
         '2014' => 'You cannot start a room: you are either not the owner or you are not in the room',
         '2015' => 'Room not found or not open',
         '2016' => 'Rooms data not changed',
-         //menu answers
+         //menu
         '3001' => 'No classes found',
         '3002' => 'Class not found',
         '3003' => 'User not found',
@@ -40,6 +39,15 @@ class Answer {
         '3005' => 'Error during purchase',
         '3006' => 'Class not owned',
         '3007' => 'Class already purchased',
+        //store
+        '4001' => 'Item not found',
+        '4002' => 'Not enough money to buy',
+        '4003' => 'Item already owned',
+        '4004' => 'Error purchasing item',
+        '4005' => 'Invalid consumable type',
+        '4006' => 'Maximum arrows limit reached (50)',
+        '4007' => 'Maximum potions limit reached (3)',
+        '4008' => 'Error purchasing consumables',
         //math
         '8001' => 'Enter at least one value',
         '8002' => 'The discriminant cannot be less than zero',

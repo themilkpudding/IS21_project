@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: MySQL-8.0
--- Время создания: Окт 26 2025 г., 12:43
+-- Время создания: Окт 29 2025 г., 18:19
 -- Версия сервера: 8.0.41
 -- Версия PHP: 8.3.14
 
@@ -65,8 +65,15 @@ CREATE TABLE `characters` (
   `arrows` int DEFAULT '0',
   `potions` int DEFAULT '0',
   `money` int DEFAULT '100',
-  `died` tinyint(1) DEFAULT '0'
+  `died` tinyint(1) DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп данных таблицы `characters`
+--
+
+INSERT INTO `characters` (`id`, `user_id`, `hp`, `defense`, `arrows`, `potions`, `money`, `died`) VALUES
+(1, 44, 100, 10, 50, 3, 890, 1);
 
 -- --------------------------------------------------------
 
@@ -97,6 +104,13 @@ CREATE TABLE `character_items` (
   `selected` tinyint(1) DEFAULT '0',
   `quantity` int DEFAULT '1'
 ) ;
+
+--
+-- Дамп данных таблицы `character_items`
+--
+
+INSERT INTO `character_items` (`id`, `item_id`, `character_id`, `room_id`, `x`, `y`, `selected`, `quantity`) VALUES
+(2, 1, 1, NULL, 0, 0, 0, 1);
 
 --
 -- Триггеры `character_items`
@@ -173,6 +187,13 @@ CREATE TABLE `items` (
   `cost` int DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Дамп данных таблицы `items`
+--
+
+INSERT INTO `items` (`id`, `name`, `item_type`, `weapon_type`, `damage`, `attack_speed`, `attack_distance`, `bonus_defense`, `bonus_hp`, `cost`) VALUES
+(1, 'Test sword', 'weapon', 'sword', 10, 2, 1, 0, 0, 15);
+
 -- --------------------------------------------------------
 
 --
@@ -206,12 +227,12 @@ CREATE TABLE `rooms` (
 CREATE TABLE `room_members` (
   `id` int NOT NULL,
   `room_id` int NOT NULL,
-  `user_id` int NOT NULL,
-  `type` enum('owner','participant') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'participant',
-  `status` enum('ready','started') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'ready',
+  `character_id` int NOT NULL,
+  `type` enum('owner','participant') NOT NULL DEFAULT 'participant',
+  `status` enum('ready','started') NOT NULL DEFAULT 'ready',
   `x` int DEFAULT NULL,
   `y` int DEFAULT NULL,
-  `direction` enum('left','right') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'right',
+  `direction` enum('left','right') DEFAULT 'right',
   `hp` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -228,6 +249,13 @@ CREATE TABLE `users` (
   `nickname` varchar(255) NOT NULL,
   `token` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп данных таблицы `users`
+--
+
+INSERT INTO `users` (`id`, `login`, `password`, `nickname`, `token`) VALUES
+(44, 'kloddef1', '123456', 'KloddeF', '9db1ed369068e94d26e959fe9fda2048');
 
 --
 -- Индексы сохранённых таблиц
@@ -270,8 +298,7 @@ ALTER TABLE `characters_classes`
 ALTER TABLE `character_items`
   ADD PRIMARY KEY (`id`),
   ADD KEY `item_id` (`item_id`),
-  ADD KEY `character_id` (`character_id`),
-  ADD KEY `room_id` (`room_id`);
+  ADD KEY `character_id` (`character_id`);
 
 --
 -- Индексы таблицы `classes`
@@ -309,8 +336,8 @@ ALTER TABLE `rooms`
 --
 ALTER TABLE `room_members`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `room_id` (`room_id`,`user_id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD UNIQUE KEY `unique_room_character` (`room_id`,`character_id`),
+  ADD KEY `character_id` (`character_id`);
 
 --
 -- Индексы таблицы `users`
@@ -339,7 +366,7 @@ ALTER TABLE `bots`
 -- AUTO_INCREMENT для таблицы `characters`
 --
 ALTER TABLE `characters`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `characters_classes`
@@ -363,7 +390,7 @@ ALTER TABLE `classes`
 -- AUTO_INCREMENT для таблицы `items`
 --
 ALTER TABLE `items`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `messages`
@@ -381,13 +408,13 @@ ALTER TABLE `rooms`
 -- AUTO_INCREMENT для таблицы `room_members`
 --
 ALTER TABLE `room_members`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
@@ -424,8 +451,7 @@ ALTER TABLE `characters_classes`
 --
 ALTER TABLE `character_items`
   ADD CONSTRAINT `character_items_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `items` (`id`),
-  ADD CONSTRAINT `character_items_ibfk_2` FOREIGN KEY (`character_id`) REFERENCES `characters` (`id`),
-  ADD CONSTRAINT `character_items_ibfk_3` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`);
+  ADD CONSTRAINT `character_items_ibfk_2` FOREIGN KEY (`character_id`) REFERENCES `characters` (`id`);
 
 --
 -- Ограничения внешнего ключа таблицы `messages`
@@ -438,7 +464,7 @@ ALTER TABLE `messages`
 --
 ALTER TABLE `room_members`
   ADD CONSTRAINT `room_members_ibfk_1` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `room_members_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `room_members_ibfk_2` FOREIGN KEY (`character_id`) REFERENCES `characters` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

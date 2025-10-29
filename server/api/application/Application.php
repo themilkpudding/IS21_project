@@ -5,6 +5,7 @@ require_once ('chat/Chat.php');
 require_once ('math/Math.php');
 require_once ('lobby/Lobby.php');
 require_once('menu/Menu.php');
+require_once('store/Store.php');
 
 class Application {
     function __construct() {
@@ -14,6 +15,7 @@ class Application {
         $this->lobby = new Lobby($db);
         $this->menu = new Menu($db);
         $this->chat = new Chat($db);
+        $this->store = new Store($db);
     }
 
     public function login($params) {
@@ -190,6 +192,29 @@ class Application {
         if (!empty($params['token']) && !empty($params['classId'])) {
             $user = $this->user->getUser($params['token']);
             if ($user) return $this->menu->selectClass($user->id, $params['classId']);
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+
+    //store
+    public function buyItem($params) {
+        if ($params['token'] && $params['itemId']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->store->buyItem($user->id, $params['itemId']);
+            }
+            return ['error' => 705];
+        }
+        return ['error' => 242];
+    }
+
+    public function buyConsumables($params) {
+        if ($params['token'] && $params['consumType']) {
+            $user = $this->user->getUser($params['token']);
+            if ($user) {
+                return $this->store->buyConsumables($user->id, $params['consumType']);
+            }
             return ['error' => 705];
         }
         return ['error' => 242];

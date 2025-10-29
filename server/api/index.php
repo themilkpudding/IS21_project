@@ -35,6 +35,9 @@ function result($params) {
             case 'getClasses': return $app->getClasses($params);
             case 'buyClass': return $app->buyClass($params);
             case 'selectClass': return $app->selectClass($params);
+            //store
+            case 'buyItem': return $app->buyItem($params);
+            case 'buyConsumables': return $app->buyConsumables($params);
 
             default: return ['error' => 102];
         }
