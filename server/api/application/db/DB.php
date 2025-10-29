@@ -43,11 +43,13 @@ class DB {
         return $this->query("SELECT * FROM users WHERE token=?", [$token]);
     }
 
-    
     public function getUserById($id) {
         return $this->query("SELECT * FROM users WHERE id = ?", [$id]);
     }
 
+    public function getCharacterByUserId($userId) {
+        return $this->query("SELECT * FROM characters WHERE user_id = ?", [$userId]);
+    }
 
     public function updateToken($userId, $token) {
         $this->execute("UPDATE users SET token=? WHERE id=?", [$token, $userId]);
@@ -57,7 +59,7 @@ class DB {
         $this->execute("INSERT INTO users (login, password, nickname) VALUES (?, ?, ?)", [$login, $password, $nickname]);
     }
 
-     public function getChatHash() {
+    public function getChatHash() {
         return $this->query("SELECT * FROM hashes WHERE id=1");
     }
 
@@ -148,7 +150,6 @@ class DB {
         $this->execute("UPDATE room_members SET status=? WHERE room_id=?", [$status, $roomId]);
     }
 
-    //?????
     public function getOpenRooms() {
         return $this->queryAll("
             SELECT r.id, r.status, COUNT(rm.user_id) as players_count 
@@ -212,6 +213,10 @@ class DB {
         return $this->execute("UPDATE users SET money = money - ? WHERE id = ?", [$amount, $userId]);
     }
 
+    public function updateCharacterMoneySubtract($characterId, $amount) {
+        return $this->execute("UPDATE characters SET money = money - ? WHERE id = ?", [$amount, $characterId]);
+    }
+
     public function beginTransaction() {
         return $this->pdo->beginTransaction();
     }
@@ -222,6 +227,38 @@ class DB {
 
     public function rollBack() {
         return $this->pdo->rollBack();
+    }
+
+    public function getItemById($itemId) {
+        return $this->query("SELECT * FROM items WHERE id = ?", [$itemId]);
+    }
+
+    public function getUserItem($characterId, $itemId) {
+        return $this->query(
+            "SELECT * FROM character_items WHERE character_id = ? AND item_id = ?",
+            [$characterId, $itemId]
+        );
+    }
+
+    public function addUserItem($characterId, $itemId) {
+        return $this->execute(
+            "INSERT INTO character_items (character_id, item_id, x, y, selected, quantity) VALUES (?, ?, 0, 0, 0, 1)",
+            [$characterId, $itemId]
+        );
+    }
+
+    public function updateUserArrows($userId, $amount) {
+        return $this->execute(
+            "UPDATE characters SET arrows = arrows + ? WHERE user_id = ?",
+            [$amount, $userId]
+        );
+    }
+
+    public function updateUserPotions($userId, $amount) {
+        return $this->execute(
+            "UPDATE characters SET potions = potions + ? WHERE user_id = ?",
+            [$amount, $userId]
+        );
     }
 }
 
