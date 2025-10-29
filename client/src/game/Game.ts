@@ -17,6 +17,7 @@ class Game {
     private Enemies: Enemy[];
     private interval: NodeJS.Timer | null = null;
     private movement: { dx: number; dy: number } = { dx: 0, dy: 0 };
+    private isAttacking: boolean = false;
 
     constructor(server: Server) {
         this.server = server;
@@ -55,9 +56,8 @@ class Game {
         this.Arrows.push(arrow);
     }
 
-    // Новый метод для обновления сцены с учетом состояния атаки
-    updateSceneWithAttack(isAttacking: boolean): void {
-        this.updateScene(isAttacking);
+    setAttack(isAttacking: boolean): void {
+        this.isAttacking = isAttacking;
     }
 
     private userIsOwner() {
@@ -68,7 +68,7 @@ class Game {
             this.stopUpdateScene();
         }
         this.interval = setInterval(
-            () => this.updateScene(false),
+            () => this.updateScene(this.isAttacking),
             CONFIG.GAME_UPDATE_TIMESTAMP
         );
     }

@@ -154,7 +154,7 @@ const GamePage: React.FC<IBasePage> = (props: IBasePage) => {
 
             // Передаем состояние атаки в обновление сцены
             if (gameRef.current) {
-                gameRef.current.updateSceneWithAttack(isAttackingRef.current);
+                gameRef.current.setAttack(isAttackingRef.current);
             }
 
             animationFrameRef.current = requestAnimationFrame(gameLoop);
