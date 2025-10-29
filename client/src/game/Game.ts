@@ -55,6 +55,11 @@ class Game {
         this.Arrows.push(arrow);
     }
 
+    // Новый метод для обновления сцены с учетом состояния атаки
+    updateSceneWithAttack(isAttacking: boolean): void {
+        this.updateScene(isAttacking);
+    }
+
     private userIsOwner() {
     }
 
@@ -63,7 +68,7 @@ class Game {
             this.stopUpdateScene();
         }
         this.interval = setInterval(
-            () => this.updateScene(),
+            () => this.updateScene(false),
             CONFIG.GAME_UPDATE_TIMESTAMP
         );
     }
@@ -97,7 +102,10 @@ class Game {
         return true;
     }
 
-    private checkSwordCollisions(): void {
+    private checkSwordCollisions(isAttacking: boolean): void {
+        // Если не атакуем, не проверяем столкновения с мечом
+        if (!isAttacking) return;
+
         this.Heroes.forEach(hero => {
             const swordRect = hero.getAttackPosition();
 
@@ -146,7 +154,7 @@ class Game {
         this.Enemies = this.Enemies.filter(enemy => enemy.isAlive());
     }
 
-    private updateScene() {
+    private updateScene(isAttacking: boolean) {
         let isUpdated = false;
 
         // Обновляем всех героев
@@ -178,7 +186,10 @@ class Game {
 
         // Обновляем позиции мечей для всех героев
         this.Swords = this.Heroes.map(hero => hero.getAttackPosition());
-        this.checkSwordCollisions();
+
+        // Передаем состояние атаки в проверку столкновений меча
+        this.checkSwordCollisions(isAttacking);
+
         if (isUpdated) {
             // Логика отправки на сервер
         }
