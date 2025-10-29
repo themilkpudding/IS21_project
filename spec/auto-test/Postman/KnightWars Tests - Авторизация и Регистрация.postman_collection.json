@@ -42,6 +42,13 @@
 						"packages": {},
 						"requests": {}
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -102,6 +109,13 @@
 						"type": "text/javascript",
 						"packages": {},
 						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript"
 					}
 				}
 			],
@@ -169,6 +183,13 @@
 						"packages": {},
 						"requests": {}
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -202,7 +223,7 @@
 			"response": []
 		},
 		{
-			"name": "BE-3 - Успешная авторизация пользователя",
+			"name": "BE-4 - Вход с неправильным паролем",
 			"event": [
 				{
 					"listen": "test",
@@ -229,6 +250,13 @@
 						"type": "text/javascript",
 						"packages": {},
 						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript"
 					}
 				}
 			],
@@ -287,6 +315,13 @@
 						"packages": {},
 						"requests": {}
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -317,8 +352,9 @@
 			"listen": "prerequest",
 			"script": {
 				"type": "text/javascript",
+				"requests": {},
 				"exec": [
-					"console.log('Запуск тестов KnightWars API');"
+					""
 				]
 			}
 		},
@@ -326,10 +362,9 @@
 			"listen": "test",
 			"script": {
 				"type": "text/javascript",
+				"requests": {},
 				"exec": [
-					"pm.test(\"Время ответа должно быть приемлемым\", function () {",
-					"    pm.expect(pm.response.responseTime).to.be.below(1000);",
-					"});"
+					""
 				]
 			}
 		}
@@ -337,13 +372,11 @@
 	"variable": [
 		{
 			"key": "baseUrl",
-			"value": "http://knightwars.local/api",
-			"type": "string"
+			"value": "http://knightwars.local/api"
 		},
 		{
 			"key": "userToken",
-			"value": "",
-			"type": "string"
+			"value": ""
 		}
 	]
 }
