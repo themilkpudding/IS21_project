@@ -197,8 +197,9 @@ class Application {
         return ['error' => 242];
     }
 
+    //store
     public function buyItem($params) {
-        if (!empty($params['token']) && !empty($params['itemId'])) {
+        if ($params['token'] && $params['itemId']) {
             $user = $this->user->getUser($params['token']);
             if ($user) {
                 return $this->store->buyItem($user->id, $params['itemId']);
@@ -209,7 +210,7 @@ class Application {
     }
 
     public function buyConsumables($params) {
-        if (!empty($params['token']) && !empty($params['consumType'])) {
+        if ($params['token'] && $params['consumType']) {
             $user = $this->user->getUser($params['token']);
             if ($user) {
                 return $this->store->buyConsumables($user->id, $params['consumType']);
