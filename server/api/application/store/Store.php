@@ -19,17 +19,18 @@ class Store {
             return ['error' => 4001];
         }
         
-        //проверка, есть ли у юзера персонаж и деньги
+        //проверка, есть ли у юзера персонаж
         $character = $this->db->getCharacterByUserId($userId);
         if (!$character) {
             return ['error' => 706];
         }
-        
+
+        //проверка, есть ли у персонажа деньги
         if ($character->money < $item->cost) {
             return ['error' => 4002];
         }
         
-        //проверка, не куплен ли уже такой шмот (по character_id)
+        //проверка, не куплен ли уже такой шмот
         $existingItem = $this->db->getUserItem($character->id, $itemId);
         if ($existingItem) {
             return ['error' => 4003];
@@ -39,14 +40,14 @@ class Store {
         $this->db->beginTransaction();
         
         try {
-            //списываем деньгу (из characters по character_id)
+            //списываем деньгу 
             $moneyUpdated = $this->db->updateCharacterMoneySubtract($character->id, $item->cost);
             if (!$moneyUpdated) {
                 $this->db->rollBack();
                 return ['error' => 4004];
             }
             
-            //добавляем шмот в инвентарь (по character_id)
+            //добавляем шмот в инвентарь
             $itemAdded = $this->db->addUserItem($character->id, $itemId);
             if (!$itemAdded) {
                 $this->db->rollBack();
@@ -69,12 +70,13 @@ class Store {
             return ['error' => 4005];
         }
         
-        //получаем данные юзера и персонажа
+        //проверка, существует ли юзер
         $user = $this->db->getUserById($userId);
         if (!$user) {
             return ['error' => 705];
         }
         
+        //проверка, есть ли у юзера персонаж
         $character = $this->db->getCharacterByUserId($userId);
         if (!$character) {
             return ['error' => 706];
@@ -109,7 +111,7 @@ class Store {
             }
         }
         
-        //проверяем, хватает ли денег у перса
+        //проверка, есть ли у персонажа деньги
         if ($character->money < $cost) {
             return ['error' => 4002];
         }
@@ -118,7 +120,7 @@ class Store {
         $this->db->beginTransaction();
         
         try {
-            //списываем деньгу (из characters)
+            //списываем деньгу 
             $moneyUpdated = $this->db->updateCharacterMoneySubtract($character->id, $cost);
             if (!$moneyUpdated) {
                 $this->db->rollBack();
