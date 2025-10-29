@@ -4,6 +4,7 @@ import Hero from "./types/Hero";
 import Server from "../services/server/Server";
 import Projectile from "./types/Projectile";
 import Unit from "./types/Unit";
+import Enemy from "./types/Enemy";
 
 class Game {
     private server: Server;
@@ -13,6 +14,7 @@ class Game {
     private gameMap: Map;
     private Arrows: Projectile[];
     private Bots: Unit[];
+    private Enemies: Enemy[];
     private interval: NodeJS.Timer | null = null;
     private movement: { dx: number; dy: number } = { dx: 0, dy: 0 };
 
@@ -24,7 +26,7 @@ class Game {
         this.Swords = [];
         this.Arrows = [];
         this.Bots = [];
-
+        this.Enemies = [new Enemy()];
         //this.server.startGetScene(() => this.getSceneFromBackend());
         this.startUpdateScene();
     }
@@ -41,6 +43,7 @@ class Game {
             Swords: this.Swords.map(hero => hero),
             Arrows: this.Arrows.map(arrow => arrow),
             Bots: this.Bots.map(bot => bot),
+            Enemies: this.Enemies.map(enemy => enemy),
         };
     }
 
@@ -87,7 +90,6 @@ class Game {
             height: hero.rect.height
         };
 
-        // Проверяем коллизию с каждой стеной
         if (this.Walls.find(wall => hero.checkRectCollision(newRect, wall))) {
             return false;
         }
@@ -95,18 +97,53 @@ class Game {
         return true;
     }
 
+    private checkSwordCollisions(): void {
+        this.Heroes.forEach(hero => {
+            const swordRect = hero.getAttackPosition();
+
+            this.Enemies.forEach(enemy => {
+                if (this.Heroes[0].checkRectCollision(swordRect, enemy.rect)) {
+                    enemy.health -= hero.damage;
+                }
+            });
+        });
+    }
+
     private checkArrowCollisions(): void {
         this.Arrows = this.Arrows.filter(arrow => {
-            if (this.Walls.find(wall => {
-                // Используем любого героя для проверки коллизий
-                // (предполагается, что метод checkRectCollision одинаков для всех героев)
+            // Проверка столкновений со стенами
+            const hitWall = this.Walls.find(wall => {
                 return this.Heroes.length > 0 ?
                     this.Heroes[0].checkRectCollision(arrow.rect, wall) : false;
-            })) {
-                return false;
-            }
-            return true;
+            });
+
+            // Проверка столкновений с врагами
+            const hitEnemy = this.Enemies.find(enemy => {
+                const hit = this.Heroes.length > 0 ?
+                    this.Heroes[0].checkRectCollision(arrow.rect, enemy.rect) : false;
+
+                if (hit) {
+                    // Наносим урон врагу
+                    enemy.health -= arrow.damage;
+                }
+
+                return hit;
+            });
+
+            return !hitWall && !hitEnemy;
         });
+    }
+
+    private updateEnemies(): void {
+
+        this.Enemies.forEach(enemy => {
+            if (enemy.isAlive()) {
+                enemy.update(this.Heroes[0], this.Walls);
+            }
+        });
+
+        // Удаляем мертвых врагов
+        this.Enemies = this.Enemies.filter(enemy => enemy.isAlive());
     }
 
     private updateScene() {
@@ -124,7 +161,9 @@ class Game {
             }
         });
 
-        // Передвинуть ботов
+        // Обновляем врагов
+        this.updateEnemies();
+
         // Передвинуть стрелы
         if (this.Arrows) {
             this.Arrows.forEach(arrow => {
@@ -139,7 +178,7 @@ class Game {
 
         // Обновляем позиции мечей для всех героев
         this.Swords = this.Heroes.map(hero => hero.getAttackPosition());
-
+        this.checkSwordCollisions();
         if (isUpdated) {
             // Логика отправки на сервер
         }

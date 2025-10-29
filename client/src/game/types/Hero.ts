@@ -13,7 +13,8 @@ class Hero extends Unit {
         this.rect.y = 100;
         this.speed = 8;
         this.rect.width = 100;
-        this.rect.height = 100
+        this.rect.height = 100;
+        this.damage = this.characterClass.damage;
     };
 
     getCharacterClass(): CharacterClass {
