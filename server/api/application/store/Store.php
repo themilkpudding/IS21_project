@@ -140,11 +140,7 @@ class Store {
             }
             
             $this->db->commit();
-            return [
-                'purchased' => $buyAmount,
-                'newBalance' => $consumType === 'arrows' ? $currentAmount + $buyAmount : $currentAmount + $buyAmount,
-                'moneyLeft' => $character->money - $cost
-            ];
+            return true;
             
         } catch (Exception $e) {
             $this->db->rollBack();
