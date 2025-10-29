@@ -1,8 +1,8 @@
 {
 	"info": {
 		"_postman_id": "f04499e4-1ee8-4c67-b9d1-e4c041009a8f",
-		"name": "KnightWars API Tests - Авторизация и Регистрация",
-		"description": "Автоматизированные тесты для аутентификации и регистрации на основе тест-кейсов BE-1, BE-2, BE-3, BE-4, BE-15",
+		"name": "KnightWars Tests - Авторизация и Регистрация",
+		"description": "Автоматизированные тесты на основе тест-кейсов BE-1, BE-2, BE-3, BE-4, BE-15",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "49609716",
 		"_collection_link": "https://ruzelruzel2211-4625263.postman.co/workspace/Ruzel's-Workspace~a66d1a99-804d-4d56-8946-104c4def32d4/collection/49609716-f04499e4-1ee8-4c67-b9d1-e4c041009a8f?action=share&source=collection_link&creator=49609716"
@@ -20,6 +20,7 @@
 							"});",
 							"",
 							"const response = pm.response.json();",
+							"",
 							"pm.test(\"Результат должен быть 'ok'\", function () {",
 							"    pm.expect(response.result).to.equal('ok');",
 							"});",
@@ -37,7 +38,9 @@
 							"    }",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
 					}
 				}
 			],
@@ -83,6 +86,7 @@
 							"});",
 							"",
 							"const response = pm.response.json();",
+							"",
 							"pm.test(\"Результат должен быть 'error'\", function () {",
 							"    pm.expect(response.result).to.equal('error');",
 							"});",
@@ -95,7 +99,9 @@
 							"    pm.expect(response.error).to.have.property('text', 'Is it unique login?');",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
 					}
 				}
 			],
@@ -141,6 +147,7 @@
 							"});",
 							"",
 							"const response = pm.response.json();",
+							"",
 							"pm.test(\"Результат должен быть 'ok'\", function () {",
 							"    pm.expect(response.result).to.equal('ok');",
 							"});",
@@ -158,7 +165,9 @@
 							"    }",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
 					}
 				}
 			],
@@ -193,7 +202,7 @@
 			"response": []
 		},
 		{
-			"name": "BE-4 - Вход с неправильным паролем",
+			"name": "BE-3 - Успешная авторизация пользователя",
 			"event": [
 				{
 					"listen": "test",
@@ -204,6 +213,7 @@
 							"});",
 							"",
 							"const response = pm.response.json();",
+							"",
 							"pm.test(\"Результат должен быть 'error'\", function () {",
 							"    pm.expect(response.result).to.equal('error');",
 							"});",
@@ -216,7 +226,9 @@
 							"    pm.expect(response.error).to.have.property('text', 'Wrong login or password');",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
 					}
 				}
 			],
@@ -262,6 +274,7 @@
 							"});",
 							"",
 							"const response = pm.response.json();",
+							"",
 							"pm.test(\"Результат должен быть 'ok'\", function () {",
 							"    pm.expect(response.result).to.equal('ok');",
 							"});",
@@ -270,7 +283,9 @@
 							"    pm.expect(response.data).to.equal(true);",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
 					}
 				}
 			],
