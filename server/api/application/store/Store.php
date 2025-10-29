@@ -22,7 +22,7 @@ class Store {
         //проверка, есть ли у юзера персонаж и деньги
         $character = $this->db->getCharacterByUserId($userId);
         if (!$character) {
-            return ['error' => 705];
+            return ['error' => 706];
         }
         
         if ($character->money < $item->cost) {
