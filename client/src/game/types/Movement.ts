@@ -1,4 +1,5 @@
 import { EDIRECTION, TRect } from "../../config";
+import { typingState } from "../../components/Chat/Chat";
 
 class Movement {
     public rect: TRect;
@@ -6,11 +7,11 @@ class Movement {
     public speed: number;
     public movement: { dx: number, dy: number };
 
-    constructor(rect = { x: 0, y: 0, width: 0, height: 0 }, direction = EDIRECTION.RIGHT, speed = 0, movement = { dx: 0, dy: 0 }) {
+    constructor(rect = { x: 0, y: 0, width: 0, height: 0 }, direction = EDIRECTION.RIGHT, speed = 0) {
         this.rect = rect;
         this.direction = direction;
         this.speed = speed;
-        this.movement = movement
+        this.movement = { dx: 0, dy: 0 }
     }
 
     getMovement() {
@@ -22,10 +23,14 @@ class Movement {
     }
 
     setMovement(dx: number, dy: number): void {
+        if (typingState.isTyping) return;
+        
         this.movement = { dx, dy };
     }
 
     move(dx: number, dy: number): void {
+        if (typingState.isTyping) return;
+
         this.rect.x += dx;
         this.rect.y += dy;
         if (dx) {

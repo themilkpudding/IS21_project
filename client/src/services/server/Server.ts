@@ -121,7 +121,7 @@ class Server {
         const token = this.store.getToken();
         if (!token) return null;
 
-        const userInfo = await this.request<{ id: number; login: string; nickname: string; money: number }>('getUserInfo', { token });
+        const userInfo = await this.request<{ id: number; login: string; nickname: string; money: number }>('getUserInfo');
         if (userInfo) {
             const user: TUser = {
                 id: userInfo.id,
