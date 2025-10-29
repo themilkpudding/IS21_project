@@ -29,15 +29,15 @@ const Menu: React.FC<IBasePage> = (props: IBasePage) => {
 
     return (<>
         <div>Меню</div>
-        <Button onClick={classShopClickHandler} text='Назад' />
-        <Button onClick={startingGameMenuClickHandler} text='Начать игру' />
-        <Button onClick={exitAccountClickHandler} text='Выйти из аккаунта' />
-        <Button onClick={deleteUserClickHandler} text='Удалить аккаунт' />
+        <Button onClick={classShopClickHandler} id='test-menu-back-button' text='Назад' />
+        <Button onClick={startingGameMenuClickHandler} id='test-menu-startGame-button' text='Начать игру' />
+        <Button onClick={exitAccountClickHandler} id='test-menu-logout-button' text='Выйти из аккаунта' />
+        <Button onClick={deleteUserClickHandler} id='test-menu-deleteAccount-button' text='Удалить аккаунт' />
         <Chat
             isOpen={isChatOpen}
             onToggle={setIsChatOpen}
         />
-        <button onClick={() => setPage(PAGES.GAME)}>Временная кнопка для открытия самой игры</button>
+        <button onClick={() => setPage(PAGES.GAME)} id='test-temporaryOpenGame-button' >Временная кнопка для открытия самой игры</button>
     </>)
 }
 
