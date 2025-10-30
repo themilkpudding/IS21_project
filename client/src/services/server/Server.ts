@@ -1,7 +1,7 @@
 import md5 from 'md5';
 import CONFIG from "../../config";
 import Store from "../store/Store";
-import { TAnswer, TError, TMessagesResponse, TUser } from "./types";
+import { TAnswer, TError, TMessagesResponse, TRoom, TRoomsResponse, TUser } from "./types";
 
 const { CHAT_TIMESTAMP, HOST } = CONFIG;
 
@@ -107,14 +107,44 @@ class Server {
         }
     }
 
-    async deleteUser(): Promise<boolean | null> {
+    async createRoom(): Promise<boolean | null> {
+        const result = await this.request<boolean>('createRoom');
+        return result;
+    }
 
-        const result = await this.request<boolean>('deleteUser')
+    async joinToRoom(roomId: number): Promise<boolean | null> {
+        const result = await this.request<boolean>('joinToRoom', { roomId: roomId.toString() });
+        return result;
+    }
+
+    async leaveRoom(): Promise<boolean | null> {
+        const result = await this.request<boolean>('leaveRoom');
+        return result;
+    }
+
+    async dropFromRoom(targetToken: string): Promise<boolean | null> {
+        const result = await this.request<boolean>('dropFromRoom', { targetToken });
+        return result;
+    }
+
+    async deleteUser(): Promise<boolean | null> {
+        const result = await this.request<boolean>('deleteUser');
+
         if (result) {
             this.store.clearUser();
             return true;
         }
         return false;
+    }
+
+    async startGame(): Promise<boolean | null> {
+        const result = await this.request<boolean>('startGame');
+        return result;
+    }
+
+    async getRooms(roomHash: string): Promise<TRoomsResponse | null> {
+        const result = await this.request<TRoomsResponse>('getRooms', { roomHash });
+        return result;
     }
 
     async getUserInfo(): Promise<{ id: number; login: string; nickname: string; money: number } | null> {
@@ -131,9 +161,9 @@ class Server {
                 token: token
             };
             this.store.setUser(user);
+            return userInfo;
         }
-
-        return userInfo;
+        return null;
     }
 
     startGetScene(callback: () => void): void {

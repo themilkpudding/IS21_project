@@ -1,0 +1,11 @@
+.lobby-manager {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 40px;
+    background-color: rgba(255, 255, 255);
+
+    .lobby-manager-toggle {
+        cursor: pointer;
+    }
+}

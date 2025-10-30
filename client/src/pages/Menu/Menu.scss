@@ -1,0 +1,50 @@
+.menu {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 1920px;
+    max-height: 1080px;
+
+    .canvas-container {
+        .startGame-button {
+            position: fixed;
+            top: 183px;
+            left: 785px;
+            width: 349px;
+            height: 124px;
+            border: none;
+            outline: none;
+            background-image: url('../../assets/img/menu/start-button.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-color: transparent;
+            cursor: pointer;
+        }
+
+        .classShop-button {
+            position: fixed;
+            top: 320px;
+            left: 1435px;
+            width: 349px;
+            height: 124px;
+            border: none;
+            outline: none;
+            background-image: url('../../assets/img/menu/shop-button.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-color: transparent;
+            cursor: pointer;
+        }
+
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+    }
+}

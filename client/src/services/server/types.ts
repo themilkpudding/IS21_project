@@ -18,6 +18,18 @@ export type TUser = {
 
 }
 
+export type TRoom = {
+    id: number;
+    status: 'open' | 'closed' | 'started';
+    players_count: number;
+}
+
+export type TRoomsResponse = {
+    status: 'unchanged' | 'updated';
+    hash: string;
+    rooms?: TRoom[];
+}
+
 export type TMessage = {
     message: string;
     author: string;

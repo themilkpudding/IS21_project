@@ -13,8 +13,8 @@ const { setPage } = props;
     };
 
     return (<>
-        <div>Меню</div>
-        <Button onClick={classShopClickHandler} text='Назад' />
+        <div>Лобби</div>
+        <Button onClick={classShopClickHandler} text='Магазин классов' />
         <Button onClick={startingGameMenuClickHandler} text='Начать игру' />
     </>)
 }
